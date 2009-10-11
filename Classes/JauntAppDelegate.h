@@ -10,9 +10,11 @@
 
 @interface JauntAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
+	IBOutlet UITabBarController *rootController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UITabBarController *rootController;
 
 @end
 
