@@ -22,6 +22,7 @@
 		6D632B17108257B7009769E5 /* JournalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B16108257B7009769E5 /* JournalView.xib */; };
 		6D632B19108257C7009769E5 /* ReservationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B18108257C7009769E5 /* ReservationView.xib */; };
 		6D632B2910825F1F009769E5 /* Route.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B2810825F1F009769E5 /* Route.png */; };
+		6D632C6610828ECA009769E5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D632C6510828ECA009769E5 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		6D632B16108257B7009769E5 /* JournalView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JournalView.xib; sourceTree = "<group>"; };
 		6D632B18108257C7009769E5 /* ReservationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReservationView.xib; sourceTree = "<group>"; };
 		6D632B2810825F1F009769E5 /* Route.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Route.png; sourceTree = "<group>"; };
+		6D632C6510828ECA009769E5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Jaunt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Jaunt-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,6 +60,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				6D632C6610828ECA009769E5 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +133,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				6D632C6510828ECA009769E5 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -209,6 +213,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -223,6 +228,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_DIR)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.0.sdk/System/Library/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Jaunt_Prefix.pch;
 				INFOPLIST_FILE = "Jaunt-Info.plist";
@@ -234,11 +243,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: John Bowles (CU75PDPP8H)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "33218BC9-E306-4CEB-AFB5-8D146AAC49D0";
 				SDKROOT = iphoneos3.0;
 			};
 			name = Debug;
@@ -251,6 +261,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.0;
 			};

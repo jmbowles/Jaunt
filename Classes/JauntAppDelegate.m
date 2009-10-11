@@ -11,11 +11,11 @@
 @implementation JauntAppDelegate
 
 @synthesize window;
+@synthesize rootController;
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
 
-    // Override point for customization after application launch
 	[window addSubview: rootController.view];
     [window makeKeyAndVisible];
 }
@@ -26,6 +26,5 @@
     [window release];
     [super dealloc];
 }
-
 
 @end
