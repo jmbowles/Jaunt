@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="10"/>
+			<integer value="23"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -37,12 +37,10 @@
 			</object>
 			<object class="IBUICustomObject" id="664661524"/>
 			<object class="IBUIWindow" id="380026005">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">1316</int>
 				<object class="NSPSMatrix" key="NSFrameMatrix"/>
 				<string key="NSFrameSize">{320, 480}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -54,10 +52,11 @@
 			<object class="IBUITabBarController" id="525858255">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="314889770">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="514776191">
-						<string key="IBUITitle">Journal</string>
-						<object class="NSCustomResource" key="IBUIImage" id="910019217">
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="594619953">
+					<string key="IBUITitle">Checklist</string>
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="383508131">
+						<string key="IBUITitle">Checklist</string>
+						<object class="NSCustomResource" key="IBUIImage" id="150416097">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">Route.png</string>
 						</object>
@@ -65,14 +64,25 @@
 					</object>
 					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="525858255"/>
-					<string key="IBUINibName">JournalView</string>
+					<string key="IBUINibName">Checklist</string>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIViewController" id="1041996467">
+						<string key="IBUITitle">Trips</string>
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="1068233501">
+							<string key="IBUITitle">Trips</string>
+							<reference key="IBUIImage" ref="150416097"/>
+							<reference key="IBUITabBar"/>
+						</object>
+						<reference key="IBUIToolbarItems" ref="0"/>
+						<reference key="IBUIParentViewController" ref="525858255"/>
+						<string key="IBUINibName">Trips</string>
+					</object>
 					<object class="IBUIViewController" id="971372982">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="648007523">
 							<string key="IBUITitle">Route</string>
-							<reference key="IBUIImage" ref="910019217"/>
+							<reference key="IBUIImage" ref="150416097"/>
 							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIParentViewController" ref="525858255"/>
@@ -81,23 +91,23 @@
 					<object class="IBUIViewController" id="102415171">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="382408701">
 							<string key="IBUITitle">Weather</string>
-							<reference key="IBUIImage" ref="910019217"/>
+							<reference key="IBUIImage" ref="150416097"/>
 							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIParentViewController" ref="525858255"/>
 						<string key="IBUINibName">WeatherView</string>
 					</object>
+					<reference ref="594619953"/>
 					<object class="IBUIViewController" id="628680358">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="34687173">
 							<string key="IBUITitle">Reservation</string>
-							<reference key="IBUIImage" ref="910019217"/>
+							<reference key="IBUIImage" ref="150416097"/>
 							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="525858255"/>
 						<string key="IBUINibName">ReservationView</string>
 					</object>
-					<reference ref="314889770"/>
 				</object>
 				<object class="IBUITabBar" key="IBUITabBar" id="317124866">
 					<nil key="NSNextResponder"/>
@@ -179,9 +189,10 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="317124866"/>
 							<reference ref="971372982"/>
-							<reference ref="102415171"/>
+							<reference ref="1041996467"/>
+							<reference ref="594619953"/>
 							<reference ref="628680358"/>
-							<reference ref="314889770"/>
+							<reference ref="102415171"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -233,18 +244,32 @@
 						<reference key="parent" ref="628680358"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">18</int>
-						<reference key="object" ref="314889770"/>
+						<int key="objectID">21</int>
+						<reference key="object" ref="1041996467"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="514776191"/>
+							<reference ref="1068233501"/>
 						</object>
 						<reference key="parent" ref="525858255"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="514776191"/>
-						<reference key="parent" ref="314889770"/>
+						<int key="objectID">22</int>
+						<reference key="object" ref="1068233501"/>
+						<reference key="parent" ref="1041996467"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">23</int>
+						<reference key="object" ref="594619953"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="383508131"/>
+						</object>
+						<reference key="parent" ref="525858255"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">24</int>
+						<reference key="object" ref="383508131"/>
+						<reference key="parent" ref="594619953"/>
 					</object>
 				</object>
 			</object>
@@ -257,13 +282,18 @@
 					<string>10.IBEditorWindowLastContentRect</string>
 					<string>10.IBPluginDependency</string>
 					<string>11.IBPluginDependency</string>
+					<string>12.CustomClassName</string>
 					<string>12.IBPluginDependency</string>
+					<string>13.CustomClassName</string>
 					<string>13.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>15.IBPluginDependency</string>
+					<string>16.CustomClassName</string>
 					<string>2.IBAttributePlaceholdersKey</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
+					<string>21.CustomClassName</string>
+					<string>23.CustomClassName</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
 				</object>
@@ -274,10 +304,13 @@
 					<string>{{688, 148}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>RouteController</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>WeatherController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>ReservationController</string>
 					<object class="NSMutableDictionary">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference key="dict.sortedKeys" ref="0"/>
@@ -287,6 +320,8 @@
 					</object>
 					<string>{{548, 164}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>TripsController</string>
+					<string>ChecklistController</string>
 					<string>JauntAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -307,11 +342,19 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">20</int>
+			<int key="maxID">24</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">ChecklistController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/ChecklistController.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">JauntAppDelegate</string>
 					<string key="superclassName">NSObject</string>
@@ -341,9 +384,53 @@
 						<string key="minorKey"/>
 					</object>
 				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ReservationController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/ReservationController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RouteController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">mapView</string>
+						<string key="NS.object.0">MKMapView</string>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/RouteController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TripsController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/TripsController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WeatherController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/WeatherController.h</string>
+					</object>
+				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">MKMapView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">MapKit.framework/Headers/MKMapView.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
