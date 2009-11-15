@@ -154,31 +154,10 @@
 	
 	[cell setCellExtensionDelegate:self];
 	[cell setValueForCell: self.trip.name];
-	[cell setTitleForCell: @"Name"];
+	[cell setTitleForCell: [self.list objectAtIndex:indexPath.section]];
 	
 	return cell;
 }
-
-/*
-- (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
-{
-	static NSString *CellIdentifier = @"TextFieldCell";
-	
-	TextFieldCell *cell = (TextFieldCell *) [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
-	
-	if (cell == nil) {
-		
-		NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TextFieldCell" owner:self options:nil];
-		cell = [nib objectAtIndex:0];
-	}
-	
-	cell.textField.delegate = self;
-	cell.leftTitleLabel.text = @"Name";
-	cell.textField.text = self.trip.name;
-	
-	return cell;
-}
-*/
 
 #pragma mark -
 #pragma mark Table Delegate Methods
