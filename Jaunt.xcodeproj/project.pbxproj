@@ -23,6 +23,10 @@
 		6D632C6610828ECA009769E5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D632C6510828ECA009769E5 /* MapKit.framework */; };
 		6D7B563410B02171007942E0 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B563310B02171007942E0 /* TextFieldCell.m */; };
 		6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B564710B02331007942E0 /* TextFieldCell.xib */; };
+		6D7B570110B049FB007942E0 /* NonEditableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B570010B049FB007942E0 /* NonEditableCell.m */; };
+		6D7B570710B04AC0007942E0 /* NonEditableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B570610B04AC0007942E0 /* NonEditableCell.xib */; };
+		6D7B570C10B04BAE007942E0 /* CellManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B570B10B04BAE007942E0 /* CellManager.m */; };
+		6D7B58BD10B08D4A007942E0 /* CellExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B58BC10B08D4A007942E0 /* CellExtension.m */; };
 		6D7DCF2A108B3CE200DFFDFE /* Checklist.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7DCF29108B3CE200DFFDFE /* Checklist.xib */; };
 		6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */; };
 		6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */; };
@@ -62,6 +66,13 @@
 		6D7B563210B02171007942E0 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		6D7B563310B02171007942E0 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		6D7B564710B02331007942E0 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
+		6D7B56FF10B049FB007942E0 /* NonEditableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonEditableCell.h; sourceTree = "<group>"; };
+		6D7B570010B049FB007942E0 /* NonEditableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonEditableCell.m; sourceTree = "<group>"; };
+		6D7B570610B04AC0007942E0 /* NonEditableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NonEditableCell.xib; sourceTree = "<group>"; };
+		6D7B570A10B04BAE007942E0 /* CellManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellManager.h; sourceTree = "<group>"; };
+		6D7B570B10B04BAE007942E0 /* CellManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellManager.m; sourceTree = "<group>"; };
+		6D7B582F10B07C38007942E0 /* CellExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellExtension.h; sourceTree = "<group>"; };
+		6D7B58BC10B08D4A007942E0 /* CellExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellExtension.m; sourceTree = "<group>"; };
 		6D7DCF29108B3CE200DFFDFE /* Checklist.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Checklist.xib; sourceTree = "<group>"; };
 		6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Trips.xib; sourceTree = "<group>"; };
 		6D7DCF32108B3E4400DFFDFE /* ChecklistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistController.h; sourceTree = "<group>"; };
@@ -172,6 +183,7 @@
 				6DD721D7109336F8008E5906 /* AddTrip.xib */,
 				6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */,
 				6D7B564710B02331007942E0 /* TextFieldCell.xib */,
+				6D7B570610B04AC0007942E0 /* NonEditableCell.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -193,6 +205,12 @@
 			children = (
 				6D7B563210B02171007942E0 /* TextFieldCell.h */,
 				6D7B563310B02171007942E0 /* TextFieldCell.m */,
+				6D7B56FF10B049FB007942E0 /* NonEditableCell.h */,
+				6D7B570010B049FB007942E0 /* NonEditableCell.m */,
+				6D7B570A10B04BAE007942E0 /* CellManager.h */,
+				6D7B570B10B04BAE007942E0 /* CellManager.m */,
+				6D7B582F10B07C38007942E0 /* CellExtension.h */,
+				6D7B58BC10B08D4A007942E0 /* CellExtension.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -260,6 +278,7 @@
 				6DD721D8109336F8008E5906 /* AddTrip.xib in Resources */,
 				6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */,
 				6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */,
+				6D7B570710B04AC0007942E0 /* NonEditableCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +303,9 @@
 				6DF00136109E3265006E1AB2 /* EditTripController.m in Sources */,
 				6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */,
 				6D7B563410B02171007942E0 /* TextFieldCell.m in Sources */,
+				6D7B570110B049FB007942E0 /* NonEditableCell.m in Sources */,
+				6D7B570C10B04BAE007942E0 /* CellManager.m in Sources */,
+				6D7B58BD10B08D4A007942E0 /* CellExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

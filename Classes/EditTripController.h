@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class Trip;
+@class CellManager;
 
 @interface EditTripController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 
@@ -17,13 +18,19 @@
 	NSMutableArray *tripsCollection;
 	Trip *trip;
 	NSManagedObjectContext *managedObjectContext;
+@private 
+	NSString *tripName;
+	CellManager *cellManager;
 }
 
 @property (nonatomic, retain) NSArray *list;
 @property (nonatomic, retain) NSMutableArray *tripsCollection;
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSString *tripName;
+@property (nonatomic, retain) CellManager *cellManager;
 
 - (void) save;
+- (void) loadCells;
 
 @end

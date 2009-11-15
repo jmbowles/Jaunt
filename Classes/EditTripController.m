@@ -10,6 +10,8 @@
 #import "Trip.h"
 #import "JauntAppDelegate.h"
 #import "TextFieldCell.h"
+#import	"CellManager.h"
+#import	"CellExtension.h"
 
 @implementation EditTripController
 
@@ -17,6 +19,8 @@
 @synthesize tripsCollection;
 @synthesize trip;
 @synthesize managedObjectContext;
+@synthesize tripName;
+@synthesize cellManager;
 
 #pragma mark -
 #pragma mark View Management Methods
@@ -32,6 +36,8 @@
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.navigationItem.rightBarButtonItem.target = self;
 	self.navigationItem.rightBarButtonItem.action = @selector(toggleEditMode);
+	
+	[self loadCells];
 }
 
 - (void) toggleEditMode {
@@ -52,9 +58,23 @@
 }
 
 #pragma mark -
+#pragma mark Cell Management Methods
+
+- (void) loadCells {
+
+	NSArray *nibNames = [NSArray arrayWithObjects:@"TextFieldCell", @"NonEditableCell", nil];
+	CellManager *manager = [[CellManager alloc] initWithNibs:nibNames forOwner:self];
+	self.cellManager = manager;
+	
+	[manager release];
+}
+
+#pragma mark -
 #pragma mark Persistence Methods
 
 - (void) save {
+	
+	[self.trip setName:self.tripName];
 	
 	NSError *error;
 	
@@ -124,6 +144,24 @@
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
+	
+	UITableViewCell *customCell = [self.cellManager cellForSection:indexPath.section];
+	UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier: customCell.reuseIdentifier];
+	
+	if (cell == nil) {
+		cell = customCell;
+	}
+	
+	[cell setCellExtensionDelegate:self];
+	[cell setValueForCell: self.trip.name];
+	[cell setTitleForCell: @"Name"];
+	
+	return cell;
+}
+
+/*
+- (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
+{
 	static NSString *CellIdentifier = @"TextFieldCell";
 	
 	TextFieldCell *cell = (TextFieldCell *) [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
@@ -140,6 +178,7 @@
 	
 	return cell;
 }
+*/
 
 #pragma mark -
 #pragma mark Table Delegate Methods
@@ -154,7 +193,7 @@
 
 - (void) textFieldDidEndEditing:(UITextField *) aTextField {
 	
-	[self.trip setName: aTextField.text];
+	self.tripName = aTextField.text;
 	self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
@@ -175,6 +214,8 @@
 	[tripsCollection release];
 	[trip release];
 	[managedObjectContext release];
+	[tripName release];
+	[cellManager release];
 	[super dealloc];
 }
 

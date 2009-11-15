@@ -1,38 +1,27 @@
 //
-//  TextFieldCell.m
+//  NonEditableCell.m
 //  Jaunt
 //
 //  Created by John Bowles on 11/15/09.
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "TextFieldCell.h"
+#import "NonEditableCell.h"
 
 
-@implementation TextFieldCell
+@implementation NonEditableCell
 
 @synthesize leftLabel;
-@synthesize textField;
-
-#pragma mark -
-#pragma mark Methods
-
--(void) textFieldDoneEditing {
-	
-	[self.textField resignFirstResponder];
-}
 
 #pragma mark -
 #pragma mark CellExtension Category Methods
 
 -(void) setValueForCell:(NSString *) aCellValue {
-	
-	self.textField.text = aCellValue;
 }
 
 -(NSString *) valueForCell {
 	
-	return self.textField.text;
+	return nil;
 }
 
 -(void) setTitleForCell:(NSString *) aCellTitle {
@@ -46,8 +35,6 @@
 }
 
 -(void) setCellExtensionDelegate:(id) aDelegate {
-		
-	self.textField.delegate = aDelegate;
 }
 
 #pragma mark -
@@ -56,7 +43,6 @@
 - (void) dealloc {
 	
 	[leftLabel release];
-	[textField release];
 	[super dealloc];
 }
 
