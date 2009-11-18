@@ -47,16 +47,10 @@
 	[trip setName: tripNameTextField.text];	
 	
 	[self.tripsCollection insertObject:trip atIndex:0];
-	
-	// Have parent view reload its data
+
 	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	
-	UINavigationController *navController = [delegate navigationController];
-	[navController popViewControllerAnimated:YES];
-	
-	NSArray *allControllers = navController.viewControllers;
-	UITableViewController *parent = [allControllers lastObject];
-	[parent.tableView reloadData];	
+	UINavigationController *aController = [delegate navigationController];
+	[aController popViewControllerAnimated:YES];
 }
 
 #pragma mark -

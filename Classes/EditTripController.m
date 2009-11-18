@@ -44,26 +44,45 @@
 	
 	if (self.tableView.editing == NO) {
 		
+		self.tripName = self.trip.name;
 		[self setEditing:YES animated:YES];
 		
 	} else {
 
 		[self save];
+		[self setEditing:NO animated:YES];
 	}
 }
 
-- (void)viewDidUnload {
+- (void) viewDidUnload {
 	
 	
 }
 
+- (void) setEditing:(BOOL) editing animated:(BOOL) animated
+{
+    [super setEditing:editing animated:animated];
+	
+	NSArray *paths = [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:1]];
+    
+	if (editing)
+    {
+        [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationRight];
+    }
+    else {
+        [[self tableView] deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+	
 #pragma mark -
 #pragma mark Cell Management Methods
 
 - (void) loadCells {
 
 	NSArray *nibNames = [NSArray arrayWithObjects:@"TextFieldCell", @"NonEditableCell", nil];
-	CellManager *manager = [[CellManager alloc] initWithNibs:nibNames forOwner:self];
+	NSArray *identifiers = [NSArray arrayWithObjects:@"TextFieldCell", @"NonEditableCell", nil];
+	
+	CellManager *manager = [[CellManager alloc] initWithNibs:nibNames withIdentifiers:identifiers forOwner:self];
 	self.cellManager = manager;
 	
 	[manager release];
@@ -74,22 +93,10 @@
 
 - (void) save {
 	
-	[self.trip setName:self.tripName];
+	[self.trip setName: self.tripName];
 	
 	NSError *error;
-	
-	if (![managedObjectContext save: &error]) {
-		// Handle the error.
-	}
-	// Have parent view reload its data
-	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	
-	UINavigationController *navController = [delegate navigationController];
-	[navController popViewControllerAnimated:YES];
-	
-	NSArray *allControllers = navController.viewControllers;
-	UITableViewController *parent = [allControllers lastObject];
-	[parent.tableView reloadData];
+	[managedObjectContext save: &error];
 }
 
 #pragma mark -
@@ -103,13 +110,17 @@
 	} else {
 		
 		NSSet *destinations = [[self trip] destinations];
-		return destinations.count + 1;
+				
+		if ([tableView isEditing])
+			return destinations.count + 1;
+		else
+			return destinations.count;		
 	}
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
 
-	return 2;
+	return [self.list count];
 }
 
 - (NSString *) tableView:(UITableView *) tableView titleForHeaderInSection:(NSInteger) section {
@@ -144,12 +155,12 @@
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-	
-	UITableViewCell *customCell = [self.cellManager cellForSection:indexPath.section];
-	UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier: customCell.reuseIdentifier];
+	NSString *reuseIdentifer = [self.cellManager reusableIdentifierForSection:indexPath.section];
+	UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier: reuseIdentifer];
 	
 	if (cell == nil) {
-		cell = customCell;
+		
+		cell = [self.cellManager cellForSection:indexPath.section];
 	}
 	
 	[cell setCellExtensionDelegate:self];

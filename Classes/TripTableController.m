@@ -43,6 +43,10 @@
 	self.navigationController = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[self.tableView reloadData];
+}
+
 #pragma mark -
 #pragma mark Persistence
 

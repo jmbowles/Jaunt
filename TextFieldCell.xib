@@ -48,7 +48,7 @@
 							<object class="IBUITextField" id="932140049">
 								<reference key="NSNextResponder" ref="836039437"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{118, 6}, {189, 31}}</string>
+								<string key="NSFrame">{{118, 6}, {161, 31}}</string>
 								<reference key="NSSuperview" ref="836039437"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>

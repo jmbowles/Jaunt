@@ -10,11 +10,20 @@
 
 @private
 	NSMutableArray *nibs;
+	NSArray *nibNames;
+	NSArray *reusableIdentifiers;
+	NSString *owner;
 }
 
 @property (nonatomic, retain) NSMutableArray *nibs;
+@property (nonatomic, retain) NSArray *nibNames;
+@property (nonatomic, retain) NSArray *reusableIdentifiers;
+@property (nonatomic, retain) NSString *owner;
 
--(id) initWithNibs:(NSArray *) nibNames forOwner:(id) anOwner;
+-(id) init;
+-(id) initWithNibs:(NSArray *) names withIdentifiers:(NSArray *) identifiers forOwner:(id) anOwner;
+
 -(UITableViewCell *) cellForSection:(NSUInteger) section;
+-(NSString *) reusableIdentifierForSection:(NSUInteger) section;
 
 @end

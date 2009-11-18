@@ -12,26 +12,26 @@
 @implementation CellManager
 
 @synthesize nibs;
+@synthesize nibNames;
+@synthesize reusableIdentifiers;
+@synthesize owner;
 
 #pragma mark -
 #pragma mark Constructors
 
-- (id) initWithNibs:(NSArray*) nibNames forOwner:(id) anOwner {
+-(id) init {
+
+	return [self initWithNibs:nil withIdentifiers:nil forOwner:nil];
+}
+
+- (id) initWithNibs:(NSArray*) names withIdentifiers:(NSArray *) identifiers forOwner:(id) anOwner {
 	
-	self = [super init];
-	
-	if (self != nil) {
+	if (self = [super init]) {
 		
-		self.nibs = [NSMutableArray arrayWithCapacity:nibNames.count];
-		
-		for (int i = 0; i < nibNames.count; i++) {
-	
-			NSString *nibName = [nibNames objectAtIndex:i];
-			NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:anOwner options:nil];
-			UITableViewCell *cell = [nib objectAtIndex: 0];
-			
-			[self.nibs insertObject:cell atIndex:i];
-		}
+		self.nibs = [NSMutableArray arrayWithCapacity:names.count];
+		self.nibNames = names;
+		self.reusableIdentifiers = identifiers;
+		self.owner = anOwner;
 	}
 	return self;
 }
@@ -41,7 +41,23 @@
 
 -(UITableViewCell *) cellForSection:(NSUInteger) section {
 
+	if (self.nibs.count == 0) {
+		
+		for (int i=0; i < self.nibNames.count; i++) {
+			
+			NSString *aNibName = [self.nibNames objectAtIndex: i];
+			NSArray *nib = [[NSBundle mainBundle] loadNibNamed:aNibName owner:self.owner options:nil];
+			UITableViewCell *cell = [nib objectAtIndex: 0];
+			
+			[self.nibs insertObject:cell atIndex:i];
+		}
+	}
 	return [self.nibs objectAtIndex: section];
+}
+
+-(NSString *) reusableIdentifierForSection:(NSUInteger) section {
+	
+	return [self.reusableIdentifiers objectAtIndex:section];
 }
 
 #pragma mark -
@@ -50,6 +66,9 @@
 - (void) dealloc {
 	
 	[nibs release];
+	[nibNames release];
+	[reusableIdentifiers release];
+	[owner release];
 	[super dealloc];
 }
 
