@@ -6,14 +6,16 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
+@class IndexedTextField;
+
 @interface TextFieldCell : UITableViewCell {
 
-	IBOutlet UILabel* leftLabel;
-	IBOutlet UITextField* textField;
+	IBOutlet UILabel *leftLabel;
+	IBOutlet IndexedTextField *textField;
 }
 
-@property (nonatomic, retain) UILabel* leftLabel;
-@property (nonatomic, retain) UITextField* textField;
+@property (nonatomic, retain) UILabel *leftLabel;
+@property (nonatomic, retain) IndexedTextField *textField;
 
 -(IBAction) textFieldDoneEditing;
 

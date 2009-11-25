@@ -15,13 +15,13 @@
 @synthesize navigationController;
 
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {    
+- (void) applicationDidFinishLaunching:(UIApplication *)application {    
 
 	[window addSubview: rootController.view];
     [window makeKeyAndVisible];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void) applicationWillTerminate:(UIApplication *)application {
 	
     NSError *error;
     

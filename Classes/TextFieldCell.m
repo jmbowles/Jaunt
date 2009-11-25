@@ -7,12 +7,14 @@
 //
 
 #import "TextFieldCell.h"
-
+#import "TextFieldExtension.h"
 
 @implementation TextFieldCell
 
+
 @synthesize leftLabel;
 @synthesize textField;
+
 
 #pragma mark -
 #pragma mark Methods
@@ -27,12 +29,12 @@
 
 -(void) setValueForCell:(NSString *) aCellValue {
 	
-	self.textField.text = aCellValue;
+	[self.textField setText: aCellValue];
 }
 
 -(NSString *) valueForCell {
 	
-	return self.textField.text;
+	return [self.textField text];
 }
 
 -(void) setTitleForCell:(NSString *) aCellTitle {
@@ -47,7 +49,12 @@
 
 -(void) setCellExtensionDelegate:(id) aDelegate {
 		
-	self.textField.delegate = aDelegate;
+	[self.textField setDelegate: aDelegate];
+}
+
+-(IndexedTextField*) indexedTextField {
+		
+	return [self textField];
 }
 
 #pragma mark -

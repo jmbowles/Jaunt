@@ -6,6 +6,8 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
+@class IndexedTextField;
+
 @implementation UITableViewCell (CellExtension)
 
 -(void) setValueForCell:(NSString *) aCellValue{}
@@ -15,5 +17,6 @@
 -(NSString *) titleForCell{return nil;}
 
 -(void) setCellExtensionDelegate:(id) aDelegate {}
+-(IndexedTextField*) indexedTextField {return nil;}
 
 @end

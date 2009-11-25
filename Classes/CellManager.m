@@ -11,7 +11,6 @@
 
 @implementation CellManager
 
-@synthesize nibs;
 @synthesize nibNames;
 @synthesize reusableIdentifiers;
 @synthesize owner;
@@ -28,7 +27,6 @@
 	
 	if (self = [super init]) {
 		
-		self.nibs = [NSMutableArray arrayWithCapacity:names.count];
 		self.nibNames = names;
 		self.reusableIdentifiers = identifiers;
 		self.owner = anOwner;
@@ -40,19 +38,12 @@
 #pragma mark Cell Manager Methods
 
 -(UITableViewCell *) cellForSection:(NSUInteger) section {
-
-	if (self.nibs.count == 0) {
-		
-		for (int i=0; i < self.nibNames.count; i++) {
-			
-			NSString *aNibName = [self.nibNames objectAtIndex: i];
-			NSArray *nib = [[NSBundle mainBundle] loadNibNamed:aNibName owner:self.owner options:nil];
-			UITableViewCell *cell = [nib objectAtIndex: 0];
-			
-			[self.nibs insertObject:cell atIndex:i];
-		}
-	}
-	return [self.nibs objectAtIndex: section];
+	
+	NSString *aNibName = [self.nibNames objectAtIndex: section];
+	NSArray *nib = [[NSBundle mainBundle] loadNibNamed:aNibName owner:self.owner options:nil];
+	UITableViewCell *cell = [nib objectAtIndex: 0];
+	
+	return cell;
 }
 
 -(NSString *) reusableIdentifierForSection:(NSUInteger) section {
@@ -65,7 +56,6 @@
 
 - (void) dealloc {
 	
-	[nibs release];
 	[nibNames release];
 	[reusableIdentifiers release];
 	[owner release];

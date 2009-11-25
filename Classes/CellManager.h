@@ -9,13 +9,11 @@
 @interface CellManager : NSObject {
 
 @private
-	NSMutableArray *nibs;
 	NSArray *nibNames;
 	NSArray *reusableIdentifiers;
 	NSString *owner;
 }
 
-@property (nonatomic, retain) NSMutableArray *nibs;
 @property (nonatomic, retain) NSArray *nibNames;
 @property (nonatomic, retain) NSArray *reusableIdentifiers;
 @property (nonatomic, retain) NSString *owner;

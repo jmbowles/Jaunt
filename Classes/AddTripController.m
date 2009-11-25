@@ -43,7 +43,7 @@
 
 - (void) save {
 	
-	Trip *trip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: managedObjectContext];
+	Trip *trip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: self.managedObjectContext];
 	[trip setName: tripNameTextField.text];	
 	
 	[self.tripsCollection insertObject:trip atIndex:0];
@@ -70,6 +70,7 @@
 	if (cell == nil) {
 		
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:AddTripCellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 125, 25)];
 		label.text = @"Name:";

@@ -12,15 +12,18 @@
 #import "TextFieldCell.h"
 #import	"CellManager.h"
 #import	"CellExtension.h"
+#import "DestinationController.h"
+#import "Destination.h"
+
 
 @implementation EditTripController
 
-@synthesize list;
+@synthesize titles;
 @synthesize tripsCollection;
 @synthesize trip;
-@synthesize managedObjectContext;
 @synthesize tripName;
 @synthesize cellManager;
+
 
 #pragma mark -
 #pragma mark View Management Methods
@@ -30,7 +33,7 @@
 	[super viewDidLoad];
 	
 	NSArray *array = [[NSArray alloc] initWithObjects:@"Name:", @"Add Destination", nil];
-	[self setList: array];
+	[self setTitles: array];
 	[array release];
 	
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -45,6 +48,7 @@
 	if (self.tableView.editing == NO) {
 		
 		self.tripName = self.trip.name;
+		self.tableView.allowsSelectionDuringEditing = YES;
 		[self setEditing:YES animated:YES];
 		
 	} else {
@@ -54,26 +58,28 @@
 	}
 }
 
-- (void) viewDidUnload {
-	
-	
-}
-
 - (void) setEditing:(BOOL) editing animated:(BOOL) animated
 {
     [super setEditing:editing animated:animated];
 	
 	NSArray *paths = [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:1]];
     
-	if (editing)
+	if (self.editing)
     {
+		isEditingTrip = YES;
         [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationRight];
     }
     else {
+		isEditingTrip = NO;
         [[self tableView] deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 	
+- (void) viewWillAppear:(BOOL) animated {
+	
+	[self.tableView reloadData];
+}
+
 #pragma mark -
 #pragma mark Cell Management Methods
 
@@ -95,8 +101,26 @@
 	
 	[self.trip setName: self.tripName];
 	
+	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *aContext = [delegate managedObjectContext];
+	
 	NSError *error;
-	[managedObjectContext save: &error];
+	
+	if (![aContext save: &error]) {
+		
+		NSLog(@"Failed to save destination: %@", [error localizedDescription]);
+		NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+		
+		if(detailedErrors != nil && [detailedErrors count] > 0) {
+			
+			for(NSError* detailedError in detailedErrors) {
+				NSLog(@"  DetailedError: %@", [detailedError userInfo]);
+			}
+		}
+		else {
+			NSLog(@"  %@", [error userInfo]);
+		}
+	}
 }
 
 #pragma mark -
@@ -111,7 +135,7 @@
 		
 		NSSet *destinations = [[self trip] destinations];
 				
-		if ([tableView isEditing])
+		if (self.editing)
 			return destinations.count + 1;
 		else
 			return destinations.count;		
@@ -120,7 +144,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
 
-	return [self.list count];
+	return [self.titles count];
 }
 
 - (NSString *) tableView:(UITableView *) tableView titleForHeaderInSection:(NSInteger) section {
@@ -134,23 +158,33 @@
 	return titleName;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath: (NSIndexPath *)indexPath
-{
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath: (NSIndexPath *) indexPath
+{	
 	if (indexPath.section == 1) {
 		
-		return UITableViewCellEditingStyleInsert;
+		if (indexPath.row == 0 && isEditingTrip == YES) {
+		
+			return UITableViewCellEditingStyleInsert;
+		}
+		return UITableViewCellEditingStyleDelete;
 	}
 	return UITableViewCellEditingStyleNone;
-
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle) editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (editingStyle == UITableViewCellEditingStyleInsert) {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		
+		Destination *aDestination = [[self.trip.destinations allObjects] objectAtIndex:[self currentRowAtIndexPath:indexPath]];
+		NSMutableSet *destinations = [self.trip mutableSetValueForKey:@"destinations"];
+		[destinations removeObject:aDestination];
 		
-    }  
-	[self save];
+		JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		NSManagedObjectContext *aContext = [delegate managedObjectContext];
+	
+		[aContext deleteObject:aDestination];
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+	}
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
@@ -165,9 +199,34 @@
 	
 	[cell setCellExtensionDelegate:self];
 	[cell setValueForCell: self.trip.name];
-	[cell setTitleForCell: [self.list objectAtIndex:indexPath.section]];
 	
+	BOOL editingTrip = (indexPath.section == 1 && indexPath.row == 0 && self.editing);
+	
+	if (indexPath.section == 0 || editingTrip) {
+		
+		[cell setTitleForCell: [self.titles objectAtIndex:indexPath.section]];
+	} else {
+		
+		NSSet *destinations = self.trip.destinations;
+		Destination *destination = [[destinations allObjects] objectAtIndex: [self currentRowAtIndexPath:indexPath]];
+		[cell setTitleForCell: destination.name];
+	}
 	return cell;
+}
+
+- (NSUInteger) currentRowAtIndexPath: (NSIndexPath *) indexPath {
+	
+	NSUInteger row = indexPath.row;
+	
+	if (self.editing) {
+		
+		// Considers row added when there are no destinations
+		row = row - 1;
+	}
+	
+	row = row == -1 ? 0 : row;
+	
+	return row;
 }
 
 #pragma mark -
@@ -175,7 +234,23 @@
 
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
 	
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	if (indexPath.section == 1) {
+		
+		DestinationController *controller = [[DestinationController alloc] initWithStyle: UITableViewStyleGrouped];
+		controller.trip = self.trip;
+		controller.title = @"Destination";
+		
+		if ([trip.destinations count] > 0) {
+			
+			controller.destination = [[trip.destinations allObjects] objectAtIndex:[self currentRowAtIndexPath:indexPath]];
+		} else {
+			controller.destination = nil;
+		}
+		
+		JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate.navigationController pushViewController:controller animated:YES];
+		[controller release];
+	}
 }
 
 #pragma mark -
@@ -200,10 +275,9 @@
 
 - (void) dealloc {
 	
-	[list release];
+	[titles release];
 	[tripsCollection release];
 	[trip release];
-	[managedObjectContext release];
 	[tripName release];
 	[cellManager release];
 	[super dealloc];

@@ -21,6 +21,7 @@
 		6D632B19108257C7009769E5 /* ReservationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B18108257C7009769E5 /* ReservationView.xib */; };
 		6D632B2910825F1F009769E5 /* Route.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B2810825F1F009769E5 /* Route.png */; };
 		6D632C6610828ECA009769E5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D632C6510828ECA009769E5 /* MapKit.framework */; };
+		6D70783F10B4D20100CDA8FD /* DestinationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D70783E10B4D20100CDA8FD /* DestinationController.m */; };
 		6D7B563410B02171007942E0 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B563310B02171007942E0 /* TextFieldCell.m */; };
 		6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B564710B02331007942E0 /* TextFieldCell.xib */; };
 		6D7B570110B049FB007942E0 /* NonEditableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B570010B049FB007942E0 /* NonEditableCell.m */; };
@@ -34,10 +35,10 @@
 		6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */; };
 		6D82EFFD109DA66400A03436 /* Trip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFFC109DA66400A03436 /* Trip.m */; };
 		6D82F0B6109DA82900A03436 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82F0B5109DA82900A03436 /* CoreData.framework */; };
+		6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */; };
+		6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B455610BCB67A00FE4212 /* IndexedTextField.m */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
-		6DD721D8109336F8008E5906 /* AddTrip.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DD721D7109336F8008E5906 /* AddTrip.xib */; };
-		6DD721DC1093376C008E5906 /* TripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD721DB1093376C008E5906 /* TripController.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
 		6DF00136109E3265006E1AB2 /* EditTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF00135109E3265006E1AB2 /* EditTripController.m */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,8 @@
 		6D632B18108257C7009769E5 /* ReservationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReservationView.xib; sourceTree = "<group>"; };
 		6D632B2810825F1F009769E5 /* Route.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Route.png; sourceTree = "<group>"; };
 		6D632C6510828ECA009769E5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		6D70783D10B4D20100CDA8FD /* DestinationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationController.h; sourceTree = "<group>"; };
+		6D70783E10B4D20100CDA8FD /* DestinationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationController.m; sourceTree = "<group>"; };
 		6D7B563210B02171007942E0 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		6D7B563310B02171007942E0 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		6D7B564710B02331007942E0 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
@@ -79,16 +82,17 @@
 		6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistController.m; sourceTree = "<group>"; };
 		6D7DD02E108B813B00DFFDFE /* TripTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TripTableController.h; sourceTree = "<group>"; };
 		6D7DD02F108B813B00DFFDFE /* TripTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TripTableController.m; sourceTree = "<group>"; };
+		6D82BCC810BB67710095DB22 /* TextFieldExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldExtension.h; sourceTree = "<group>"; };
 		6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Jaunt.xcdatamodel; sourceTree = "<group>"; };
 		6D82EFFB109DA66400A03436 /* Trip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trip.h; sourceTree = "<group>"; };
 		6D82EFFC109DA66400A03436 /* Trip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trip.m; sourceTree = "<group>"; };
 		6D82F0B5109DA82900A03436 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldExtension.m; sourceTree = "<group>"; };
+		6D8B455510BCB67A00FE4212 /* IndexedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexedTextField.h; sourceTree = "<group>"; };
+		6D8B455610BCB67A00FE4212 /* IndexedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexedTextField.m; sourceTree = "<group>"; };
 		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
-		6DD721D7109336F8008E5906 /* AddTrip.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddTrip.xib; sourceTree = "<group>"; };
-		6DD721DA1093376C008E5906 /* TripController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TripController.h; sourceTree = "<group>"; };
-		6DD721DB1093376C008E5906 /* TripController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TripController.m; sourceTree = "<group>"; };
 		6DD7220D10933F93008E5906 /* AddTripController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTripController.h; sourceTree = "<group>"; };
 		6DD7220E10933F93008E5906 /* AddTripController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTripController.m; sourceTree = "<group>"; };
 		6DF00134109E3265006E1AB2 /* EditTripController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTripController.h; sourceTree = "<group>"; };
@@ -129,12 +133,12 @@
 				6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */,
 				6D7DD02E108B813B00DFFDFE /* TripTableController.h */,
 				6D7DD02F108B813B00DFFDFE /* TripTableController.m */,
-				6DD721DA1093376C008E5906 /* TripController.h */,
-				6DD721DB1093376C008E5906 /* TripController.m */,
 				6DD7220D10933F93008E5906 /* AddTripController.h */,
 				6DD7220E10933F93008E5906 /* AddTripController.m */,
 				6DF00134109E3265006E1AB2 /* EditTripController.h */,
 				6DF00135109E3265006E1AB2 /* EditTripController.m */,
+				6D70783D10B4D20100CDA8FD /* DestinationController.h */,
+				6D70783E10B4D20100CDA8FD /* DestinationController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -180,7 +184,6 @@
 				6D632B18108257C7009769E5 /* ReservationView.xib */,
 				6D7DCF29108B3CE200DFFDFE /* Checklist.xib */,
 				6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */,
-				6DD721D7109336F8008E5906 /* AddTrip.xib */,
 				6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */,
 				6D7B564710B02331007942E0 /* TextFieldCell.xib */,
 				6D7B570610B04AC0007942E0 /* NonEditableCell.xib */,
@@ -211,6 +214,10 @@
 				6D7B570B10B04BAE007942E0 /* CellManager.m */,
 				6D7B582F10B07C38007942E0 /* CellExtension.h */,
 				6D7B58BC10B08D4A007942E0 /* CellExtension.m */,
+				6D82BCC810BB67710095DB22 /* TextFieldExtension.h */,
+				6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */,
+				6D8B455510BCB67A00FE4212 /* IndexedTextField.h */,
+				6D8B455610BCB67A00FE4212 /* IndexedTextField.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -275,7 +282,6 @@
 				6D632B2910825F1F009769E5 /* Route.png in Resources */,
 				6D7DCF2A108B3CE200DFFDFE /* Checklist.xib in Resources */,
 				6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */,
-				6DD721D8109336F8008E5906 /* AddTrip.xib in Resources */,
 				6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */,
 				6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */,
 				6D7B570710B04AC0007942E0 /* NonEditableCell.xib in Resources */,
@@ -296,7 +302,6 @@
 				6D632B1110825724009769E5 /* ReservationController.m in Sources */,
 				6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */,
 				6D7DD030108B813B00DFFDFE /* TripTableController.m in Sources */,
-				6DD721DC1093376C008E5906 /* TripController.m in Sources */,
 				6DD7220F10933F93008E5906 /* AddTripController.m in Sources */,
 				6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */,
 				6D82EFFD109DA66400A03436 /* Trip.m in Sources */,
@@ -306,6 +311,9 @@
 				6D7B570110B049FB007942E0 /* NonEditableCell.m in Sources */,
 				6D7B570C10B04BAE007942E0 /* CellManager.m in Sources */,
 				6D7B58BD10B08D4A007942E0 /* CellExtension.m in Sources */,
+				6D70783F10B4D20100CDA8FD /* DestinationController.m in Sources */,
+				6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */,
+				6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,23 +14,23 @@
 
 @interface EditTripController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 
-	NSArray *list;
 	NSMutableArray *tripsCollection;
 	Trip *trip;
-	NSManagedObjectContext *managedObjectContext;
 @private 
+	NSArray *titles;
 	NSString *tripName;
 	CellManager *cellManager;
+	BOOL isEditingTrip;
 }
 
-@property (nonatomic, retain) NSArray *list;
+@property (nonatomic, retain) NSArray *titles;
 @property (nonatomic, retain) NSMutableArray *tripsCollection;
 @property (nonatomic, retain) Trip *trip;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSString *tripName;
 @property (nonatomic, retain) CellManager *cellManager;
 
 - (void) save;
 - (void) loadCells;
+- (NSUInteger) currentRowAtIndexPath: (NSIndexPath *) indexPath;
 
 @end

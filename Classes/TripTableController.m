@@ -43,7 +43,8 @@
 	self.navigationController = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void) viewWillAppear:(BOOL)animated {
+	
 	[self.tableView reloadData];
 }
 
@@ -62,7 +63,7 @@
 
 	NSManagedObjectContext *managedObjectContext = [self getManagedObjectContext];
 
-	// Gets all trips that have been savedß∫
+	// Gets all trips that have been saved
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:managedObjectContext];
 	[request setEntity:entity];
@@ -129,7 +130,7 @@
 	
 	Trip *aTrip = [self.tripsCollection objectAtIndex: [indexPath row]];
 	
-	cell.text = [aTrip name];	
+	cell.textLabel.text = [aTrip name];	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return cell;
@@ -145,8 +146,8 @@
 		NSManagedObjectContext *managedObjectContext = [self getManagedObjectContext];
 		
         // Delete the managed object at the given index path.
-		NSManagedObject *eventToDelete = [self.tripsCollection objectAtIndex:indexPath.row];
-		[managedObjectContext deleteObject:eventToDelete];
+		NSManagedObject *trip = [self.tripsCollection objectAtIndex:indexPath.row];
+		[managedObjectContext deleteObject:trip];
 		
 		// Update the array and table view.
         [self.tripsCollection removeObjectAtIndex: indexPath.row];
@@ -155,7 +156,8 @@
 		// Commit the change.
 		NSError *error;
 		if (![managedObjectContext save:&error]) {
-			// Handle the error.
+			
+			NSLog(@"Deleting trip failed: %@", error.localizedDescription);
 		}
     }   
 }

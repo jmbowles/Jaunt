@@ -9,12 +9,13 @@
 
 @interface UITableViewCell (CellExtension)
 
-	-(void) setValueForCell:(NSString *) aCellValue;
-	-(NSString *) valueForCell;
+-(void) setValueForCell:(NSString *) aCellValue;
+-(NSString *) valueForCell;
 	
-	-(void) setTitleForCell:(NSString *) aCellTitle;
-	-(NSString *) titleForCell;
+-(void) setTitleForCell:(NSString *) aCellTitle;
+-(NSString *) titleForCell;
 	
-	-(void) setCellExtensionDelegate:(id) aDelegate;
+-(void) setCellExtensionDelegate:(id) aDelegate;
+-(IndexedTextField*) indexedTextField;
 
 @end

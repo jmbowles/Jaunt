@@ -48,7 +48,7 @@
 							<object class="IBUILabel" id="442894708">
 								<reference key="NSNextResponder" ref="970980379"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{9, 9}, {188, 21}}</string>
+								<string key="NSFrame">{{9, 9}, {282, 21}}</string>
 								<reference key="NSSuperview" ref="970980379"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -68,7 +68,7 @@
 								<float key="IBUIMinimumFontSize">10</float>
 							</object>
 						</object>
-						<string key="NSFrameSize">{320, 43}</string>
+						<string key="NSFrameSize">{300, 43}</string>
 						<reference key="NSSuperview" ref="1047139493"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -88,6 +88,8 @@
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUISelectionStyle">0</int>
+				<int key="IBUIAccessoryType">1</int>
 				<reference key="IBUIContentView" ref="970980379"/>
 				<string key="IBUIReuseIdentifier">NonEditableCell</string>
 				<int key="IBUIEditingAccessoryType">1</int>
@@ -155,7 +157,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIResponder</string>
 					<string>NonEditableCell</string>
-					<string>{{549, 394}, {320, 44}}</string>
+					<string>{{527, 398}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
