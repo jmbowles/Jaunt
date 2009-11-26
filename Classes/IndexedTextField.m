@@ -19,13 +19,11 @@
 
 - (void) setIndexPathForField:(NSIndexPath*) anIndexPath {
 	
-	NSLog(@"setIndexPathForField = %i", anIndexPath.row);
 	[self setFieldIndexPath:anIndexPath];
 }
 
 - (NSIndexPath*) indexPathForField {
 	
-	NSLog(@"indexPathForField = %i", self.fieldIndexPath.row);
 	return [self fieldIndexPath];
 }
 

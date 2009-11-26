@@ -240,17 +240,30 @@
 		controller.trip = self.trip;
 		controller.title = @"Destination";
 		
-		if ([trip.destinations count] > 0) {
+		JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+
+		if (self.editing == YES && indexPath.row == 0) {
 			
-			controller.destination = [[trip.destinations allObjects] objectAtIndex:[self currentRowAtIndexPath:indexPath]];
+			NSManagedObjectContext *aContext = [delegate managedObjectContext];
+			
+			Destination *aDestination = (Destination *) [NSEntityDescription insertNewObjectForEntityForName:@"Destination" inManagedObjectContext: aContext];
+			aDestination.name = @"";
+			aDestination.city = @"";
+			aDestination.state = @"";
+			
+			controller.destination = aDestination;
+			
+			NSMutableSet *destinations = [self.trip mutableSetValueForKey:@"destinations"];
+			[destinations addObject: aDestination];
+			
 		} else {
-			controller.destination = nil;
+			
+			controller.destination = [[self.trip.destinations allObjects] objectAtIndex:[self currentRowAtIndexPath:indexPath]];
 		}
 		
-		JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate.navigationController pushViewController:controller animated:YES];
 		[controller release];
-	}
+	} 
 }
 
 #pragma mark -

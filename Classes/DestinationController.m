@@ -35,7 +35,6 @@
 	[super viewDidLoad];
 	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
-	saveButton.enabled = YES;
 	
     self.navigationItem.rightBarButtonItem = saveButton;
 	[saveButton release];
@@ -74,6 +73,10 @@
 	
 	if (self.destination != nil) {
 		
+		NSLog(@"name = %@", self.destination.name);
+		NSLog(@"name = %@", self.destination.city);
+		NSLog(@"name = %@", self.destination.state);
+		
 		[self.values replaceObjectAtIndex:0 withObject: self.destination.name];
 		[self.values replaceObjectAtIndex:1 withObject: self.destination.city];
 		[self.values replaceObjectAtIndex:2 withObject: self.destination.state];
@@ -88,15 +91,9 @@
 	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	NSManagedObjectContext *aContext = [delegate managedObjectContext];
 	
-	NSMutableSet *destinations = [NSMutableSet setWithSet: self.trip.destinations];
-	
-	Destination *aDestination = (Destination *) [NSEntityDescription insertNewObjectForEntityForName:@"Destination" inManagedObjectContext: aContext];
-	aDestination.name = [self.values objectAtIndex:0];
-	aDestination.city = [self.values objectAtIndex:1];
-	aDestination.state = [self.values objectAtIndex:2];
-	
-	[destinations addObject:aDestination];
-	[self.trip setDestinations: destinations];
+	self.destination.name = [self.values objectAtIndex:0];
+	self.destination.city = [self.values objectAtIndex:1];
+	self.destination.state = [self.values objectAtIndex:2];
 	
 	NSError *error;
 	
@@ -156,13 +153,16 @@
 #pragma mark -
 #pragma mark UITextFieldDelegate Methods
 
+- (void) textFieldDidBeginEditing:(UITextField *) aTextField {
+	
+	self.navigationItem.rightBarButtonItem.enabled = NO;
+}
+
 - (void) textFieldDidEndEditing:(UITextField *) aTextField {
 	
 	NSIndexPath *anIndexPath = [aTextField indexPathForField];
-	
-	NSLog(@"DestinationController anIndexPath = %i", anIndexPath.row);
-	
 	[self.values replaceObjectAtIndex:anIndexPath.row withObject: aTextField.text];
+	self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 #pragma mark -
