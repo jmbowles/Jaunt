@@ -12,6 +12,8 @@
 #import	"EditTripController.h"
 #import "CoreData/CoreData.h"
 #import "Trip.h"
+#import	"Logger.h"
+#import "CoreDataManager.h"
 
 @implementation TripTableController
 
@@ -24,8 +26,6 @@
 - (void)viewDidLoad {
 	
 	[super viewDidLoad];
-	
-	[self loadTrips];
 		
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTrip)];
 	addButton.enabled = YES;
@@ -36,15 +36,10 @@
 	[addButton release];
 }
 
-- (void)viewDidUnload {
+- (void) viewWillAppear:(BOOL) animated {
 	
-	// Release any properties that are loaded in viewDidLoad or can be recreated lazily.
-	self.tripsCollection = nil;
-	self.navigationController = nil;
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-	
+	[super viewWillAppear:animated];
+	[self loadTrips];
 	[self.tableView reloadData];
 }
 
@@ -53,65 +48,33 @@
 
 - (NSManagedObjectContext *) getManagedObjectContext {
     
-	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *managedObjectContext = [delegate managedObjectContext];
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *aContext = [aDelegate managedObjectContext];
 	
-    return managedObjectContext;
+    return aContext;
 }
 
 - (void) loadTrips {
 
-	NSManagedObjectContext *managedObjectContext = [self getManagedObjectContext];
-
-	// Gets all trips that have been saved
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
-	
-	// Sort by the trip's name
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	[request setSortDescriptors:sortDescriptors];
-	[sortDescriptor release];
-	[sortDescriptors release];
-	
-	// Get the list of all trips
-	NSError *error = nil;
-	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-	
-	[self setTripsCollection: mutableFetchResults];
-	
-	[entity	release];
-	[mutableFetchResults release];
-	[request release];
+	NSMutableArray *results = [CoreDataManager executeFetch:[self getManagedObjectContext] forEntity:@"Trip" withPredicate:nil usingFilter:@"name"];
+	[self setTripsCollection: results];
 }
 
 #pragma mark -
 #pragma mark Methods
 
-/**
- Add a new trip
- */
 - (void) addTrip {
 
 	AddTripController *addTripController = [[AddTripController alloc] initWithStyle: UITableViewStyleGrouped];
 	addTripController.title = @"Add Trip";
-	addTripController.tripsCollection = self.tripsCollection; 
 	
-	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[addTripController setManagedObjectContext: [delegate managedObjectContext]];
-	
-	[delegate.navigationController pushViewController:addTripController animated:YES];
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	[aDelegate.navigationController pushViewController:addTripController animated:YES];
 	[addTripController release];
 }
 
 #pragma mark -
 #pragma mark Table Data Source Methods
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	
-	return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
@@ -120,12 +83,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *TripNameCellIdentifier = @"TripNameCellIdentifier";
+	static NSString *reuseIdentifer = @"TripNameCellIdentifier";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: TripNameCellIdentifier];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: reuseIdentifer];
 	
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:TripNameCellIdentifier] autorelease];
+		
+		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:reuseIdentifer] autorelease];
 	}
 	
 	Trip *aTrip = [self.tripsCollection objectAtIndex: [indexPath row]];
@@ -143,11 +107,11 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		
-		NSManagedObjectContext *managedObjectContext = [self getManagedObjectContext];
+		NSManagedObjectContext *aContext = [self getManagedObjectContext];
 		
         // Delete the managed object at the given index path.
 		NSManagedObject *trip = [self.tripsCollection objectAtIndex:indexPath.row];
-		[managedObjectContext deleteObject:trip];
+		[aContext deleteObject:trip];
 		
 		// Update the array and table view.
         [self.tripsCollection removeObjectAtIndex: indexPath.row];
@@ -155,9 +119,9 @@
 		
 		// Commit the change.
 		NSError *error;
-		if (![managedObjectContext save:&error]) {
+		if (![aContext save:&error]) {
 			
-			NSLog(@"Deleting trip failed: %@", error.localizedDescription);
+			[Logger logError:error withMessage:@"Failed to delete trip"];
 		}
     }   
 }

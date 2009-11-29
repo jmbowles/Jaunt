@@ -15,7 +15,7 @@
 #import "Destination.h"
 #import "TextFieldExtension.h"
 #import "IndexedTextField.h"
-
+#import	"Logger.h"
 
 @implementation DestinationController
 
@@ -30,25 +30,30 @@
 #pragma mark -
 #pragma mark View Management Methods
 
+
 - (void) viewDidLoad {
 	
 	[super viewDidLoad];
 	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
-	
-    self.navigationItem.rightBarButtonItem = saveButton;
+	self.navigationItem.rightBarButtonItem = saveButton;
 	[saveButton release];
 	
-	NSArray *array = [[NSArray alloc] initWithObjects:@"Name:", @"City:", @"State:", nil];
-	[self setTitles: array];
-	[array release];
-	
+	[self loadTitles];
 	[self loadCells];
 	[self loadValues];
 }
 
 #pragma mark -
 #pragma mark Cell Management Methods
+
+- (void) loadTitles {
+	
+	NSArray *array = [[NSArray alloc] initWithObjects:@"Name:", @"City:", @"State:", nil];
+	[self setTitles: array];
+	
+	[array release];
+}
 
 - (void) loadCells {
 	
@@ -71,16 +76,9 @@
 		[destinationValues release];
 	}
 	
-	if (self.destination != nil) {
-		
-		NSLog(@"name = %@", self.destination.name);
-		NSLog(@"name = %@", self.destination.city);
-		NSLog(@"name = %@", self.destination.state);
-		
-		[self.values replaceObjectAtIndex:0 withObject: self.destination.name];
-		[self.values replaceObjectAtIndex:1 withObject: self.destination.city];
-		[self.values replaceObjectAtIndex:2 withObject: self.destination.state];
-	}
+	[self.values replaceObjectAtIndex:0 withObject: self.destination.name];
+	[self.values replaceObjectAtIndex:1 withObject: self.destination.city];
+	[self.values replaceObjectAtIndex:2 withObject: self.destination.state];
 }
 
 #pragma mark -
@@ -99,18 +97,7 @@
 	
 	if (![aContext save: &error]) {
 		
-		NSLog(@"Failed to save destination: %@", [error localizedDescription]);
-		NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-		
-		if(detailedErrors != nil && [detailedErrors count] > 0) {
-			
-			for(NSError* detailedError in detailedErrors) {
-				NSLog(@"  DetailedError: %@", [detailedError userInfo]);
-			}
-		}
-		else {
-			NSLog(@"  %@", [error userInfo]);
-		}
+		[Logger logError:error withMessage:@"Failed to save destination"];
 	}
 	
 	UINavigationController *aController = [delegate navigationController];

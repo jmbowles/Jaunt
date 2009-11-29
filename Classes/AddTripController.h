@@ -5,25 +5,22 @@
 //  Created by John Bowles on 10/24/09.
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
-#define kNumberOfRows	1
-#define kLabelTag		4096
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+@class CellManager;
+
 @interface AddTripController : UITableViewController <UITableViewDataSource, UITextFieldDelegate> {
 	
-	NSMutableArray *tripsCollection;
-	UITextField *tripNameTextField;
-	
-	NSManagedObjectContext *managedObjectContext;
+	NSString *tripName;
+	CellManager *cellManager;
 }
 
-@property (nonatomic, retain) NSMutableArray *tripsCollection;
-@property (nonatomic, retain) UITextField *tripNameTextField;
+@property (nonatomic, retain) NSString *tripName;
+@property (nonatomic, retain) CellManager *cellManager;
 
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-
-- (void) save;
+-(void) save;
+-(void) loadCells;
 
 @end

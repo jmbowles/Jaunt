@@ -9,12 +9,18 @@
 #import "AddTripController.h"
 #import "Trip.h"
 #import "JauntAppDelegate.h"
+#import	"CellManager.h"
+#import "IndexedTextField.h"
+#import	"TextFieldExtension.h"
+#import "CellExtension.h"
+#import	"Logger.h"
 
 @implementation AddTripController
 
-@synthesize tripNameTextField;
-@synthesize tripsCollection;
-@synthesize managedObjectContext;
+
+@synthesize tripName;
+@synthesize cellManager;
+
 
 #pragma mark -
 #pragma mark View Management
@@ -24,32 +30,46 @@
 	[super viewDidLoad];
 	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
-	saveButton.enabled = YES;
-	
-    self.navigationItem.rightBarButtonItem = saveButton;
+	self.navigationItem.rightBarButtonItem = saveButton;
+	self.navigationItem.rightBarButtonItem.enabled = NO;
 	[saveButton release];
-}
-
-- (void)viewDidUnload {
 	
-	self.tripsCollection = nil;
-	self.tripNameTextField = nil;
-	self.managedObjectContext = nil;
+	[self loadCells];
 }
 
+#pragma mark -
+#pragma mark Cell Management Methods
+
+- (void) loadCells {
+	
+	NSArray *nibNames = [NSArray arrayWithObjects:@"TextFieldCell", nil];
+	NSArray *identifiers = [NSArray arrayWithObjects:@"TextFieldCell", nil];
+	
+	CellManager *manager = [[CellManager alloc] initWithNibs:nibNames withIdentifiers:identifiers forOwner:self];
+	self.cellManager = manager;
+	
+	[manager release];
+}
 
 #pragma mark -
 #pragma mark Persistence
 
 - (void) save {
 	
-	Trip *trip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: self.managedObjectContext];
-	[trip setName: tripNameTextField.text];	
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *aContext = [aDelegate managedObjectContext];
 	
-	[self.tripsCollection insertObject:trip atIndex:0];
-
-	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	UINavigationController *aController = [delegate navigationController];
+	Trip *trip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: aContext];
+	[trip setName: self.tripName];
+	
+	NSError *error;
+	
+	if (![aContext save: &error]) {
+		
+		[Logger logError:error withMessage:@"Failed to add trip"];
+	}
+	
+	UINavigationController *aController = [aDelegate navigationController];
 	[aController popViewControllerAnimated:YES];
 }
 
@@ -58,34 +78,23 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
-	return kNumberOfRows;
+	return 1;
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-	static NSString *AddTripCellIdentifier = @"AddTripCellIdentifier";
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: AddTripCellIdentifier];
+	static NSString *reuseIdentifer = @"TextFieldCell";
+	UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier: reuseIdentifer];
 	
 	if (cell == nil) {
 		
-		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:AddTripCellIdentifier] autorelease];
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		
-		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 125, 25)];
-		label.text = @"Name:";
-		label.textAlignment = UITextAlignmentLeft;
-		label.tag = kLabelTag;
-		label.font = [UIFont boldSystemFontOfSize: 14];
-		[cell.contentView addSubview: label];
-		[label release];
-		
-		UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(130, 12, 200, 25)];
-		textField.clearsOnBeginEditing = YES;
-		[textField setDelegate: self];
-		[cell.contentView addSubview: textField];
-		[textField release];
+		cell = [self.cellManager cellForSection:indexPath.section];
+		UITextField *aField = [cell indexedTextField];
+		[aField setIndexPathForField: indexPath];
 	}
+	
+	[cell setCellExtensionDelegate:self];
+	[cell setTitleForCell: @"Name:"];
 	
 	return cell;
 }
@@ -95,18 +104,22 @@
 
 - (void) textFieldDidBeginEditing:(UITextField *) textField
 {
-	[self setTripNameTextField: textField];
+	self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
+- (void) textFieldDidEndEditing:(UITextField *) aTextField {
+	
+	[self setTripName:aTextField.text];
+	self.navigationItem.rightBarButtonItem.enabled = YES;
+}
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void) dealloc {
 	
-	[tripsCollection release];
-	[tripNameTextField release];
-	[managedObjectContext release];
+	[tripName release];
+	[cellManager release];
 	[super dealloc];
 }
 

@@ -6,7 +6,10 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 @class IndexedTextField;
+
 
 @interface TextFieldCell : UITableViewCell {
 

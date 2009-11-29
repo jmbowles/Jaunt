@@ -14,12 +14,11 @@
 #import	"CellExtension.h"
 #import "DestinationController.h"
 #import "Destination.h"
-
+#import "Logger.h"
 
 @implementation EditTripController
 
 @synthesize titles;
-@synthesize tripsCollection;
 @synthesize trip;
 @synthesize tripName;
 @synthesize cellManager;
@@ -32,14 +31,11 @@
 	
 	[super viewDidLoad];
 	
-	NSArray *array = [[NSArray alloc] initWithObjects:@"Name:", @"Add Destination", nil];
-	[self setTitles: array];
-	[array release];
-	
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.navigationItem.rightBarButtonItem.target = self;
 	self.navigationItem.rightBarButtonItem.action = @selector(toggleEditMode);
 	
+	[self loadTitles];
 	[self loadCells];
 }
 
@@ -77,11 +73,20 @@
 	
 - (void) viewWillAppear:(BOOL) animated {
 	
+	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 }
 
 #pragma mark -
 #pragma mark Cell Management Methods
+
+-(void) loadTitles {
+	
+	NSArray *array = [[NSArray alloc] initWithObjects:@"Name:", @"Add Destination", nil];
+	[self setTitles: array];
+	
+	[array release];
+}
 
 - (void) loadCells {
 
@@ -108,18 +113,7 @@
 	
 	if (![aContext save: &error]) {
 		
-		NSLog(@"Failed to save destination: %@", [error localizedDescription]);
-		NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-		
-		if(detailedErrors != nil && [detailedErrors count] > 0) {
-			
-			for(NSError* detailedError in detailedErrors) {
-				NSLog(@"  DetailedError: %@", [detailedError userInfo]);
-			}
-		}
-		else {
-			NSLog(@"  %@", [error userInfo]);
-		}
+		[Logger logError:error withMessage:@"Failed to save destination"];
 	}
 }
 
@@ -289,7 +283,6 @@
 - (void) dealloc {
 	
 	[titles release];
-	[tripsCollection release];
 	[trip release];
 	[tripName release];
 	[cellManager release];

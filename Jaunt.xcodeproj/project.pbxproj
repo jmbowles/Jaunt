@@ -32,6 +32,8 @@
 		6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */; };
 		6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */; };
 		6D7DD030108B813B00DFFDFE /* TripTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7DD02F108B813B00DFFDFE /* TripTableController.m */; };
+		6D82433B10C29E6E0008DC60 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82433A10C29E6D0008DC60 /* Logger.m */; };
+		6D82441F10C2B0300008DC60 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82441E10C2B0300008DC60 /* CoreDataManager.m */; };
 		6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */; };
 		6D82EFFD109DA66400A03436 /* Trip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFFC109DA66400A03436 /* Trip.m */; };
 		6D82F0B6109DA82900A03436 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82F0B5109DA82900A03436 /* CoreData.framework */; };
@@ -82,6 +84,10 @@
 		6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistController.m; sourceTree = "<group>"; };
 		6D7DD02E108B813B00DFFDFE /* TripTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TripTableController.h; sourceTree = "<group>"; };
 		6D7DD02F108B813B00DFFDFE /* TripTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TripTableController.m; sourceTree = "<group>"; };
+		6D82433910C29E6D0008DC60 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		6D82433A10C29E6D0008DC60 /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logger.m; sourceTree = "<group>"; };
+		6D82441D10C2B0300008DC60 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
+		6D82441E10C2B0300008DC60 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		6D82BCC810BB67710095DB22 /* TextFieldExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldExtension.h; sourceTree = "<group>"; };
 		6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Jaunt.xcdatamodel; sourceTree = "<group>"; };
 		6D82EFFB109DA66400A03436 /* Trip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trip.h; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				6D82433810C29E490008DC60 /* Utility */,
 				6D7B563110B020FA007942E0 /* Cells */,
 				6D82EFFA109DA62A00A03436 /* Entities */,
 				1D3623240D0F684500981E51 /* JauntAppDelegate.h */,
@@ -222,6 +229,17 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		6D82433810C29E490008DC60 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				6D82433910C29E6D0008DC60 /* Logger.h */,
+				6D82433A10C29E6D0008DC60 /* Logger.m */,
+				6D82441D10C2B0300008DC60 /* CoreDataManager.h */,
+				6D82441E10C2B0300008DC60 /* CoreDataManager.m */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
 		6D82EFFA109DA62A00A03436 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,6 +332,8 @@
 				6D70783F10B4D20100CDA8FD /* DestinationController.m in Sources */,
 				6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */,
 				6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */,
+				6D82433B10C29E6E0008DC60 /* Logger.m in Sources */,
+				6D82441F10C2B0300008DC60 /* CoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

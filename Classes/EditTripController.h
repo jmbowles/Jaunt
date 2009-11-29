@@ -12,9 +12,9 @@
 @class Trip;
 @class CellManager;
 
+
 @interface EditTripController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 
-	NSMutableArray *tripsCollection;
 	Trip *trip;
 @private 
 	NSArray *titles;
@@ -24,13 +24,13 @@
 }
 
 @property (nonatomic, retain) NSArray *titles;
-@property (nonatomic, retain) NSMutableArray *tripsCollection;
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) NSString *tripName;
 @property (nonatomic, retain) CellManager *cellManager;
 
-- (void) save;
-- (void) loadCells;
-- (NSUInteger) currentRowAtIndexPath: (NSIndexPath *) indexPath;
+-(void) save;
+-(void) loadTitles;
+-(void) loadCells;
+-(NSUInteger) currentRowAtIndexPath: (NSIndexPath *) indexPath;
 
 @end

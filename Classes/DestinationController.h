@@ -31,8 +31,9 @@
 @property (nonatomic, retain) Destination *destination;
 @property (nonatomic, retain) CellManager *cellManager;
 
-- (void) save;
-- (void) loadCells;
-- (void) loadValues;
+-(void) save;
+-(void) loadTitles;
+-(void) loadCells;
+-(void) loadValues;
 
 @end
