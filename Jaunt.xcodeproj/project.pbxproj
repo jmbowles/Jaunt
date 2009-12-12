@@ -22,6 +22,9 @@
 		6D632B2910825F1F009769E5 /* Route.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B2810825F1F009769E5 /* Route.png */; };
 		6D632C6610828ECA009769E5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D632C6510828ECA009769E5 /* MapKit.framework */; };
 		6D70783F10B4D20100CDA8FD /* DestinationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D70783E10B4D20100CDA8FD /* DestinationController.m */; };
+		6D755F9610CBDD33004D36F2 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D755F9510CBDD33004D36F2 /* Photo.m */; };
+		6D755F9B10CBDE74004D36F2 /* UIImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D755F9A10CBDE74004D36F2 /* UIImageToDataTransformer.m */; };
+		6D7768DF10CAE8E30047C8C6 /* GenericContact.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7768DE10CAE8E30047C8C6 /* GenericContact.png */; };
 		6D7B563410B02171007942E0 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B563310B02171007942E0 /* TextFieldCell.m */; };
 		6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B564710B02331007942E0 /* TextFieldCell.xib */; };
 		6D7B570110B049FB007942E0 /* NonEditableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B570010B049FB007942E0 /* NonEditableCell.m */; };
@@ -39,6 +42,7 @@
 		6D82F0B6109DA82900A03436 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82F0B5109DA82900A03436 /* CoreData.framework */; };
 		6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */; };
 		6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B455610BCB67A00FE4212 /* IndexedTextField.m */; };
+		6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
@@ -68,6 +72,11 @@
 		6D632C6510828ECA009769E5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6D70783D10B4D20100CDA8FD /* DestinationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationController.h; sourceTree = "<group>"; };
 		6D70783E10B4D20100CDA8FD /* DestinationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationController.m; sourceTree = "<group>"; };
+		6D755F9410CBDD33004D36F2 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		6D755F9510CBDD33004D36F2 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		6D755F9910CBDE74004D36F2 /* UIImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageToDataTransformer.h; sourceTree = "<group>"; };
+		6D755F9A10CBDE74004D36F2 /* UIImageToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageToDataTransformer.m; sourceTree = "<group>"; };
+		6D7768DE10CAE8E30047C8C6 /* GenericContact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericContact.png; sourceTree = "<group>"; };
 		6D7B563210B02171007942E0 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		6D7B563310B02171007942E0 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		6D7B564710B02331007942E0 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
@@ -96,6 +105,8 @@
 		6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldExtension.m; sourceTree = "<group>"; };
 		6D8B455510BCB67A00FE4212 /* IndexedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexedTextField.h; sourceTree = "<group>"; };
 		6D8B455610BCB67A00FE4212 /* IndexedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexedTextField.m; sourceTree = "<group>"; };
+		6D8E4CF110D3D4CB0009FD80 /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
+		6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
 		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
@@ -182,6 +193,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6D7768DE10CAE8E30047C8C6 /* GenericContact.png */,
 				6DA07D5D109A7CCC0071D22C /* blue_blank.png */,
 				6D632B2810825F1F009769E5 /* Route.png */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
@@ -236,6 +248,8 @@
 				6D82433A10C29E6D0008DC60 /* Logger.m */,
 				6D82441D10C2B0300008DC60 /* CoreDataManager.h */,
 				6D82441E10C2B0300008DC60 /* CoreDataManager.m */,
+				6D8E4CF110D3D4CB0009FD80 /* UIImage+Extension.h */,
+				6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -243,6 +257,10 @@
 		6D82EFFA109DA62A00A03436 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				6D755F9910CBDE74004D36F2 /* UIImageToDataTransformer.h */,
+				6D755F9A10CBDE74004D36F2 /* UIImageToDataTransformer.m */,
+				6D755F9410CBDD33004D36F2 /* Photo.h */,
+				6D755F9510CBDD33004D36F2 /* Photo.m */,
 				6D82EFFB109DA66400A03436 /* Trip.h */,
 				6D82EFFC109DA66400A03436 /* Trip.m */,
 				6DA1827810AEE95B0084CFAE /* Destination.h */,
@@ -303,6 +321,7 @@
 				6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */,
 				6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */,
 				6D7B570710B04AC0007942E0 /* NonEditableCell.xib in Resources */,
+				6D7768DF10CAE8E30047C8C6 /* GenericContact.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +353,9 @@
 				6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */,
 				6D82433B10C29E6E0008DC60 /* Logger.m in Sources */,
 				6D82441F10C2B0300008DC60 /* CoreDataManager.m in Sources */,
+				6D755F9610CBDD33004D36F2 /* Photo.m in Sources */,
+				6D755F9B10CBDE74004D36F2 /* UIImageToDataTransformer.m in Sources */,
+				6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

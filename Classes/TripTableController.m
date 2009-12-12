@@ -26,13 +26,16 @@
 - (void)viewDidLoad {
 	
 	[super viewDidLoad];
-		
+	
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	self.tableView.rowHeight = 66.0;
+	
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTrip)];
 	addButton.enabled = YES;
 	
 	self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = addButton;
-	
+
 	[addButton release];
 }
 
@@ -65,10 +68,14 @@
 
 - (void) addTrip {
 
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *aContext = [aDelegate managedObjectContext];
+	
+	Trip *aTrip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: aContext];
 	AddTripController *addTripController = [[AddTripController alloc] initWithStyle: UITableViewStyleGrouped];
 	addTripController.title = @"Add Trip";
+	addTripController.trip = aTrip;
 	
-	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	[aDelegate.navigationController pushViewController:addTripController animated:YES];
 	[addTripController release];
 }
@@ -83,7 +90,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *reuseIdentifer = @"TripNameCellIdentifier";
+	static NSString *reuseIdentifer = @"TripNameCell";
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: reuseIdentifer];
 	
@@ -96,29 +103,25 @@
 	
 	cell.textLabel.text = [aTrip name];	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.imageView.image = aTrip.thumbNail;
 	
 	return cell;
 }
 
-/**
- Handle deletion of an event.
- */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		
 		NSManagedObjectContext *aContext = [self getManagedObjectContext];
 		
-        // Delete the managed object at the given index path.
 		NSManagedObject *trip = [self.tripsCollection objectAtIndex:indexPath.row];
 		[aContext deleteObject:trip];
 		
-		// Update the array and table view.
         [self.tripsCollection removeObjectAtIndex: indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject: indexPath] withRowAnimation:YES];
-		
-		// Commit the change.
+				
 		NSError *error;
+		
 		if (![aContext save:&error]) {
 			
 			[Logger logError:error withMessage:@"Failed to delete trip"];
@@ -142,6 +145,7 @@
 	
 	[editTripController release];
 }
+
 
 #pragma mark -
 #pragma mark Memory Management
