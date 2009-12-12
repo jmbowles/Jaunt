@@ -11,28 +11,25 @@
 
 @class Trip;
 @class CellManager;
+@class ActivityManager;
 
 @interface AddTripController : UITableViewController <UITableViewDataSource, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 	
 	Trip *trip;
 	
 @private
-	NSOperationQueue *queue;
-	UIActivityIndicatorView *activityIndicator;
+	ActivityManager *activityManager;
 	NSString *tripName;
 	UIButton *photoButton;
 	CellManager *cellManager;
 }
 
-@property (nonatomic, retain) NSOperationQueue *queue;
-@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, retain) ActivityManager *activityManager;
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) NSString *tripName;
 @property (nonatomic, retain) CellManager *cellManager;
 @property (nonatomic, retain) UIButton *photoButton;
 
--(void) showActivity;
--(void) hideActivity;
 -(void) save;
 -(void) asyncSave;
 -(void) finishedSaving;

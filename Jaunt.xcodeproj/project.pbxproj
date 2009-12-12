@@ -43,6 +43,7 @@
 		6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */; };
 		6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B455610BCB67A00FE4212 /* IndexedTextField.m */; };
 		6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */; };
+		6D8E4D4710D420080009FD80 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4D4610D420080009FD80 /* ActivityManager.m */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
@@ -107,6 +108,8 @@
 		6D8B455610BCB67A00FE4212 /* IndexedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexedTextField.m; sourceTree = "<group>"; };
 		6D8E4CF110D3D4CB0009FD80 /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
 		6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
+		6D8E4D4510D420080009FD80 /* ActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityManager.h; sourceTree = "<group>"; };
+		6D8E4D4610D420080009FD80 /* ActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityManager.m; sourceTree = "<group>"; };
 		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 				6D82441E10C2B0300008DC60 /* CoreDataManager.m */,
 				6D8E4CF110D3D4CB0009FD80 /* UIImage+Extension.h */,
 				6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */,
+				6D8E4D4510D420080009FD80 /* ActivityManager.h */,
+				6D8E4D4610D420080009FD80 /* ActivityManager.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 				6D755F9610CBDD33004D36F2 /* Photo.m in Sources */,
 				6D755F9B10CBDE74004D36F2 /* UIImageToDataTransformer.m in Sources */,
 				6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */,
+				6D8E4D4710D420080009FD80 /* ActivityManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

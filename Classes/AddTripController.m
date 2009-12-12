@@ -16,12 +16,12 @@
 #import "CellExtension.h"
 #import	"Logger.h"
 #import "UIImage+Extension.h"
+#import "ActivityManager.h"
 
 @implementation AddTripController
 
 
-@synthesize queue;
-@synthesize activityIndicator;
+@synthesize activityManager;
 @synthesize trip;
 @synthesize tripName;
 @synthesize cellManager;
@@ -35,15 +35,9 @@
 	
 	[super viewDidLoad];
 	
-	NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
-	[aQueue setMaxConcurrentOperationCount:1];
-	self.queue = aQueue;
-	[aQueue release];
-	
-	UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-	progress.hidesWhenStopped = YES;
-	self.activityIndicator = progress;
-	[progress release];
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
 	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
 	self.navigationItem.rightBarButtonItem = saveButton;
@@ -131,11 +125,7 @@
 
 - (void) save {
 	
-	[self showActivity];
-	
-	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(asyncSave) object:nil];
-	[self.queue addOperation:operation];
-	[operation release];
+	[self.activityManager startTaskWithTarget:self selector:@selector(asyncSave) object:nil];
 }
 
 - (void) asyncSave {
@@ -161,40 +151,12 @@
 
 -(void) finishedSaving {
 
-	[self hideActivity];
+	[self.activityManager stopTask];
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	UINavigationController *aController = [aDelegate navigationController];
 	[aController popViewControllerAnimated:YES];
 
-}
-
-#pragma mark -
-#pragma mark Activity Indication
-
--(void) showActivity {
-    
-	UIApplication *anApplication = [UIApplication sharedApplication];
-	anApplication.networkActivityIndicatorVisible = YES;
-	
-	[self.activityIndicator startAnimating];
-	
-	// Center the indicator in the middle of the view
-	CGRect aFrame = self.activityIndicator.frame;
-	aFrame.origin.x = (self.tableView.bounds.size.width - aFrame.size.width) / 2.0;
-	aFrame.origin.y = (self.tableView.bounds.size.height - aFrame.size.height) / 2.0;
-	self.activityIndicator.frame = aFrame;
-	
-	[self.tableView addSubview:self.activityIndicator];
-}
-
--(void) hideActivity {
-    
-	[self.activityIndicator stopAnimating];
-	[self.activityIndicator removeFromSuperview];
-	
-	UIApplication *anApplication = [UIApplication sharedApplication];
-	anApplication.networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark -
@@ -242,8 +204,7 @@
 
 - (void) dealloc {
 	
-	[queue release];
-	[activityIndicator release];
+	[activityManager release];
 	[trip release];
 	[tripName release];
 	[cellManager release];
