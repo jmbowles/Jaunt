@@ -17,10 +17,12 @@
 #import	"Logger.h"
 #import "UIImage+Extension.h"
 #import "ActivityManager.h"
+#import "CameraController.h"
 
 @implementation AddTripController
 
 
+@synthesize cameraController;
 @synthesize activityManager;
 @synthesize trip;
 @synthesize tripName;
@@ -35,15 +37,12 @@
 	
 	[super viewDidLoad];
 	
-	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
-	self.activityManager = anActivityManager;
-	[anActivityManager release];
-	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
 	self.navigationItem.rightBarButtonItem = saveButton;
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 	[saveButton release];
 	
+	[self initializeDelegates];
 	[self createHeader];
 	[self loadCells];
 }
@@ -72,38 +71,40 @@
 }
 
 #pragma mark -
-#pragma mark Camera
+#pragma mark Post Construction Initialization
 
-- (void) setTripImage:(id) sender {
+-(void) initializeDelegates {
 	
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-		
-		UIImagePickerController *aPicker = [[UIImagePickerController alloc] init];
-		aPicker.delegate = self;
-		aPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-		[self presentModalViewController:aPicker animated:YES];
-		
-		[aPicker release];
-	}
+	CameraController *aCameraController = [[CameraController alloc] initWithController:self andActionView:self.tableView];
+	self.cameraController = aCameraController;
+	self.cameraController.delegate = self;
+	[aCameraController release];
+	
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
 }
 
-- (void) imagePickerController:(UIImagePickerController *) aPicker didFinishPickingImage:(UIImage *)anImage editingInfo:(NSDictionary *) editingInfo {
+#pragma mark -
+#pragma mark CameraControllerDelegate
+
+-(void) didFinishSelectingImage {
 	
-	[[self photoButton] setBackgroundImage:anImage forState:UIControlStateNormal];
+	UIImage *originalImage = self.cameraController.imageSelected;
+	
+	[[self photoButton] setBackgroundImage:originalImage forState:UIControlStateNormal];
 	[[self photoButton] setTitle:nil forState:UIControlStateNormal];
 	
 	Photo *aPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext: self.trip.managedObjectContext];
-	aPhoto.image = anImage;
+	aPhoto.image = originalImage;
 	
 	self.trip.photo = aPhoto;
-	self.trip.thumbNail = [UIImage imageWithImage:anImage scaledToSize:CGSizeMake(88.0, 66.0)];
-	 
-	[aPicker dismissModalViewControllerAnimated:YES];
+	self.trip.thumbNail = [self.cameraController imageSelectedUsingDefaultSize];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *) aPicker {
+- (void) setTripImage:(id) sender {
 	
-	[aPicker dismissModalViewControllerAnimated:YES];
+	[self.cameraController selectImage];
 }
 
 #pragma mark -
@@ -204,6 +205,7 @@
 
 - (void) dealloc {
 	
+	[cameraController release];
 	[activityManager release];
 	[trip release];
 	[tripName release];
