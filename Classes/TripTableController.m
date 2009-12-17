@@ -52,7 +52,7 @@
 - (NSManagedObjectContext *) getManagedObjectContext {
     
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *aContext = [aDelegate managedObjectContext];
+	NSManagedObjectContext *aContext = [aDelegate getManagedObjectContext];
 	
     return aContext;
 }
@@ -67,15 +67,11 @@
 #pragma mark Methods
 
 - (void) addTrip {
-
-	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *aContext = [aDelegate managedObjectContext];
 	
-	Trip *aTrip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: aContext];
 	AddTripController *addTripController = [[AddTripController alloc] initWithStyle: UITableViewStyleGrouped];
 	addTripController.title = @"Add Trip";
-	addTripController.trip = aTrip;
-	
+		
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	[aDelegate.navigationController pushViewController:addTripController animated:YES];
 	[addTripController release];
 }

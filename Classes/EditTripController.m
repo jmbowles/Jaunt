@@ -107,7 +107,7 @@
 	[self.trip setName: self.tripName];
 	
 	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *aContext = [delegate managedObjectContext];
+	NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
 	
 	NSError *error;
 	
@@ -174,7 +174,7 @@
 		[destinations removeObject:aDestination];
 		
 		JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		NSManagedObjectContext *aContext = [delegate managedObjectContext];
+		NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
 	
 		[aContext deleteObject:aDestination];
 		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
@@ -238,7 +238,7 @@
 
 		if (self.editing == YES && indexPath.row == 0) {
 			
-			NSManagedObjectContext *aContext = [delegate managedObjectContext];
+			NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
 			
 			Destination *aDestination = (Destination *) [NSEntityDescription insertNewObjectForEntityForName:@"Destination" inManagedObjectContext: aContext];
 			aDestination.name = @"";

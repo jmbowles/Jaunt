@@ -18,16 +18,15 @@
 #import "UIImage+Extension.h"
 #import "ActivityManager.h"
 #import "CameraController.h"
+#import	"ViewManager.h"
 
 @implementation AddTripController
 
 
 @synthesize cameraController;
 @synthesize activityManager;
-@synthesize trip;
 @synthesize tripName;
 @synthesize cellManager;
-@synthesize photoButton;
 
 
 #pragma mark -
@@ -49,25 +48,10 @@
 
 -(void) createHeader {
 	
-	CGRect aFrame = CGRectMake(20, 18, 62, 62);
+	UIView *aHeaderView = [ViewManager viewWithPhotoButtonForTarget:self andAction:@selector(setTripImage:) usingTag:1 
+							width:self.tableView.bounds.size.width height:100];
 	
-	UIImage *anImage = [UIImage imageNamed:@"GenericContact.png"];
-	UIButton *aButton = [[UIButton alloc] initWithFrame:aFrame];
-	[aButton setBackgroundImage:anImage forState:UIControlStateNormal];
-	aButton.titleLabel.font = [UIFont systemFontOfSize: 12];
-	[aButton setTitle:@"add photo" forState:UIControlStateNormal];
-	[aButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	[aButton addTarget:self action:@selector(setTripImage:) forControlEvents:UIControlEventTouchUpInside];
-	[self setPhotoButton:aButton];
-	
-	aFrame = CGRectMake(0, 0, self.tableView.bounds.size.width, 100);
-	UIView *aHeaderView = [[UIView alloc] initWithFrame:aFrame];
-	[aHeaderView addSubview:aButton];
-	aHeaderView.backgroundColor = [UIColor clearColor];
-	self.tableView.tableHeaderView = aHeaderView;	
-	
-	[aHeaderView release];
-	[aButton release];
+	self.tableView.tableHeaderView = aHeaderView;
 }
 
 #pragma mark -
@@ -92,14 +76,11 @@
 	
 	UIImage *originalImage = self.cameraController.imageSelected;
 	
-	[[self photoButton] setBackgroundImage:originalImage forState:UIControlStateNormal];
-	[[self photoButton] setTitle:nil forState:UIControlStateNormal];
+	UIView *aHeaderView = self.tableView.tableHeaderView;
+	UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
 	
-	Photo *aPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext: self.trip.managedObjectContext];
-	aPhoto.image = originalImage;
-	
-	self.trip.photo = aPhoto;
-	self.trip.thumbNail = [self.cameraController imageSelectedUsingDefaultSize];
+	[aButton setBackgroundImage:originalImage forState:UIControlStateNormal];
+	[aButton setTitle:nil forState:UIControlStateNormal];
 }
 
 - (void) setTripImage:(id) sender {
@@ -134,10 +115,16 @@
 	NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *aContext = [aDelegate managedObjectContext];
+	NSManagedObjectContext *aContext = [aDelegate getManagedObjectContext];
 	
-	[self.trip setName: self.tripName];
+	Photo *aPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext: aContext];
+	aPhoto.image = self.cameraController.imageSelected;
 	
+	Trip *aTrip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: aContext];
+	[aTrip setName:self.tripName];
+	[aTrip setPhoto:aPhoto];
+	[aTrip setThumbNail:[self.cameraController imageSelectedUsingDefaultSize]];
+	 
 	NSError *error;
 	
 	if (![aContext save: &error]) {
@@ -205,12 +192,12 @@
 
 - (void) dealloc {
 	
+	[cameraController setDelegate: nil];
+	[activityManager setView: nil];
 	[cameraController release];
 	[activityManager release];
-	[trip release];
 	[tripName release];
 	[cellManager release];
-	[photoButton release];
 	[super dealloc];
 }
 

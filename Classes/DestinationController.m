@@ -87,7 +87,7 @@
 - (void) save {
 	
 	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *aContext = [delegate managedObjectContext];
+	NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
 	
 	self.destination.name = [self.values objectAtIndex:0];
 	self.destination.city = [self.values objectAtIndex:1];

@@ -7,13 +7,21 @@
 //
 
 #import "JauntAppDelegate.h"
+#import "Logger.h"
+
 
 @implementation JauntAppDelegate
 
 @synthesize window;
 @synthesize rootController;
 @synthesize navigationController;
+@synthesize managedObjectModel;
+@synthesize managedObjectContext;
+@synthesize persistentStoreCoordinator;
 
+
+#pragma mark -
+#pragma mark Application Delegation
 
 - (void) applicationDidFinishLaunching:(UIApplication *)application {    
 
@@ -21,75 +29,60 @@
     [window makeKeyAndVisible];
 }
 
-- (void) applicationWillTerminate:(UIApplication *)application {
-	
-    NSError *error;
-    
-	if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-			// Handle the error.
-        } 
-    }
-}
-
 #pragma mark -
 #pragma mark Core Data stack
 
-/**
- Returns the managed object context for the application.
- If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
- */
-- (NSManagedObjectContext *) managedObjectContext {
+-(NSManagedObjectModel *) getManagedObjectModel {
 	
-    if (managedObjectContext != nil) {
-        return managedObjectContext;
+	if (self.managedObjectModel != nil) {
+        
+		return self.managedObjectModel;
     }
+    self.managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];    
 	
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
-    }
-	
-    return managedObjectContext;
+    return self.managedObjectModel;
 }
 
-
-/**
- Returns the managed object model for the application.
- If the model doesn't already exist, it is created by merging all of the models found in the application bundle.
- */
-- (NSManagedObjectModel *)managedObjectModel {
+-(NSManagedObjectContext *) getManagedObjectContext {
 	
-    if (managedObjectModel != nil) {
-        return managedObjectModel;
-    }
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
-	
-    return managedObjectModel;
-}
-
-
-/**
- Returns the persistent store coordinator for the application.
- If the coordinator doesn't already exist, it is created and the application's store added to it.
- */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-	
-    if (persistentStoreCoordinator != nil) {
-        return persistentStoreCoordinator;
+	if (self.managedObjectContext != nil) {
+        
+		return self.managedObjectContext;
     }
 	
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Jaunt.sqlite"]];
-	
-	NSError *error;
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    NSPersistentStoreCoordinator *coordinator = [self getPersistentStoreCoordinator];
     
-	if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
-        // Handle the error.
+	if (coordinator != nil) {
+        
+		NSManagedObjectContext *aContext = [[NSManagedObjectContext alloc] init];
+		self.managedObjectContext = aContext;
+		[aContext release];
+		
+        [self.managedObjectContext setPersistentStoreCoordinator: coordinator];
+    }
+	return self.managedObjectContext;
+}
+
+-(NSPersistentStoreCoordinator *) getPersistentStoreCoordinator {
+
+	if (self.persistentStoreCoordinator != nil) {
+        
+		return self.persistentStoreCoordinator;
+    }
+	
+	NSPersistentStoreCoordinator *aCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self getManagedObjectModel]];
+	self.persistentStoreCoordinator = aCoordinator;
+	[aCoordinator release];
+    
+	NSError *error;
+	NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Jaunt.sqlite"]];
+	
+	if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
+        
+		[Logger logError:error withMessage:@"Failed to add persistent store"];
     }    
 	
-    return persistentStoreCoordinator;
+    return self.persistentStoreCoordinator;
 }
 
 /**
