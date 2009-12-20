@@ -8,6 +8,7 @@
 
 #import "EditTripController.h"
 #import "Trip.h"
+#import "Photo.h"
 #import "JauntAppDelegate.h"
 #import "TextFieldCell.h"
 #import	"CellManager.h"
@@ -15,9 +16,15 @@
 #import "DestinationController.h"
 #import "Destination.h"
 #import "Logger.h"
+#import "ActivityManager.h"
+#import "CameraController.h"
+#import "ViewManager.h"
 
 @implementation EditTripController
 
+
+@synthesize cameraController;
+@synthesize activityManager;
 @synthesize titles;
 @synthesize trip;
 @synthesize tripName;
@@ -35,8 +42,22 @@
 	self.navigationItem.rightBarButtonItem.target = self;
 	self.navigationItem.rightBarButtonItem.action = @selector(toggleEditMode);
 	
+	[self initializeDelegates];
+	[self createHeader];
 	[self loadTitles];
 	[self loadCells];
+}
+
+-(void) createHeader {
+	
+	UIView *aHeaderView = [ViewManager viewWithPhotoButtonForTarget:self andAction:@selector(setTripImage:) usingTag:1 
+								width:self.tableView.bounds.size.width height:100];
+	
+	UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
+	[aButton setBackgroundImage:self.trip.thumbNail forState:UIControlStateNormal];
+	[aButton setTitle:nil forState:UIControlStateNormal];
+	
+	self.tableView.tableHeaderView = aHeaderView;
 }
 
 - (void) toggleEditMode {
@@ -78,6 +99,40 @@
 }
 
 #pragma mark -
+#pragma mark Post Construction Initialization
+
+-(void) initializeDelegates {
+	
+	CameraController *aCameraController = [[CameraController alloc] initWithController:self andActionView:self.tableView];
+	self.cameraController = aCameraController;
+	self.cameraController.delegate = self;
+	[aCameraController release];
+	
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
+}
+
+#pragma mark -
+#pragma mark CameraControllerDelegate
+
+-(void) didFinishSelectingImage {
+	
+	UIImage *originalImage = self.cameraController.imageSelected;
+	
+	UIView *aHeaderView = self.tableView.tableHeaderView;
+	UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
+	
+	[aButton setBackgroundImage:originalImage forState:UIControlStateNormal];
+	[aButton setTitle:nil forState:UIControlStateNormal];
+}
+
+- (void) setTripImage:(id) sender {
+	
+	[self.cameraController selectImage];
+}
+
+#pragma mark -
 #pragma mark Cell Management Methods
 
 -(void) loadTitles {
@@ -104,6 +159,9 @@
 
 - (void) save {
 	
+	[self.activityManager startTaskWithTarget:self selector:@selector(asyncSave) object:nil];
+	
+	/**
 	[self.trip setName: self.tripName];
 	
 	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -115,6 +173,35 @@
 		
 		[Logger logError:error withMessage:@"Failed to save destination"];
 	}
+	 **/
+}
+
+- (void) asyncSave {
+	
+	NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
+	
+	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
+	
+	[self.trip setName: self.tripName];
+	trip.photo.image = self.cameraController.imageSelected;
+	trip.thumbNail = [self.cameraController imageSelectedUsingDefaultSize];
+	
+	NSError *error;
+	
+	if (![aContext save: &error]) {
+		
+		[Logger logError:error withMessage:@"Failed to save destination"];
+	}
+	
+	[self performSelectorOnMainThread:@selector(finishedSaving) withObject:nil waitUntilDone:NO]; 
+	
+	[aPool release];
+}
+
+-(void) finishedSaving {
+	
+	[self.activityManager stopTask];
 }
 
 #pragma mark -
@@ -281,7 +368,11 @@
 #pragma mark Memory Management
 
 - (void) dealloc {
-	
+		
+	[cameraController setDelegate: nil];
+	[activityManager setView: nil];
+	[cameraController release];
+	[activityManager release];
 	[titles release];
 	[trip release];
 	[tripName release];

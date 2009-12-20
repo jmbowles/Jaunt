@@ -23,7 +23,7 @@
 
 -(id) transformedValue:(id)value {
 	
-	return UIImageJPEGRepresentation(value, 0.5);
+	return UIImagePNGRepresentation(value);
 }
 
 -(id) reverseTransformedValue:(id)value {
