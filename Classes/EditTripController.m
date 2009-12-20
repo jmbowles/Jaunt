@@ -53,9 +53,12 @@
 	UIView *aHeaderView = [ViewManager viewWithPhotoButtonForTarget:self andAction:@selector(setTripImage:) usingTag:1 
 								width:self.tableView.bounds.size.width height:100];
 	
-	UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
-	[aButton setBackgroundImage:self.trip.thumbNail forState:UIControlStateNormal];
-	[aButton setTitle:nil forState:UIControlStateNormal];
+	if (self.trip.photo.image != nil) {
+		
+		UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
+		[aButton setBackgroundImage:self.trip.thumbNail forState:UIControlStateNormal];
+		[aButton setTitle:nil forState:UIControlStateNormal];
+	}
 	
 	self.tableView.tableHeaderView = aHeaderView;
 }
@@ -161,19 +164,6 @@
 	
 	[self.activityManager startTaskWithTarget:self selector:@selector(asyncSave) object:nil];
 	
-	/**
-	[self.trip setName: self.tripName];
-	
-	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
-	
-	NSError *error;
-	
-	if (![aContext save: &error]) {
-		
-		[Logger logError:error withMessage:@"Failed to save destination"];
-	}
-	 **/
 }
 
 - (void) asyncSave {

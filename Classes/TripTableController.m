@@ -12,8 +12,11 @@
 #import	"EditTripController.h"
 #import "CoreData/CoreData.h"
 #import "Trip.h"
+#import	"Photo.h"
 #import	"Logger.h"
 #import "CoreDataManager.h"
+#import "UIImage+Extension.h"
+
 
 @implementation TripTableController
 
@@ -99,8 +102,15 @@
 	
 	cell.textLabel.text = [aTrip name];	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.imageView.image = aTrip.thumbNail;
 	
+	if (aTrip.photo.image == nil) {
+		
+		UIImage *anImage = [UIImage imageNamed:@"GenericContact.png"];
+		cell.imageView.image = [UIImage imageWithImage:anImage scaledToSize:CGSizeMake(88.0, 66.0)];
+	} else {
+		
+		cell.imageView.image = aTrip.thumbNail;
+	}
 	return cell;
 }
 
