@@ -57,9 +57,16 @@
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate
 
-- (void) imagePickerController:(UIImagePickerController *) aPicker didFinishPickingImage:(UIImage *)anImage editingInfo:(NSDictionary *) editingInfo {
+- (void) imagePickerController:(UIImagePickerController *) aPicker didFinishPickingMediaWithInfo:(NSDictionary *) aDictionary {
 	
+	UIImage *anImage = [aDictionary valueForKey:UIImagePickerControllerOriginalImage];
 	self.imageSelected = anImage;
+	
+	if (aPicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+		
+		UIImageWriteToSavedPhotosAlbum (anImage,nil,nil,nil);
+	}
+	
 	[aPicker dismissModalViewControllerAnimated:YES];
 	
 	[self.delegate didFinishSelectingImage];
