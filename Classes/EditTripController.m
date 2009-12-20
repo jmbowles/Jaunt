@@ -132,7 +132,10 @@
 
 - (void) setTripImage:(id) sender {
 	
-	[self.cameraController selectImage];
+	if (self.tableView.editing) {
+		
+		[self.cameraController selectImage];
+	}
 }
 
 #pragma mark -
@@ -174,8 +177,12 @@
 	NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
 	
 	[self.trip setName: self.tripName];
-	trip.photo.image = self.cameraController.imageSelected;
-	trip.thumbNail = [self.cameraController imageSelectedUsingDefaultSize];
+	
+	if (self.cameraController.imageSelected != nil) {
+		
+		trip.photo.image = self.cameraController.imageSelected;
+		trip.thumbNail = [self.cameraController imageSelectedUsingDefaultSize];
+	}
 	
 	NSError *error;
 	
@@ -220,7 +227,7 @@
 
 - (NSString *) tableView:(UITableView *) tableView titleForHeaderInSection:(NSInteger) section {
 	
-	NSString *titleName = @"Trip";
+	NSString *titleName = nil;
 	
 	if (section == 1) {
 		
