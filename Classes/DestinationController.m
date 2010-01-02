@@ -51,19 +51,11 @@
 #pragma mark -
 #pragma mark UISearchBarDelegate
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	
-	[searchBar resignFirstResponder];
-}
-
-#pragma mark -
-#pragma mark UISearchDisplayController Delegate Methods
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-
 	[self.cities removeAllObjects];
 	
-	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K like [cd]%@",@"cityName", searchString];
+	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K like [cd]%@",@"cityName", searchBar.text];
 	NSFetchedResultsController *aController = [self fetchedResultsController];
 	[aController.fetchRequest setPredicate:aPredicate];
 	
@@ -77,13 +69,21 @@
 		
 		NSArray *results = [aController fetchedObjects];
 		[self.cities setArray: results];
-		
-		if ([results count] > 0) {
-			return YES;
-		}
-		return NO;
+		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
-	return NO;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	
+	[searchBar resignFirstResponder];
+}
+
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+
+	return YES;
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
