@@ -17,6 +17,7 @@
 #import "TextFieldExtension.h"
 #import "IndexedTextField.h"
 #import	"Logger.h"
+#import "CoreDataManager.h"
 
 @implementation DestinationController
 
@@ -31,7 +32,7 @@
 @synthesize fetchedResultsController;
 
 #pragma mark -
-#pragma mark View Management Methods
+#pragma mark View Management
 
 
 - (void) viewDidLoad {
@@ -49,56 +50,12 @@
 }
 
 #pragma mark -
-#pragma mark UISearchBarDelegate
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	
-	[self.cities removeAllObjects];
-	
-	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K like [cd]%@",@"cityName", searchBar.text];
-	NSFetchedResultsController *aController = [self fetchedResultsController];
-	[aController.fetchRequest setPredicate:aPredicate];
-	
-	NSError *error;
-	
-	if(! [aController performFetch:&error]) {
-		
-		[Logger logError:error withMessage:@"Failed to filter city"];
-		
-	} else {
-		
-		NSArray *results = [aController fetchedObjects];
-		[self.cities setArray: results];
-		[self.searchDisplayController.searchResultsTableView reloadData];
-	}
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	
-	[searchBar resignFirstResponder];
-}
-
-#pragma mark -
-#pragma mark UISearchDisplayController Delegate Methods
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-
-	return YES;
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
-	
-	[self.tableView reloadData];
-}
-
-#pragma mark -
 #pragma mark Post-Initialization Methods
 
 - (void) loadTitles {
 	
 	NSArray *array = [[NSArray alloc] initWithObjects:@"Name:", @"City:", @"State:", nil];
 	[self setTitles: array];
-	
 	[array release];
 }
 
@@ -109,7 +66,6 @@
 	
 	CellManager *manager = [[CellManager alloc] initWithNibs:nibNames withIdentifiers:identifiers forOwner:self];
 	self.cellManager = manager;
-	
 	[manager release];
 }
 
@@ -119,7 +75,6 @@
 		
 		NSMutableArray *destinationValues = [[NSMutableArray alloc] initWithObjects: @"", @"", @"", nil];
 		self.values = destinationValues;
-		
 		[destinationValues release];
 	}
 	
@@ -153,7 +108,7 @@
 }
 
 #pragma mark -
-#pragma mark Persistence Methods
+#pragma mark Persistence
 
 - (void) save {
 	
@@ -263,34 +218,61 @@
 }
 
 #pragma mark -
+#pragma mark UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	
+	[self.cities removeAllObjects];
+	
+	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K like [cd]%@",@"cityName", searchBar.text];
+	NSFetchedResultsController *aController = [self fetchedResultsController];
+	[aController.fetchRequest setPredicate:aPredicate];
+	
+	NSError *error;
+	
+	if(! [aController performFetch:&error]) {
+		
+		[Logger logError:error withMessage:@"Failed to filter city"];
+		
+	} else {
+		
+		NSArray *results = [aController fetchedObjects];
+		[self.cities setArray: results];
+		[self.searchDisplayController.searchResultsTableView reloadData];
+	}
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	
+	[searchBar resignFirstResponder];
+}
+
+#pragma mark -
+#pragma mark UISearchDisplayControllerDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+	
+	return YES;
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
+	
+	[self.tableView reloadData];
+}
+
+#pragma mark -
 #pragma mark Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController {
     
     if (fetchedResultsController != nil) {
-        return fetchedResultsController;
+        
+		return fetchedResultsController;
     }
     
 	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	NSManagedObjectContext *aContext = [delegate getManagedObjectContext];
-	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"City" inManagedObjectContext:aContext];
-	[fetchRequest setEntity:entity];
-	
-	NSSortDescriptor *aDescriptor = [[NSSortDescriptor alloc] initWithKey:@"cityName" ascending:YES];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:aDescriptor, nil];
-	[fetchRequest setSortDescriptors:sortDescriptors];
-	
-	NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-															managedObjectContext:aContext sectionNameKeyPath:nil cacheName:nil];
-	self.fetchedResultsController = aFetchedResultsController;
-	fetchedResultsController.delegate = self;
-	
-	[aFetchedResultsController release];
-	[fetchRequest release];
-	[aDescriptor release];
-	[sortDescriptors release];
+	self.fetchedResultsController = [CoreDataManager fetchedResultsController:aContext forEntity:@"City" columnName:@"cityName" delegate:self];
 	
 	return fetchedResultsController;
 }

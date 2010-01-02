@@ -17,4 +17,7 @@
 +(NSMutableArray*) executeFetch:(NSManagedObjectContext*) aContext forEntity:(NSString*) anEntity 
 				  withPredicate:(NSPredicate*) aPredicate usingFilter:(NSString*) aColumnName;
 
++(NSFetchedResultsController *)fetchedResultsController:(NSManagedObjectContext*) aContext forEntity:(NSString*) 
+								anEntity columnName:(NSString *) aColumnName delegate:(id) aDelegate;
+
 @end

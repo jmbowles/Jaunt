@@ -32,4 +32,26 @@
 	return results;
 }
 
++(NSFetchedResultsController *)fetchedResultsController:(NSManagedObjectContext*) aContext forEntity:(NSString*) anEntity 
+								columnName:(NSString *) aColumnName delegate:(id) aDelegate {
+	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:anEntity inManagedObjectContext:aContext];
+	[fetchRequest setEntity:entity];
+	
+	NSSortDescriptor *aDescriptor = [[NSSortDescriptor alloc] initWithKey:aColumnName ascending:YES];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:aDescriptor, nil];
+	[fetchRequest setSortDescriptors:sortDescriptors];
+	
+	NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+																managedObjectContext:aContext sectionNameKeyPath:nil cacheName:nil];
+	aFetchedResultsController.delegate = aDelegate;
+	
+	[fetchRequest release];
+	[aDescriptor release];
+	[sortDescriptors release];
+	
+	return [aFetchedResultsController autorelease];
+}
+
 @end
