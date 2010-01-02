@@ -14,15 +14,19 @@
 @class Destination;
 
 
-@interface DestinationController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
+@interface DestinationController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, 
+															UISearchBarDelegate, UISearchDisplayDelegate, NSFetchedResultsControllerDelegate> {
 
 	Trip *trip;
 	Destination *destination;
 
 @private 
-	NSArray *titles;
+    NSArray *titles;
 	NSMutableArray *values;
 	CellManager *cellManager;
+	UISearchDisplayController *searchDisplayController;
+	NSMutableArray *cities;		
+	NSFetchedResultsController *fetchedResultsController;
 }
 
 @property (nonatomic, retain) NSArray *titles;
@@ -30,10 +34,14 @@
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) Destination *destination;
 @property (nonatomic, retain) CellManager *cellManager;
+@property (nonatomic, retain) UISearchDisplayController *searchDisplayController;
+@property (nonatomic, retain) NSMutableArray *cities;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 -(void) save;
 -(void) loadTitles;
 -(void) loadCells;
 -(void) loadValues;
+-(void) configureSearchDisplay;
 
 @end

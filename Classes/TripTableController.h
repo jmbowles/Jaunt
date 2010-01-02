@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface TripTableController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface TripTableController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 
 	NSMutableArray *tripsCollection;
 	UINavigationController *navigationController;

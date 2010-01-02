@@ -13,7 +13,6 @@
 
 
 @interface Destination : NSManagedObject {
-
 }
 
 @property (nonatomic, retain) NSString *name;

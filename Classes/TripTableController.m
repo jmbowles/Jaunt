@@ -10,6 +10,10 @@
 #import "JauntAppDelegate.h"
 #import	"AddTripController.h"
 #import	"EditTripController.h"
+#import "RouteController.h"
+#import "ChecklistController.h"
+#import	"ReservationController.h"
+#import "WeatherController.h"
 #import "CoreData/CoreData.h"
 #import "Trip.h"
 #import	"Photo.h"
@@ -47,6 +51,11 @@
 	[super viewWillAppear:animated];
 	[self loadTrips];
 	[self.tableView reloadData];
+}
+
+- (void) viewDidAppear:(BOOL) animated {
+	
+	[super viewDidAppear:animated];
 }
 
 #pragma mark -
@@ -101,7 +110,7 @@
 	Trip *aTrip = [self.tripsCollection objectAtIndex: [indexPath row]];
 	
 	cell.textLabel.text = [aTrip name];	
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
 	if (aTrip.photo.image == nil) {
 		
@@ -140,18 +149,66 @@
 
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {
+	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+													otherButtonTitles:@"Map", @"Weather", @"Checklist", @"Reservations", nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	actionSheet.cancelButtonIndex = 4;
+	[actionSheet showInView: self.view];
+	[actionSheet release];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	
 	Trip *aTrip = [self.tripsCollection objectAtIndex:indexPath.row];
 	
 	EditTripController	*editTripController = [[EditTripController alloc] initWithStyle: UITableViewStyleGrouped];
 	editTripController.title = @"Edit Trip";
 	editTripController.trip = aTrip;
 	
-	JauntAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate.navigationController pushViewController:editTripController animated:YES];
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	[aDelegate.navigationController pushViewController:editTripController animated:YES];
 	
 	[editTripController release];
 }
 
+#pragma mark -
+#pragma mark ActionSheet Navigation 
+
+- (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex
+{
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	
+	if (buttonIndex == 0)
+	{
+		RouteController *aController = [[RouteController alloc] initWithNibName:@"RouteView" bundle:[NSBundle mainBundle]];
+		aController.title = @"Map";
+		[aDelegate.navigationController pushViewController:aController animated:YES];
+		[aController release];
+	}
+	if (buttonIndex == 1)
+	{
+		WeatherController *aController = [[WeatherController alloc] initWithNibName:@"WeatherView" bundle:[NSBundle mainBundle]];
+		aController.title = @"Weather";
+		[aDelegate.navigationController pushViewController:aController animated:YES];
+		[aController release];
+	}
+	if (buttonIndex == 2)
+	{
+		ChecklistController *aController = [[ChecklistController alloc] initWithNibName:@"Checklist" bundle:[NSBundle mainBundle]];
+		aController.title = @"Checklist";
+		[aDelegate.navigationController pushViewController:aController animated:YES];
+		[aController release];
+	}
+	if (buttonIndex == 3)
+	{
+		ReservationController *aController = [[ReservationController alloc] initWithNibName:@"ReservationView" bundle:[NSBundle mainBundle]];
+		aController.title = @"Reservations";
+		[aDelegate.navigationController pushViewController:aController animated:YES];
+		[aController release];
+	}
+}
 
 #pragma mark -
 #pragma mark Memory Management

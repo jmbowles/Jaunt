@@ -26,5 +26,10 @@
 		NSLog(@"  %@", [anError userInfo]);
 	}
 }
-											   							
+	
++(void) logMessage:(NSString*) aMessage withTitle:(NSString *) aTitle {
+	
+	NSLog(@"%@: %@", aTitle, aMessage);
+}
+
 @end

@@ -63,6 +63,7 @@
 	return self.managedObjectContext;
 }
 
+/**
 -(NSPersistentStoreCoordinator *) getPersistentStoreCoordinator {
 
 	if (self.persistentStoreCoordinator != nil) {
@@ -76,6 +77,41 @@
     
 	NSError *error;
 	NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Jaunt.sqlite"]];
+	
+	if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
+        
+		[Logger logError:error withMessage:@"Failed to add persistent store"];
+    }    
+	
+    return self.persistentStoreCoordinator;
+}
+**/
+
+-(NSPersistentStoreCoordinator *) getPersistentStoreCoordinator {
+	
+	if (self.persistentStoreCoordinator != nil) {
+        
+		return self.persistentStoreCoordinator;
+    }
+	
+	NSPersistentStoreCoordinator *aCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self getManagedObjectModel]];
+	self.persistentStoreCoordinator = aCoordinator;
+	[aCoordinator release];
+    
+	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Jaunt.sqlite"];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	
+	if (![fileManager fileExistsAtPath:storePath]) {
+		
+		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Jaunt" ofType:@"sqlite"];
+		
+		if (defaultStorePath) {
+			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+		}
+	}
+	
+	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
+	NSError *error;
 	
 	if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
         

@@ -14,5 +14,6 @@
 }
 
 +(void) logError:(NSError*) anError withMessage:(NSString*) aMessage;
++(void) logMessage:(NSString*) aMessage withTitle:(NSString *) aTitle;
 
 @end

@@ -21,13 +21,12 @@
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:aColumnName ascending:YES];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[request setSortDescriptors:sortDescriptors];
+	[request setPredicate:aPredicate];
 	[sortDescriptor release];
 	[sortDescriptors release];
 	
 	NSError *error = nil;
 	NSMutableArray *results = [[[aContext executeFetchRequest:request error:&error] mutableCopy] autorelease];
-	[Logger logError:error withMessage:@"Failed to execute fetch for entity"];
-	
 	[request release];
 	
 	return results;
