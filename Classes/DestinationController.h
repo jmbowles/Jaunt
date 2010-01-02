@@ -14,13 +14,14 @@
 @class Destination;
 
 
-@interface DestinationController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, 
-															UISearchBarDelegate, UISearchDisplayDelegate, NSFetchedResultsControllerDelegate> {
+@interface DestinationController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate, 
+															UISearchDisplayDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
 
 	Trip *trip;
 	Destination *destination;
 
 @private 
+	UIToolbar *toolBar;															
     NSArray *titles;
 	NSMutableArray *values;
 	CellManager *cellManager;
@@ -29,6 +30,7 @@
 	NSFetchedResultsController *fetchedResultsController;
 }
 
+@property (nonatomic, retain) UIToolbar *toolBar;
 @property (nonatomic, retain) NSArray *titles;
 @property (nonatomic, retain) NSMutableArray *values;
 @property (nonatomic, retain) Trip *trip;
@@ -43,5 +45,7 @@
 -(void) loadCells;
 -(void) loadValues;
 -(void) configureSearchDisplay;
+-(void) configureToolBar;
+-(void) showActions:(id) sender;
 
 @end

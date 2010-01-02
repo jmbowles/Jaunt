@@ -21,7 +21,7 @@
 
 @implementation DestinationController
 
-
+@synthesize toolBar;
 @synthesize titles;
 @synthesize values;
 @synthesize trip;
@@ -47,6 +47,12 @@
 	[self loadCells];
 	[self loadValues];
 	[self configureSearchDisplay];
+	[self configureToolBar];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+	
+	[self.toolBar removeFromSuperview];
 }
 
 #pragma mark -
@@ -92,8 +98,10 @@
 	UISearchBar *aSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
 	aSearchBar.delegate = self;  
     aSearchBar.showsCancelButton = YES;  
-	aSearchBar.prompt = @"Search for city and state";
+	aSearchBar.placeholder = @"Search for city and state";
 	aSearchBar.keyboardType = UIKeyboardTypeASCIICapable;
+	aSearchBar.autocorrectionType =UITextAutocorrectionTypeNo;
+	aSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [aSearchBar sizeToFit];  
     self.tableView.tableHeaderView = aSearchBar;  
 	
@@ -105,6 +113,68 @@
 	
 	[aSearchBar release];
 	[aSearchDisplayController release];
+}
+
+-(void) configureToolBar {
+	
+	UIBarButtonItem *aBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
+																					target:self action:@selector(showActions:)];
+	aBarButtonItem.style = UIBarButtonItemStyleBordered;
+	
+	UIToolbar *aToolbar = [[UIToolbar alloc] init];
+	aToolbar.barStyle = UIBarStyleDefault;
+	[aToolbar sizeToFit];
+	
+	CGFloat toolbarHeight = [aToolbar frame].size.height;
+	CGRect aRectangle = self.view.bounds;
+	[aToolbar setFrame:CGRectMake(CGRectGetMinX(aRectangle),
+								  CGRectGetMinY(aRectangle) + CGRectGetHeight(aRectangle) - (toolbarHeight * 2.0) + 2.0,
+								  CGRectGetWidth(aRectangle),
+								  58.0)];
+	
+	NSArray *items = [NSArray arrayWithObjects: aBarButtonItem, nil];
+	[aToolbar setItems:items animated:NO];
+	
+	[self.navigationController.view addSubview:aToolbar];
+	self.toolBar = aToolbar;
+	
+	[aToolbar release];
+	[aBarButtonItem release];
+}
+
+-(void) showActions:(id) sender {
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+													otherButtonTitles:@"Add Current Location", @"Add Photo", @"Publish Facebook", @"Add Note", nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	actionSheet.cancelButtonIndex = 4;
+	[actionSheet showInView: self.view];
+	[actionSheet release];
+}
+
+#pragma mark -
+#pragma mark ActionSheet Navigation 
+
+- (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex
+{
+	//JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	
+	if (buttonIndex == 0)
+	{
+		
+	}
+	if (buttonIndex == 1)
+	{
+		
+	}
+	if (buttonIndex == 2)
+	{
+		
+	}
+	if (buttonIndex == 3)
+	{
+		
+	}
 }
 
 #pragma mark -
@@ -224,7 +294,7 @@
 	
 	[self.cities removeAllObjects];
 	
-	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K like [cd]%@",@"cityName", searchBar.text];
+	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K = [cd]%@",@"cityName", searchBar.text];
 	NSFetchedResultsController *aController = [self fetchedResultsController];
 	[aController.fetchRequest setPredicate:aPredicate];
 	
@@ -282,6 +352,7 @@
 
 - (void) dealloc {
 	
+	[toolBar release];
 	[titles release];
 	[values release];
 	[trip release];
