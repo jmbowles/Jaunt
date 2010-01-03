@@ -8,14 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 @class CellManager;
 @class Trip;
 @class Destination;
+@class ActivityManager;
 
 
 @interface DestinationController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate, 
-															UISearchDisplayDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
+															UISearchDisplayDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate, 
+														    CLLocationManagerDelegate, MKReverseGeocoderDelegate> {
 
 	Trip *trip;
 	Destination *destination;
@@ -28,6 +32,9 @@
 	UISearchDisplayController *searchDisplayController;
 	NSMutableArray *cities;		
 	NSFetchedResultsController *fetchedResultsController;
+    CLLocationManager *locationManager;
+	ActivityManager *activityManager;
+    MKReverseGeocoder *reverseGeocoder;
 }
 
 @property (nonatomic, retain) UIToolbar *toolBar;
@@ -39,6 +46,10 @@
 @property (nonatomic, retain) UISearchDisplayController *searchDisplayController;
 @property (nonatomic, retain) NSMutableArray *cities;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) CLLocationManager *locationManager;
+@property (nonatomic, retain) ActivityManager *activityManager;
+@property (nonatomic, retain) MKReverseGeocoder *reverseGeocoder;
+
 
 -(void) save;
 -(void) loadTitles;

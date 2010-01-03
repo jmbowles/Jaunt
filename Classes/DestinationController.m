@@ -18,6 +18,7 @@
 #import "IndexedTextField.h"
 #import	"Logger.h"
 #import "CoreDataManager.h"
+#import "ActivityManager.h"
 
 @implementation DestinationController
 
@@ -30,6 +31,10 @@
 @synthesize searchDisplayController;
 @synthesize cities;
 @synthesize fetchedResultsController;
+@synthesize locationManager;
+@synthesize activityManager;
+@synthesize reverseGeocoder;
+
 
 #pragma mark -
 #pragma mark View Management
@@ -42,6 +47,17 @@
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
 	self.navigationItem.rightBarButtonItem = saveButton;
 	[saveButton release];
+	
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.view];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
+	
+	CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
+	aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
+	aLocationManager.distanceFilter = kCLDistanceFilterNone;
+	aLocationManager.delegate = self;
+	self.locationManager = aLocationManager;
+	[aLocationManager release];
 	
 	[self loadTitles];
 	[self loadCells];
@@ -126,7 +142,7 @@
 	[aToolbar sizeToFit];
 	
 	CGFloat toolbarHeight = [aToolbar frame].size.height;
-	CGRect aRectangle = self.view.bounds;
+	CGRect aRectangle = self.tableView.bounds;
 	[aToolbar setFrame:CGRectMake(CGRectGetMinX(aRectangle),
 								  CGRectGetMinY(aRectangle) + CGRectGetHeight(aRectangle) - (toolbarHeight * 2.0) + 2.0,
 								  CGRectGetWidth(aRectangle),
@@ -161,7 +177,8 @@
 	
 	if (buttonIndex == 0)
 	{
-		
+		[self.activityManager showActivity];
+		[self.locationManager startUpdatingLocation];
 	}
 	if (buttonIndex == 1)
 	{
@@ -348,6 +365,56 @@
 }
 
 #pragma mark -
+#pragma mark Core Location
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+	
+	if (newLocation != nil && newLocation.horizontalAccuracy <= 500) {
+		
+		// Update the users position
+		CLLocationCoordinate2D coordinate = [newLocation coordinate];
+		[self.destination setLatitude:[NSNumber numberWithDouble:coordinate.latitude]];
+		[self.destination setLongitude:[NSNumber numberWithDouble:coordinate.longitude]];
+		
+		[self.locationManager stopUpdatingLocation];
+		
+		// Get the city and state from the users position
+		MKReverseGeocoder *aGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
+		aGeocoder.delegate = self;
+		[self setReverseGeocoder:aGeocoder];
+		[aGeocoder release];
+		
+		[self.reverseGeocoder start];
+	}
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	
+	[Logger logMessage:@"LocationManager failed to get position" withTitle:@"LocationManager"];
+}
+
+#pragma mark -
+#pragma mark MKReverseGeocoder
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark {
+	
+	NSString *aMessage = [NSString stringWithFormat:@"Found locality: ", placemark.locality];
+	[Logger logMessage:aMessage withTitle:@"MKReverseGeocoder"];
+	
+	NSArray *anArray = [NSArray arrayWithObjects:placemark.subAdministrativeArea, placemark.locality, placemark.administrativeArea, nil];		
+	[self.values setArray:anArray];
+	[self.tableView reloadData];
+	
+	[self.activityManager hideActivity];
+}
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error {
+
+	[Logger logMessage:@"MKReverseGeocoder failed to get place" withTitle:@"MKReverseGeocoder"];
+	
+}
+
+#pragma mark -
 #pragma mark Memory Management
 
 - (void) dealloc {
@@ -361,6 +428,9 @@
 	[searchDisplayController release];
 	[cities release];
 	[fetchedResultsController release];
+	[locationManager release];
+	[activityManager release];
+	[reverseGeocoder release];
 	[super dealloc];
 }
 

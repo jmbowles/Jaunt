@@ -8,7 +8,7 @@
 
 #import "JauntAppDelegate.h"
 #import "Logger.h"
-
+#import "TripTableController.h"
 
 @implementation JauntAppDelegate
 
@@ -24,7 +24,7 @@
 #pragma mark Application Delegation
 
 - (void) applicationDidFinishLaunching:(UIApplication *)application {    
-
+	
 	[window addSubview: rootController.view];
     [window makeKeyAndVisible];
 }
@@ -63,30 +63,6 @@
 	return self.managedObjectContext;
 }
 
-/**
--(NSPersistentStoreCoordinator *) getPersistentStoreCoordinator {
-
-	if (self.persistentStoreCoordinator != nil) {
-        
-		return self.persistentStoreCoordinator;
-    }
-	
-	NSPersistentStoreCoordinator *aCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self getManagedObjectModel]];
-	self.persistentStoreCoordinator = aCoordinator;
-	[aCoordinator release];
-    
-	NSError *error;
-	NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Jaunt.sqlite"]];
-	
-	if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
-        
-		[Logger logError:error withMessage:@"Failed to add persistent store"];
-    }    
-	
-    return self.persistentStoreCoordinator;
-}
-**/
-
 -(NSPersistentStoreCoordinator *) getPersistentStoreCoordinator {
 	
 	if (self.persistentStoreCoordinator != nil) {
@@ -99,6 +75,7 @@
 	[aCoordinator release];
     
 	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Jaunt.sqlite"];
+	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	
 	if (![fileManager fileExistsAtPath:storePath]) {

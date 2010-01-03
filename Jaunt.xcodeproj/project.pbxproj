@@ -37,8 +37,9 @@
 		6D82441F10C2B0300008DC60 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82441E10C2B0300008DC60 /* CoreDataManager.m */; };
 		6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */; };
 		6D82EFFD109DA66400A03436 /* Trip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFFC109DA66400A03436 /* Trip.m */; };
+		6D86B76610F0C88B00FC366A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D86B76510F0C88B00FC366A /* CoreLocation.framework */; };
+		6D86B87610F0EDD500FC366A /* Jaunt.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6D86B87510F0EDD500FC366A /* Jaunt.sqlite */; };
 		6D8A0CCD10E7DA12007001B5 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8A0CCC10E7DA12007001B5 /* City.m */; };
-		6D8A0D0A10E7E42B007001B5 /* Jaunt.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6D8A0D0910E7E42B007001B5 /* Jaunt.sqlite */; };
 		6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */; };
 		6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B455610BCB67A00FE4212 /* IndexedTextField.m */; };
 		6D8C924410DE8A6F00D79F44 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -112,9 +113,10 @@
 		6D82EFFB109DA66400A03436 /* Trip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trip.h; sourceTree = "<group>"; };
 		6D82EFFC109DA66400A03436 /* Trip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trip.m; sourceTree = "<group>"; };
 		6D82F0B5109DA82900A03436 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		6D86B76510F0C88B00FC366A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = ../../../../../../System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6D86B87510F0EDD500FC366A /* Jaunt.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jaunt.sqlite; sourceTree = "<group>"; };
 		6D8A0CCB10E7DA12007001B5 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
 		6D8A0CCC10E7DA12007001B5 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
-		6D8A0D0910E7E42B007001B5 /* Jaunt.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jaunt.sqlite; sourceTree = "<group>"; };
 		6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldExtension.m; sourceTree = "<group>"; };
 		6D8B455510BCB67A00FE4212 /* IndexedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexedTextField.h; sourceTree = "<group>"; };
 		6D8B455610BCB67A00FE4212 /* IndexedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexedTextField.m; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				6D8C924610DE8A8800D79F44 /* CoreGraphics.framework in Frameworks */,
 				6D8C924710DE8A9900D79F44 /* MapKit.framework in Frameworks */,
 				6D8C924810DE8AA000D79F44 /* CoreData.framework in Frameworks */,
+				6D86B76610F0C88B00FC366A /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,7 +211,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6D8A0D0910E7E42B007001B5 /* Jaunt.sqlite */,
+				6D86B87510F0EDD500FC366A /* Jaunt.sqlite */,
 				6D7768DE10CAE8E30047C8C6 /* GenericContact.png */,
 				6DA07D5D109A7CCC0071D22C /* blue_blank.png */,
 				6D632B2810825F1F009769E5 /* Route.png */,
@@ -234,6 +237,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				6D632C6510828ECA009769E5 /* MapKit.framework */,
 				6D82F0B5109DA82900A03436 /* CoreData.framework */,
+				6D86B76510F0C88B00FC366A /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -347,7 +351,7 @@
 				6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */,
 				6D7B570710B04AC0007942E0 /* NonEditableCell.xib in Resources */,
 				6D7768DF10CAE8E30047C8C6 /* GenericContact.png in Resources */,
-				6D8A0D0A10E7E42B007001B5 /* Jaunt.sqlite in Resources */,
+				6D86B87610F0EDD500FC366A /* Jaunt.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

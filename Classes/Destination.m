@@ -17,5 +17,7 @@
 @dynamic state;
 @dynamic zipCode;
 @dynamic trip;
+@dynamic latitude;
+@dynamic longitude;
 
 @end

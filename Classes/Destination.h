@@ -21,5 +21,7 @@
 @property (nonatomic, retain) NSString *state;
 @property (nonatomic, retain) NSNumber *zipCode;
 @property (nonatomic, retain) Trip *trip;
+@property (nonatomic, retain) NSNumber *latitude;
+@property (nonatomic, retain) NSNumber *longitude;
 
 @end
