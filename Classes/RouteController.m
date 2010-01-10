@@ -7,60 +7,108 @@
 //
 
 #import "RouteController.h"
+#import	"Destination.h"
+#import "MapAnnotation.h"
+#import "Trip.h"
+#import "Destination.h"
 
 
 @implementation RouteController
 
 @synthesize mapView;
+@synthesize trip;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
 
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+#pragma mark -
+#pragma mark View Management
+
 - (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+    
+	[super viewDidLoad];
 	
-	// Release any cached data, images, etc that aren't in use.
+	[self.mapView setDelegate:self];
+	[self loadAnnotations];
+	[self adjustMapRegion];
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+#pragma mark -
+#pragma mark MapView Delegates
+
+-(void) loadAnnotations {
+	
+	NSMutableArray *annotations = [NSMutableArray array];
+	
+	NSEnumerator *anIterator = [self.trip.destinations objectEnumerator];
+	Destination *aDestination;
+	
+	while ((aDestination = [anIterator nextObject])) {
+		
+		CLLocationCoordinate2D aCoordinate;
+		aCoordinate.latitude = [aDestination.latitude doubleValue];
+		aCoordinate.longitude = [aDestination.longitude doubleValue];
+		
+		MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
+		anAnnotation.title = aDestination.city;
+		anAnnotation.subtitle = aDestination.state;
+		
+		[annotations addObject:anAnnotation];
+		[anAnnotation release];
+	}
+	[self.mapView addAnnotations:annotations];
 }
 
+-(void) adjustMapRegion {
+	
+	CLLocationCoordinate2D topLeftCoord;
+    topLeftCoord.latitude = -90;
+    topLeftCoord.longitude = 180;
+    
+    CLLocationCoordinate2D bottomRightCoord;
+    bottomRightCoord.latitude = 90;
+    bottomRightCoord.longitude = -180;
+    
+    for(MapAnnotation *annotation in self.mapView.annotations)
+    {
+        topLeftCoord.longitude = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
+        topLeftCoord.latitude = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
+        
+        bottomRightCoord.longitude = fmax(bottomRightCoord.longitude, annotation.coordinate.longitude);
+        bottomRightCoord.latitude = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
+    }
+    
+    MKCoordinateRegion region;
+    region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
+    region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
+    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.1; 
+    region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.1;
+    
+    region = [self.mapView regionThatFits:region];
+    [self.mapView setRegion:region animated:YES];
+}
+
+#pragma mark -
+#pragma mark MapView Delegates
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+	for (MKPinAnnotationView *aView in views)
+	{
+		aView.pinColor = MKPinAnnotationColorRed;
+		aView.animatesDrop = YES;
+		UIButton *aButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+		aView.rightCalloutAccessoryView = aButton;
+	}
+}
+
+#pragma mark -
+#pragma mark Memory Management
 
 - (void)dealloc {
+	
 	[mapView release];
+	[trip release];
     [super dealloc];
 }
-
 
 @end

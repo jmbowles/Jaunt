@@ -9,12 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
+@class Trip;
 
 @interface RouteController : UIViewController <MKMapViewDelegate> {
 
 	IBOutlet MKMapView *mapView;
+	Trip *trip;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
+@property (nonatomic, retain) Trip *trip;
+
+-(void) loadAnnotations;
+-(void) adjustMapRegion;
 
 @end

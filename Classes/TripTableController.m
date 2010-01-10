@@ -26,6 +26,8 @@
 
 @synthesize tripsCollection;
 @synthesize navigationController;
+@synthesize selectedTrip;
+
 
 #pragma mark -
 #pragma mark View Management
@@ -151,6 +153,8 @@
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
 	
+	self.selectedTrip = [self.tripsCollection objectAtIndex:indexPath.row];
+	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
 													otherButtonTitles:@"Map", @"Weather", @"Checklist", @"Reservations", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
@@ -184,6 +188,7 @@
 	{
 		RouteController *aController = [[RouteController alloc] initWithNibName:@"RouteView" bundle:[NSBundle mainBundle]];
 		aController.title = @"Map";
+		[aController setTrip:self.selectedTrip];
 		[aDelegate.navigationController pushViewController:aController animated:YES];
 		[aController release];
 	}
@@ -217,6 +222,7 @@
 
 	[tripsCollection release];
 	[navigationController release];
+	[selectedTrip release];
     [super dealloc];
 }
 

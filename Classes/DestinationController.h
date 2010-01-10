@@ -48,7 +48,6 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) ActivityManager *activityManager;
-@property (nonatomic) BOOL isSearching;
 
 -(void) save;
 -(void) loadTitles;

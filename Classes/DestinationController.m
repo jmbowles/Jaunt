@@ -33,7 +33,6 @@
 @synthesize fetchedResultsController;
 @synthesize locationManager;
 @synthesize activityManager;
-@synthesize isSearching;
 
 #pragma mark -
 #pragma mark View Management
@@ -41,9 +40,7 @@
 
 - (void) viewDidLoad {
 	
-	[super viewDidLoad];
-	
-	self.isSearching = NO;
+	[super viewDidLoad];	
 	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
 	self.navigationItem.rightBarButtonItem = saveButton;
@@ -317,18 +314,11 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
 	
-	if (self.isSearching == NO) {
-		
-		self.isSearching = YES;
-		[self performSelectorInBackground:@selector(asyncSearch:) withObject:searchString];
-		
-	}	
+	[self performSelector:@selector(asyncSearch:) withObject:searchString afterDelay:0.1f];
 	return NO;
 }
 
 -(void) asyncSearch:(id) aTarget {
-	
-	NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
 	
 	[self.cities removeAllObjects];
 	
@@ -343,9 +333,7 @@
 		NSArray *results = [aController fetchedObjects];
 		[self.cities setArray: results];
 		[self.searchDisplayController.searchResultsTableView reloadData];
-		self.isSearching = NO;
 	}
-	[aPool drain];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
