@@ -33,8 +33,7 @@
 @synthesize fetchedResultsController;
 @synthesize locationManager;
 @synthesize activityManager;
-@synthesize reverseGeocoder;
-
+@synthesize isSearching;
 
 #pragma mark -
 #pragma mark View Management
@@ -43,6 +42,8 @@
 - (void) viewDidLoad {
 	
 	[super viewDidLoad];
+	
+	self.isSearching = NO;
 	
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
 	self.navigationItem.rightBarButtonItem = saveButton;
@@ -99,7 +100,6 @@
 		self.values = destinationValues;
 		[destinationValues release];
 	}
-	
 	[self.values replaceObjectAtIndex:0 withObject: self.destination.name];
 	[self.values replaceObjectAtIndex:1 withObject: self.destination.city];
 	[self.values replaceObjectAtIndex:2 withObject: self.destination.state];
@@ -116,7 +116,7 @@
     aSearchBar.showsCancelButton = YES;  
 	aSearchBar.placeholder = @"Search for city and state";
 	aSearchBar.keyboardType = UIKeyboardTypeASCIICapable;
-	aSearchBar.autocorrectionType =UITextAutocorrectionTypeNo;
+	aSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 	aSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [aSearchBar sizeToFit];  
     self.tableView.tableHeaderView = aSearchBar;  
@@ -172,10 +172,8 @@
 #pragma mark ActionSheet Navigation 
 
 - (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex
-{
-	//JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	
-	if (buttonIndex == 0)
+{	
+	if (buttonIndex == 0 && self.locationManager.locationServicesEnabled)
 	{
 		[self.activityManager showActivity];
 		[self.locationManager startUpdatingLocation];
@@ -239,7 +237,6 @@
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-	
 	if (self.tableView == tableView) {
 		
 		static NSString *reuseIdentifer = @"TextFieldCell";
@@ -269,7 +266,7 @@
 		}
 		
 		City *aCity = [self.cities objectAtIndex:indexPath.row];
-		cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", aCity.cityName, aCity.stateCode];;
+		cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [aCity.cityName capitalizedString], aCity.stateCode];;
 		
 		return cell;
 	}
@@ -282,8 +279,11 @@
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		
         City *aCity = [self.cities objectAtIndex:indexPath.row];
-		NSArray *anArray = [NSArray arrayWithObjects:aCity.cityName, aCity.cityName, aCity.stateCode, nil];		
+		NSArray *anArray = [NSArray arrayWithObjects:[aCity.cityName capitalizedString], [aCity.cityName capitalizedString], aCity.stateCode, nil];		
 		[self.values setArray:anArray];
+		
+		[self.destination setLatitude:aCity.latitude];
+		[self.destination setLongitude:aCity.longitude];
 		
 		[self.searchDisplayController setActive:NO];
 	}
@@ -307,28 +307,6 @@
 #pragma mark -
 #pragma mark UISearchBarDelegate
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	
-	[self.cities removeAllObjects];
-	
-	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K = [cd]%@",@"cityName", searchBar.text];
-	NSFetchedResultsController *aController = [self fetchedResultsController];
-	[aController.fetchRequest setPredicate:aPredicate];
-	
-	NSError *error;
-	
-	if(! [aController performFetch:&error]) {
-		
-		[Logger logError:error withMessage:@"Failed to filter city"];
-		
-	} else {
-		
-		NSArray *results = [aController fetchedObjects];
-		[self.cities setArray: results];
-		[self.searchDisplayController.searchResultsTableView reloadData];
-	}
-}
-
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	
 	[searchBar resignFirstResponder];
@@ -339,7 +317,35 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
 	
-	return YES;
+	if (self.isSearching == NO) {
+		
+		self.isSearching = YES;
+		[self performSelectorInBackground:@selector(asyncSearch:) withObject:searchString];
+		
+	}	
+	return NO;
+}
+
+-(void) asyncSearch:(id) aTarget {
+	
+	NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
+	
+	[self.cities removeAllObjects];
+	
+	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K beginswith[cd]%@",@"cityName", (NSString*) aTarget];
+	NSFetchedResultsController *aController = [self fetchedResultsController];
+	[aController.fetchRequest setPredicate:aPredicate];
+	
+	NSError *error;
+	
+	if([aController performFetch:&error]) {
+		
+		NSArray *results = [aController fetchedObjects];
+		[self.cities setArray: results];
+		[self.searchDisplayController.searchResultsTableView reloadData];
+		self.isSearching = NO;
+	}
+	[aPool drain];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
@@ -369,49 +375,47 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	
-	if (newLocation != nil && newLocation.horizontalAccuracy <= 500) {
-		
-		// Update the users position
-		CLLocationCoordinate2D coordinate = [newLocation coordinate];
-		[self.destination setLatitude:[NSNumber numberWithDouble:coordinate.latitude]];
-		[self.destination setLongitude:[NSNumber numberWithDouble:coordinate.longitude]];
-		
-		[self.locationManager stopUpdatingLocation];
-		
-		// Get the city and state from the users position
-		MKReverseGeocoder *aGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
-		aGeocoder.delegate = self;
-		[self setReverseGeocoder:aGeocoder];
-		[aGeocoder release];
-		
-		[self.reverseGeocoder start];
-	}
+	[self.locationManager stopUpdatingLocation];
+	
+	CLLocationCoordinate2D coordinate = [newLocation coordinate];
+	[self.destination setLatitude:[NSNumber numberWithDouble:coordinate.latitude]];
+	[self.destination setLongitude:[NSNumber numberWithDouble:coordinate.longitude]];
+	
+	MKReverseGeocoder *aGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
+	aGeocoder.delegate = self;
+	[aGeocoder start];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
 	
-	[Logger logMessage:@"LocationManager failed to get position" withTitle:@"LocationManager"];
+	if (error.code == kCLErrorDenied) {
+		
+		[self.locationManager stopUpdatingLocation];
+	}
 }
 
 #pragma mark -
 #pragma mark MKReverseGeocoder
 
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark {
-	
-	NSString *aMessage = [NSString stringWithFormat:@"Found locality: ", placemark.locality];
-	[Logger logMessage:aMessage withTitle:@"MKReverseGeocoder"];
+- (void)reverseGeocoder:(MKReverseGeocoder *) aGeocoder didFindPlacemark:(MKPlacemark *)placemark {
 	
 	NSArray *anArray = [NSArray arrayWithObjects:placemark.subAdministrativeArea, placemark.locality, placemark.administrativeArea, nil];		
 	[self.values setArray:anArray];
 	[self.tableView reloadData];
 	
+	[aGeocoder release];
 	[self.activityManager hideActivity];
 }
 
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error {
+- (void)reverseGeocoder:(MKReverseGeocoder *)aGeocoder didFailWithError:(NSError *)error {
 
-	[Logger logMessage:@"MKReverseGeocoder failed to get place" withTitle:@"MKReverseGeocoder"];
+	[aGeocoder release];
+	[self.activityManager hideActivity];
 	
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Status" message:@"Unable to determine city and state"
+												delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
 }
 
 #pragma mark -
@@ -430,7 +434,6 @@
 	[fetchedResultsController release];
 	[locationManager release];
 	[activityManager release];
-	[reverseGeocoder release];
 	[super dealloc];
 }
 

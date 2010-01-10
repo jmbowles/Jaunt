@@ -13,5 +13,7 @@
 
 @dynamic cityName;
 @dynamic stateCode;
+@dynamic latitude;
+@dynamic longitude;
 
 @end

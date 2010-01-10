@@ -12,10 +12,8 @@
 @implementation Destination
 
 @dynamic name;
-@dynamic address;
 @dynamic city;
 @dynamic state;
-@dynamic zipCode;
 @dynamic trip;
 @dynamic latitude;
 @dynamic longitude;

@@ -76,6 +76,7 @@
     
 	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Jaunt.sqlite"];
 	
+
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	
 	if (![fileManager fileExistsAtPath:storePath]) {
@@ -86,6 +87,7 @@
 			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
 		}
 	}
+	
 	
 	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
 	NSError *error;

@@ -193,7 +193,7 @@
 	
 	[self performSelectorOnMainThread:@selector(finishedSaving) withObject:nil waitUntilDone:NO]; 
 	
-	[aPool release];
+	[aPool drain];
 }
 
 -(void) finishedSaving {
