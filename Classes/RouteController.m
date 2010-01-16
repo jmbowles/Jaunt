@@ -11,6 +11,8 @@
 #import "MapAnnotation.h"
 #import "Trip.h"
 #import "Destination.h"
+#import "ChecklistController.h"
+#import "JauntAppDelegate.h"
 
 
 @implementation RouteController
@@ -33,7 +35,7 @@
 }
 
 #pragma mark -
-#pragma mark MapView Delegates
+#pragma mark MapView
 
 -(void) loadAnnotations {
 	
@@ -44,16 +46,22 @@
 	
 	while ((aDestination = [anIterator nextObject])) {
 		
-		CLLocationCoordinate2D aCoordinate;
-		aCoordinate.latitude = [aDestination.latitude doubleValue];
-		aCoordinate.longitude = [aDestination.longitude doubleValue];
+		double latitude = [aDestination.latitude doubleValue];
+		double longitude = [aDestination.longitude doubleValue];
 		
-		MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
-		anAnnotation.title = aDestination.city;
-		anAnnotation.subtitle = aDestination.state;
-		
-		[annotations addObject:anAnnotation];
-		[anAnnotation release];
+		if (fabs(latitude) > 0 && fabs(longitude) > 0) {
+			
+			CLLocationCoordinate2D aCoordinate;
+			aCoordinate.latitude = latitude;
+			aCoordinate.longitude = longitude;
+			
+			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
+			anAnnotation.title = aDestination.city;
+			anAnnotation.subtitle = aDestination.state;
+			
+			[annotations addObject:anAnnotation];
+			[anAnnotation release];
+		}
 	}
 	[self.mapView addAnnotations:annotations];
 }
@@ -99,6 +107,15 @@
 		UIButton *aButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		aView.rightCalloutAccessoryView = aButton;
 	}
+}
+
+-(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+	
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	ChecklistController *aController = [[ChecklistController alloc] initWithNibName:@"Checklist" bundle:[NSBundle mainBundle]];
+	aController.title = @"Journal";
+	[aDelegate.navigationController pushViewController:aController animated:YES];
+	[aController release];
 }
 
 #pragma mark -

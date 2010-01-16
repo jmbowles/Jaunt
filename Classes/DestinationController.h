@@ -34,7 +34,7 @@
 	NSFetchedResultsController *fetchedResultsController;
     CLLocationManager *locationManager;
 	ActivityManager *activityManager;
-	BOOL isSearching;
+	NSOperationQueue *queue;
 }
 
 @property (nonatomic, retain) UIToolbar *toolBar;
@@ -48,6 +48,8 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) ActivityManager *activityManager;
+@property (nonatomic, retain) NSOperationQueue *queue;
+
 
 -(void) save;
 -(void) loadTitles;
@@ -56,6 +58,8 @@
 -(void) configureSearchDisplay;
 -(void) configureToolBar;
 -(void) showActions:(id) sender;
--(void) asyncSearch:(NSString *) aSearchString;
+-(void) asyncSearch:(id) anArray;
+-(void) finishedSearching:(NSArray *) results;
+
 
 @end

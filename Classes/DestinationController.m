@@ -33,6 +33,8 @@
 @synthesize fetchedResultsController;
 @synthesize locationManager;
 @synthesize activityManager;
+@synthesize queue;
+
 
 #pragma mark -
 #pragma mark View Management
@@ -56,6 +58,11 @@
 	aLocationManager.delegate = self;
 	self.locationManager = aLocationManager;
 	[aLocationManager release];
+	
+	NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
+	[aQueue setMaxConcurrentOperationCount:1];
+	self.queue = aQueue;
+	[aQueue release];
 	
 	[self loadTitles];
 	[self loadCells];
@@ -283,6 +290,7 @@
 		[self.destination setLongitude:aCity.longitude];
 		
 		[self.searchDisplayController setActive:NO];
+		[self.tableView reloadData];
 	}
 }
 
@@ -314,31 +322,51 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
 	
-	[self performSelector:@selector(asyncSearch:) withObject:searchString afterDelay:0.1f];
+	NSArray *operations = [self.queue operations];
+	
+	if ([operations count] == 0) {
+
+		NSArray *arguments = [NSArray arrayWithObjects:searchString, [self fetchedResultsController], nil];
+		NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(asyncSearch:) object:arguments];
+		[self.queue addOperation:operation];
+		[operation release];
+	}
+	
 	return NO;
 }
 
--(void) asyncSearch:(id) aTarget {
+-(void) asyncSearch:(id) anArray {
 	
-	[self.cities removeAllObjects];
+	NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
 	
-	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K beginswith[cd]%@",@"cityName", (NSString*) aTarget];
-	NSFetchedResultsController *aController = [self fetchedResultsController];
+	NSArray *arguments = (NSArray *) anArray;
+	NSString *aSearchString = (NSString *) [arguments objectAtIndex:0];
+	
+	NSFetchedResultsController *aController = (NSFetchedResultsController *) [arguments objectAtIndex:1];
+	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K beginswith[cd]%@",@"cityName", aSearchString];
 	[aController.fetchRequest setPredicate:aPredicate];
 	
 	NSError *error;
+	NSArray *results = nil;
 	
 	if([aController performFetch:&error]) {
 		
-		NSArray *results = [aController fetchedObjects];
-		[self.cities setArray: results];
-		[self.searchDisplayController.searchResultsTableView reloadData];
+		results = [aController fetchedObjects];
 	}
+	
+	[self performSelectorOnMainThread:@selector(finishedSearching:) withObject:results waitUntilDone:YES];
+	[aPool drain];
 }
 
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
+-(void) finishedSearching:(NSArray *) results {
 	
-	[self.tableView reloadData];
+	[self.cities removeAllObjects];
+	
+	if (results != nil && [results count] > 0) {
+	
+		[self.cities setArray: results];
+	}
+	[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 #pragma mark -
@@ -422,6 +450,7 @@
 	[fetchedResultsController release];
 	[locationManager release];
 	[activityManager release];
+	[queue release];
 	[super dealloc];
 }
 
