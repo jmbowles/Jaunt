@@ -19,7 +19,7 @@
 
 @synthesize mapView;
 @synthesize trip;
-
+@synthesize locationManager;
 
 
 #pragma mark -
@@ -29,9 +29,48 @@
     
 	[super viewDidLoad];
 	
+	CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
+	aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
+	aLocationManager.distanceFilter = kCLDistanceFilterNone;
+	aLocationManager.delegate = self;
+	self.locationManager = aLocationManager;
+	[aLocationManager release];
+
+	if (self.locationManager.locationServicesEnabled == YES)
+	{
+		[self.locationManager startUpdatingLocation];
+		
+		UIBarButtonItem *aRefreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performRefresh)];
+		self.navigationItem.rightBarButtonItem = aRefreshButton;
+		[aRefreshButton release];
+		
+	} else {
+		
+		[self loadAnnotations];
+	}
+		
 	[self.mapView setDelegate:self];
-	[self loadAnnotations];
-	[self adjustMapRegion];
+}
+
+-(void) performRefresh {
+	
+	[self.locationManager startUpdatingLocation];
+}
+
+#pragma mark -
+#pragma mark Core Location
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+	
+	[self loadAnnotationsUsing:newLocation fromLocation:oldLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	
+	if (error.code == kCLErrorDenied) {
+		
+		[self.locationManager stopUpdatingLocation];
+	}
 }
 
 #pragma mark -
@@ -56,14 +95,66 @@
 			aCoordinate.longitude = longitude;
 			
 			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
-			anAnnotation.title = aDestination.city;
-			anAnnotation.subtitle = aDestination.state;
+			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.city, aDestination.state];
 			
 			[annotations addObject:anAnnotation];
 			[anAnnotation release];
 		}
 	}
 	[self.mapView addAnnotations:annotations];
+	[self adjustMapRegion];
+}
+
+
+-(void) loadAnnotationsUsing:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+	
+	[self.locationManager stopUpdatingLocation];
+	
+	NSMutableArray *annotations = [NSMutableArray array];
+	
+	NSEnumerator *anIterator = [self.trip.destinations objectEnumerator];
+	Destination *aDestination;
+	
+	while ((aDestination = [anIterator nextObject])) {
+		
+		double latitude = [aDestination.latitude doubleValue];
+		double longitude = [aDestination.longitude doubleValue];
+		
+		if (fabs(latitude) > 0 && fabs(longitude) > 0) {
+			
+			NSNumberFormatter *aNumberFormatter = [[NSNumberFormatter alloc] init];
+			[aNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+			[aNumberFormatter setMaximumFractionDigits:1];
+			
+			CLLocationCoordinate2D aCoordinate;
+			aCoordinate.latitude = latitude;
+			aCoordinate.longitude = longitude;
+
+			CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+			CLLocationDistance miles = ([newLocation getDistanceFrom:aLocation] * 3.28f) / 5280;
+			NSString *mileage = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:miles]];
+			NSString *eta = @"Stopped";
+			[aLocation release];
+			
+			double mph = ([newLocation speed] * 3.28 * 3600) / 5280;
+			
+			if (mph > 0) {
+				
+				double hours = miles / mph;
+				eta = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:hours]];
+			} 
+			
+			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
+			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.city, aDestination.state];
+			anAnnotation.subtitle = [NSString stringWithFormat:@"Miles: %@, Hours: %@", mileage, eta];
+
+			[annotations addObject:anAnnotation];
+			[anAnnotation release];
+			[aNumberFormatter release];
+		}
+	}
+	[self.mapView addAnnotations:annotations];
+	[self adjustMapRegion];
 }
 
 -(void) adjustMapRegion {
@@ -76,7 +167,7 @@
     bottomRightCoord.latitude = 90;
     bottomRightCoord.longitude = -180;
     
-    for(MapAnnotation *annotation in self.mapView.annotations)
+    for (MapAnnotation *annotation in self.mapView.annotations)
     {
         topLeftCoord.longitude = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
         topLeftCoord.latitude = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
@@ -125,6 +216,7 @@
 	
 	[mapView release];
 	[trip release];
+	[locationManager release];
     [super dealloc];
 }
 

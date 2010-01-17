@@ -11,16 +11,20 @@
 
 @class Trip;
 
-@interface RouteController : UIViewController <MKMapViewDelegate> {
+@interface RouteController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate> {
 
 	IBOutlet MKMapView *mapView;
 	Trip *trip;
+	CLLocationManager *locationManager;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) Trip *trip;
+@property (nonatomic, retain) CLLocationManager *locationManager;
 
+-(void) loadAnnotationsUsing:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
 -(void) loadAnnotations;
 -(void) adjustMapRegion;
+-(void) performRefresh;
 
 @end

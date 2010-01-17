@@ -270,7 +270,7 @@
 		}
 		
 		City *aCity = [self.cities objectAtIndex:indexPath.row];
-		cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [aCity.cityName capitalizedString], aCity.stateCode];;
+		cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [aCity.cityName capitalizedString], aCity.stateCode];
 		
 		return cell;
 	}
