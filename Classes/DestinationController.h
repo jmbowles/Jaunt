@@ -35,6 +35,7 @@
     CLLocationManager *locationManager;
 	ActivityManager *activityManager;
 	NSOperationQueue *queue;
+	MKReverseGeocoder *reverseGeoCoder;
 }
 
 @property (nonatomic, retain) UIToolbar *toolBar;
@@ -49,6 +50,7 @@
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) ActivityManager *activityManager;
 @property (nonatomic, retain) NSOperationQueue *queue;
+@property (nonatomic, retain) MKReverseGeocoder *reverseGeoCoder;
 
 
 -(void) save;

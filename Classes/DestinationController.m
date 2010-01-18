@@ -34,6 +34,7 @@
 @synthesize locationManager;
 @synthesize activityManager;
 @synthesize queue;
+@synthesize reverseGeoCoder;
 
 
 #pragma mark -
@@ -179,8 +180,12 @@
 {	
 	if (buttonIndex == 0 && self.locationManager.locationServicesEnabled)
 	{
-		[self.activityManager showActivity];
-		[self.locationManager startUpdatingLocation];
+		if (self.reverseGeoCoder != nil && self.reverseGeoCoder.querying == NO) {
+			
+			[self.activityManager showActivity];
+			[self.locationManager startUpdatingLocation];
+		}
+		
 	}
 	if (buttonIndex == 1)
 	{
@@ -399,7 +404,9 @@
 	
 	MKReverseGeocoder *aGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
 	aGeocoder.delegate = self;
-	[aGeocoder start];
+	self.reverseGeoCoder = aGeocoder;
+	[aGeocoder release];
+	[self.reverseGeoCoder start];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -415,17 +422,25 @@
 
 - (void)reverseGeocoder:(MKReverseGeocoder *) aGeocoder didFindPlacemark:(MKPlacemark *)placemark {
 	
-	NSArray *anArray = [NSArray arrayWithObjects:placemark.subAdministrativeArea, placemark.locality, placemark.administrativeArea, nil];		
-	[self.values setArray:anArray];
-	[self.tableView reloadData];
-	
-	[aGeocoder release];
 	[self.activityManager hideActivity];
+	
+	if (placemark != nil && placemark.locality != nil && placemark.administrativeArea != nil) {
+		
+		NSArray *anArray = [NSArray arrayWithObjects:placemark.locality, placemark.locality, placemark.administrativeArea, nil];		
+		[self.values setArray:anArray];
+		[self.tableView reloadData];
+		
+	} else {
+		
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Status" message:@"Unable to determine city and state"
+														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[anAlert show];	
+		[anAlert release];
+	}
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)aGeocoder didFailWithError:(NSError *)error {
 
-	[aGeocoder release];
 	[self.activityManager hideActivity];
 	
 	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Status" message:@"Unable to determine city and state"
@@ -451,6 +466,7 @@
 	[locationManager release];
 	[activityManager release];
 	[queue release];
+	[reverseGeoCoder release];
 	[super dealloc];
 }
 
