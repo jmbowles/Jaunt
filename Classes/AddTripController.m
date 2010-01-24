@@ -15,10 +15,11 @@
 #import	"TextFieldExtension.h"
 #import "CellExtension.h"
 #import	"Logger.h"
-#import "UIImage+Extension.h"
 #import "ActivityManager.h"
 #import "CameraController.h"
 #import	"ViewManager.h"
+#import	"ImageHelper.h"
+
 
 @implementation AddTripController
 
@@ -74,12 +75,12 @@
 
 -(void) didFinishSelectingImage {
 	
-	UIImage *originalImage = self.cameraController.imageSelected;
-	
 	UIView *aHeaderView = self.tableView.tableHeaderView;
 	UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
 	
-	[aButton setBackgroundImage:originalImage forState:UIControlStateNormal];
+	UIImage *anImage = [ImageHelper image:self.cameraController.imageSelected fillView:aButton];
+	
+	[aButton setBackgroundImage:anImage forState:UIControlStateNormal];
 	[aButton setTitle:nil forState:UIControlStateNormal];
 }
 
@@ -123,7 +124,7 @@
 	Trip *aTrip = (Trip *) [NSEntityDescription insertNewObjectForEntityForName:@"Trip" inManagedObjectContext: aContext];
 	[aTrip setName:self.tripName];
 	[aTrip setPhoto:aPhoto];
-	[aTrip setThumbNail:[self.cameraController imageSelectedUsingDefaultSize]];
+	[aTrip setThumbNail:[ImageHelper image:self.cameraController.imageSelected fitInSize:CGSizeMake(88.0, 66.0)]];
 	 
 	NSError *error;
 	

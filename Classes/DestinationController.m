@@ -180,11 +180,8 @@
 {	
 	if (buttonIndex == 0 && self.locationManager.locationServicesEnabled)
 	{
-		if (self.reverseGeoCoder != nil && self.reverseGeoCoder.querying == NO) {
-			
-			[self.activityManager showActivity];
-			[self.locationManager startUpdatingLocation];
-		}
+		[self.activityManager showActivity];
+		[self.locationManager startUpdatingLocation];
 		
 	}
 	if (buttonIndex == 1)
@@ -432,7 +429,7 @@
 		
 	} else {
 		
-		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Status" message:@"Unable to determine city and state"
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Location Status" message:@"Unable to determine city and state."
 														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[anAlert show];	
 		[anAlert release];
@@ -443,7 +440,7 @@
 
 	[self.activityManager hideActivity];
 	
-	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Status" message:@"Unable to determine city and state"
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Location Status" message:@"Unable to determine city and state."
 												delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 	[anAlert show];	
 	[anAlert release];

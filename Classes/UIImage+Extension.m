@@ -11,6 +11,7 @@
 
 @implementation UIImage (Extension)
 
+
 +(UIImage*) imageWithImage:(UIImage*) anImage scaledToSize:(CGSize) newSize {
 	
 	UIGraphicsBeginImageContext(newSize);

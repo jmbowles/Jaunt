@@ -40,6 +40,8 @@
 		6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */; };
 		6D82EFFD109DA66400A03436 /* Trip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFFC109DA66400A03436 /* Trip.m */; };
 		6D86B76610F0C88B00FC366A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D86B76510F0C88B00FC366A /* CoreLocation.framework */; };
+		6D879029110C79E70087BD94 /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D879028110C79E70087BD94 /* ImageHelper.m */; };
+		6D879039110C7A540087BD94 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D879038110C7A540087BD94 /* QuartzCore.framework */; };
 		6D8A0CCD10E7DA12007001B5 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8A0CCC10E7DA12007001B5 /* City.m */; };
 		6D8B454A10BCB1CA00FE4212 /* TextFieldExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */; };
 		6D8B455710BCB67A00FE4212 /* IndexedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8B455610BCB67A00FE4212 /* IndexedTextField.m */; };
@@ -118,6 +120,9 @@
 		6D82EFFC109DA66400A03436 /* Trip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trip.m; sourceTree = "<group>"; };
 		6D82F0B5109DA82900A03436 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		6D86B76510F0C88B00FC366A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = ../../../../../../System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6D879027110C79E70087BD94 /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
+		6D879028110C79E70087BD94 /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
+		6D879038110C7A540087BD94 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		6D8A0CCB10E7DA12007001B5 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
 		6D8A0CCC10E7DA12007001B5 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 		6D8B454910BCB1CA00FE4212 /* TextFieldExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldExtension.m; sourceTree = "<group>"; };
@@ -148,6 +153,7 @@
 				6D8C924710DE8A9900D79F44 /* MapKit.framework in Frameworks */,
 				6D8C924810DE8AA000D79F44 /* CoreData.framework in Frameworks */,
 				6D86B76610F0C88B00FC366A /* CoreLocation.framework in Frameworks */,
+				6D879039110C7A540087BD94 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +248,7 @@
 				6D632C6510828ECA009769E5 /* MapKit.framework */,
 				6D82F0B5109DA82900A03436 /* CoreData.framework */,
 				6D86B76510F0C88B00FC366A /* CoreLocation.framework */,
+				6D879038110C7A540087BD94 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -277,6 +284,8 @@
 		6D82433810C29E490008DC60 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				6D879027110C79E70087BD94 /* ImageHelper.h */,
+				6D879028110C79E70087BD94 /* ImageHelper.m */,
 				6D82433910C29E6D0008DC60 /* Logger.h */,
 				6D82433A10C29E6D0008DC60 /* Logger.m */,
 				6D82441D10C2B0300008DC60 /* CoreDataManager.h */,
@@ -404,6 +413,7 @@
 				6D761C5310D99BD60050E414 /* ViewManager.m in Sources */,
 				6D8A0CCD10E7DA12007001B5 /* City.m in Sources */,
 				6D7A548010FA0193001E9FB1 /* MapAnnotation.m in Sources */,
+				6D879029110C79E70087BD94 /* ImageHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,8 @@
 #import <MapKit/MapKit.h>
 
 @class Trip;
+@class Destination;
+
 
 @interface RouteController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate> {
 
@@ -22,9 +24,9 @@
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 
--(void) loadAnnotationsUsing:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
--(void) loadAnnotations;
+-(void) loadAnnotations:(CLLocation *)aCurrentLocation;
 -(void) adjustMapRegion;
 -(void) performRefresh;
+-(NSString *) titleFromCurrentLocation:(CLLocation *) aCurrentLocation toDestination:(Destination *) aDestination;
 
 @end

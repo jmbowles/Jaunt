@@ -46,7 +46,7 @@
 		
 	} else {
 		
-		[self loadAnnotations];
+		[self loadAnnotations:nil];
 	}
 		
 	[self.mapView setDelegate:self];
@@ -62,7 +62,8 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	
-	[self loadAnnotationsUsing:newLocation fromLocation:oldLocation];
+	[self loadAnnotations:newLocation];
+	[self.locationManager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -76,8 +77,8 @@
 #pragma mark -
 #pragma mark MapView
 
--(void) loadAnnotations {
-	
+-(void) loadAnnotations:(CLLocation *)aCurrentLocation {
+
 	NSMutableArray *annotations = [NSMutableArray array];
 	
 	NSEnumerator *anIterator = [self.trip.destinations objectEnumerator];
@@ -96,7 +97,8 @@
 			
 			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
 			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.city, aDestination.state];
-			
+			anAnnotation.subtitle = [self titleFromCurrentLocation:aCurrentLocation toDestination:aDestination];
+
 			[annotations addObject:anAnnotation];
 			[anAnnotation release];
 		}
@@ -105,56 +107,37 @@
 	[self adjustMapRegion];
 }
 
+-(NSString *) titleFromCurrentLocation:(CLLocation *) aCurrentLocation toDestination:(Destination *) aDestination {
 
--(void) loadAnnotationsUsing:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+	NSString *aTitle = @"";
 	
-	[self.locationManager stopUpdatingLocation];
-	
-	NSMutableArray *annotations = [NSMutableArray array];
-	
-	NSEnumerator *anIterator = [self.trip.destinations objectEnumerator];
-	Destination *aDestination;
-	
-	while ((aDestination = [anIterator nextObject])) {
+	if (aCurrentLocation != nil) {
+		
+		NSNumberFormatter *aNumberFormatter = [[NSNumberFormatter alloc] init];
+		[aNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		[aNumberFormatter setMaximumFractionDigits:1];
 		
 		double latitude = [aDestination.latitude doubleValue];
 		double longitude = [aDestination.longitude doubleValue];
 		
-		if (fabs(latitude) > 0 && fabs(longitude) > 0) {
+		CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+		CLLocationDistance miles = ([aCurrentLocation getDistanceFrom:aLocation] * 3.28f) / 5280;
+		[aLocation release];
+		
+		NSString *mileage = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:miles]];
+		aTitle = [NSString stringWithFormat:@"Miles: %@", mileage];
+		
+		double mph = ([aCurrentLocation speed] * 3.28 * 3600) / 5280;
+		
+		if (mph > 0) {
 			
-			NSNumberFormatter *aNumberFormatter = [[NSNumberFormatter alloc] init];
-			[aNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-			[aNumberFormatter setMaximumFractionDigits:1];
-			
-			CLLocationCoordinate2D aCoordinate;
-			aCoordinate.latitude = latitude;
-			aCoordinate.longitude = longitude;
-
-			CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-			CLLocationDistance miles = ([newLocation getDistanceFrom:aLocation] * 3.28f) / 5280;
-			NSString *mileage = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:miles]];
-			NSString *eta = @"Stopped";
-			[aLocation release];
-			
-			double mph = ([newLocation speed] * 3.28 * 3600) / 5280;
-			
-			if (mph > 0) {
-				
-				double hours = miles / mph;
-				eta = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:hours]];
-			} 
-			
-			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
-			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.city, aDestination.state];
-			anAnnotation.subtitle = [NSString stringWithFormat:@"Miles: %@, Hours: %@", mileage, eta];
-
-			[annotations addObject:anAnnotation];
-			[anAnnotation release];
-			[aNumberFormatter release];
+			double hours = miles / mph;
+			NSString *totalHours = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:hours]];
+			aTitle = [NSString stringWithFormat:@"Miles: %@, Hours: %@", mileage, totalHours];
 		}
+		[aNumberFormatter release];
 	}
-	[self.mapView addAnnotations:annotations];
-	[self adjustMapRegion];
+	return aTitle;
 }
 
 -(void) adjustMapRegion {

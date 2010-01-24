@@ -19,7 +19,7 @@
 #import	"Photo.h"
 #import	"Logger.h"
 #import "CoreDataManager.h"
-#import "UIImage+Extension.h"
+#import "ImageHelper.h"
 
 
 @implementation TripTableController
@@ -117,7 +117,8 @@
 	if (aTrip.photo.image == nil) {
 		
 		UIImage *anImage = [UIImage imageNamed:@"GenericContact.png"];
-		cell.imageView.image = [UIImage imageWithImage:anImage scaledToSize:CGSizeMake(88.0, 66.0)];
+		cell.imageView.image = [ImageHelper image:anImage fillSize:CGSizeMake(88.0, 66.0)];
+		
 	} else {
 		
 		cell.imageView.image = aTrip.thumbNail;

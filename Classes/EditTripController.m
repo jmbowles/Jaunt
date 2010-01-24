@@ -19,6 +19,8 @@
 #import "ActivityManager.h"
 #import "CameraController.h"
 #import "ViewManager.h"
+#import "ImageHelper.h"
+
 
 @implementation EditTripController
 
@@ -56,7 +58,9 @@
 	if (self.trip.photo.image != nil) {
 		
 		UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
-		[aButton setBackgroundImage:self.trip.thumbNail forState:UIControlStateNormal];
+		UIImage *anImage = [ImageHelper image:self.trip.thumbNail fillView:aButton];
+		[aButton setBackgroundImage:anImage forState:UIControlStateNormal];
+		
 		[aButton setTitle:nil forState:UIControlStateNormal];
 	}
 	
@@ -121,12 +125,12 @@
 
 -(void) didFinishSelectingImage {
 	
-	UIImage *originalImage = self.cameraController.imageSelected;
-	
 	UIView *aHeaderView = self.tableView.tableHeaderView;
 	UIButton *aButton = (UIButton*)[aHeaderView viewWithTag:1];
 	
-	[aButton setBackgroundImage:originalImage forState:UIControlStateNormal];
+	UIImage *anImage = [ImageHelper image:self.cameraController.imageSelected fillView:aButton];
+							  
+	[aButton setBackgroundImage:anImage forState:UIControlStateNormal];
 	[aButton setTitle:nil forState:UIControlStateNormal];
 }
 
@@ -181,7 +185,7 @@
 	if (self.cameraController.imageSelected != nil) {
 		
 		trip.photo.image = self.cameraController.imageSelected;
-		trip.thumbNail = [self.cameraController imageSelectedUsingDefaultSize];
+		trip.thumbNail = [ImageHelper image:self.cameraController.imageSelected fitInSize:CGSizeMake(88.0, 66.0)];
 	}
 	
 	NSError *error;
