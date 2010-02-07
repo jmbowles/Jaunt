@@ -13,6 +13,7 @@
 #import "Destination.h"
 #import "ChecklistController.h"
 #import "JauntAppDelegate.h"
+#import "ActivityManager.h"
 
 
 @implementation RouteController
@@ -20,6 +21,7 @@
 @synthesize mapView;
 @synthesize trip;
 @synthesize locationManager;
+@synthesize activityManager;
 
 
 #pragma mark -
@@ -28,6 +30,10 @@
 - (void)viewDidLoad {
     
 	[super viewDidLoad];
+	
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.mapView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
 	
 	CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
 	aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -38,6 +44,7 @@
 
 	if (self.locationManager.locationServicesEnabled == YES)
 	{
+		[self.activityManager showActivity];
 		[self.locationManager startUpdatingLocation];
 		
 		UIBarButtonItem *aRefreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performRefresh)];
@@ -54,6 +61,7 @@
 
 -(void) performRefresh {
 	
+	[self.activityManager showActivity];
 	[self.locationManager startUpdatingLocation];
 }
 
@@ -62,8 +70,15 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	
-	[self loadAnnotations:newLocation];
-	[self.locationManager stopUpdatingLocation];
+	// Force accuracy to within a mile
+	if (newLocation.horizontalAccuracy >= 0 && newLocation.horizontalAccuracy <= 1600) {
+		
+		NSLog(@"Loading Annotations", nil);
+		
+		[self loadAnnotations:newLocation];
+		[self.locationManager stopUpdatingLocation];
+		[self.activityManager hideActivity];
+	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -200,6 +215,7 @@
 	[mapView release];
 	[trip release];
 	[locationManager release];
+	[activityManager release];
     [super dealloc];
 }
 

@@ -11,6 +11,7 @@
 
 @class Trip;
 @class Destination;
+@class ActivityManager;
 
 
 @interface RouteController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate> {
@@ -18,11 +19,13 @@
 	IBOutlet MKMapView *mapView;
 	Trip *trip;
 	CLLocationManager *locationManager;
+	ActivityManager *activityManager;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) CLLocationManager *locationManager;
+@property (nonatomic, retain) ActivityManager *activityManager;
 
 -(void) loadAnnotations:(CLLocation *)aCurrentLocation;
 -(void) adjustMapRegion;

@@ -311,6 +311,17 @@
 	self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *) aTextField {
+	
+	NSIndexPath *anIndexPath = [aTextField indexPathForField];
+	
+	// Destination name can be edited, not the city and state.
+	if (anIndexPath.row == 0) {
+		return YES;
+	}
+	return NO;
+}
+
 #pragma mark -
 #pragma mark UISearchBarDelegate
 
