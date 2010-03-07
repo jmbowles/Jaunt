@@ -91,7 +91,6 @@
 			
 			aPicker.sourceType = UIImagePickerControllerSourceTypeCamera;		
 			[self.controller presentModalViewController:aPicker animated:YES];
-			[aPicker release];
 		}
 	}
 	if (buttonIndex == 1)
@@ -100,9 +99,9 @@
 			
 			aPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 			[self.controller presentModalViewController:aPicker animated:YES];
-			[aPicker release];
 		}
 	}
+	[aPicker release];
 }
 
 #pragma mark -

@@ -11,7 +11,7 @@
 #import "MapAnnotation.h"
 #import "Trip.h"
 #import "Destination.h"
-#import "ChecklistController.h"
+#import "DestinationDetailController.h"
 #import "JauntAppDelegate.h"
 #import "ActivityManager.h"
 
@@ -22,7 +22,7 @@
 @synthesize trip;
 @synthesize locationManager;
 @synthesize activityManager;
-
+@synthesize currentLocation;
 
 #pragma mark -
 #pragma mark View Management
@@ -73,8 +73,7 @@
 	// Force accuracy to within a mile
 	if (newLocation.horizontalAccuracy >= 0 && newLocation.horizontalAccuracy <= 1600) {
 		
-		NSLog(@"Loading Annotations", nil);
-		
+		[self setCurrentLocation:newLocation];
 		[self loadAnnotations:newLocation];
 		[self.locationManager stopUpdatingLocation];
 		[self.activityManager hideActivity];
@@ -113,6 +112,7 @@
 			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
 			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.city, aDestination.state];
 			anAnnotation.subtitle = [self titleFromCurrentLocation:aCurrentLocation toDestination:aDestination];
+			anAnnotation.destination = aDestination;
 
 			[annotations addObject:anAnnotation];
 			[anAnnotation release];
@@ -201,8 +201,12 @@
 -(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	ChecklistController *aController = [[ChecklistController alloc] initWithNibName:@"Checklist" bundle:[NSBundle mainBundle]];
-	aController.title = @"Journal";
+	DestinationDetailController *aController = [[DestinationDetailController alloc] init];
+	
+	MapAnnotation *anAnnotation = (MapAnnotation *) [view annotation];
+	[aController setTitle: anAnnotation.title];
+	[aController setDestination: anAnnotation.destination];
+	[aController setCurrentLocation: self.currentLocation];
 	[aDelegate.navigationController pushViewController:aController animated:YES];
 	[aController release];
 }
@@ -216,6 +220,7 @@
 	[trip release];
 	[locationManager release];
 	[activityManager release];
+	[currentLocation release];
     [super dealloc];
 }
 

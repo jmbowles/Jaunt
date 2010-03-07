@@ -14,6 +14,7 @@
 @synthesize coordinate;
 @synthesize title;
 @synthesize subtitle;
+@synthesize destination;
 
 
 #pragma mark -
@@ -35,6 +36,7 @@
 	
 	[title release];
 	[subtitle release];
+	[destination release];
     [super dealloc];
 }
 

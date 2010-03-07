@@ -10,6 +10,7 @@
 		1D3623260D0F684500981E51 /* JauntAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* JauntAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		6D0BA06D111F5E9100AF7773 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8F8776111F29BF003061A5 /* libGDataTouchStaticLib.a */; };
 		6D488D8310D544C900F90D44 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D488D8210D544C900F90D44 /* CameraController.m */; };
 		6D503D7F10F8D79D00921BAC /* Jaunt.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6D503D7E10F8D79D00921BAC /* Jaunt.sqlite */; };
 		6D632B08108256F1009769E5 /* RouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B07108256F1009769E5 /* RouteController.m */; };
@@ -35,6 +36,10 @@
 		6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */; };
 		6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */; };
 		6D7DD030108B813B00DFFDFE /* TripTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7DD02F108B813B00DFFDFE /* TripTableController.m */; };
+		6D812E301143E02900173980 /* DestinationDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D812E2F1143E02900173980 /* DestinationDetailController.m */; };
+		6D812E6F1143FE3400173980 /* GoogleServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D812E6E1143FE3400173980 /* GoogleServices.m */; };
+		6D812F3B114417E900173980 /* GoogleQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D812F3A114417E900173980 /* GoogleQuery.m */; };
+		6D812F601144230D00173980 /* QueryResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D812F5F1144230D00173980 /* QueryResultController.m */; };
 		6D82433B10C29E6E0008DC60 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82433A10C29E6D0008DC60 /* Logger.m */; };
 		6D82441F10C2B0300008DC60 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82441E10C2B0300008DC60 /* CoreDataManager.m */; };
 		6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */; };
@@ -52,7 +57,6 @@
 		6D8C924810DE8AA000D79F44 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82F0B5109DA82900A03436 /* CoreData.framework */; };
 		6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */; };
 		6D8E4D4710D420080009FD80 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4D4610D420080009FD80 /* ActivityManager.m */; };
-		6D8F8781111F2A91003061A5 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8F8776111F29BF003061A5 /* libGDataTouchStaticLib.a */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
@@ -60,6 +64,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6D04B0B6111F3EC4002DBF3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D8F8755111F29A5003061A5 /* GData.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F1C6E0E1027B3CE00B46459;
+			remoteInfo = GDataTouchStaticLib;
+		};
 		6D8F8773111F29BF003061A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6D8F8755111F29A5003061A5 /* GData.xcodeproj */;
@@ -94,13 +105,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 4F1AD9020B71603F00DC0485;
 			remoteInfo = DevelopmentTestTool;
-		};
-		6D8F877D111F2A0D003061A5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6D8F8755111F29A5003061A5 /* GData.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4F1C6E0E1027B3CE00B46459;
-			remoteInfo = GDataTouchStaticLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -156,6 +160,14 @@
 		6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistController.m; sourceTree = "<group>"; };
 		6D7DD02E108B813B00DFFDFE /* TripTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TripTableController.h; sourceTree = "<group>"; };
 		6D7DD02F108B813B00DFFDFE /* TripTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TripTableController.m; sourceTree = "<group>"; };
+		6D812E2E1143E02900173980 /* DestinationDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationDetailController.h; sourceTree = "<group>"; };
+		6D812E2F1143E02900173980 /* DestinationDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationDetailController.m; sourceTree = "<group>"; };
+		6D812E6D1143FE3400173980 /* GoogleServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleServices.h; sourceTree = "<group>"; };
+		6D812E6E1143FE3400173980 /* GoogleServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleServices.m; sourceTree = "<group>"; };
+		6D812F39114417E900173980 /* GoogleQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleQuery.h; sourceTree = "<group>"; };
+		6D812F3A114417E900173980 /* GoogleQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleQuery.m; sourceTree = "<group>"; };
+		6D812F5E1144230D00173980 /* QueryResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryResultController.h; sourceTree = "<group>"; };
+		6D812F5F1144230D00173980 /* QueryResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryResultController.m; sourceTree = "<group>"; };
 		6D82433910C29E6D0008DC60 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		6D82433A10C29E6D0008DC60 /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logger.m; sourceTree = "<group>"; };
 		6D82441D10C2B0300008DC60 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
@@ -194,7 +206,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D8F8781111F2A91003061A5 /* libGDataTouchStaticLib.a in Frameworks */,
+				6D0BA06D111F5E9100AF7773 /* libGDataTouchStaticLib.a in Frameworks */,
 				6D8C924410DE8A6F00D79F44 /* Foundation.framework in Frameworks */,
 				6D8C924510DE8A7F00D79F44 /* UIKit.framework in Frameworks */,
 				6D8C924610DE8A8800D79F44 /* CoreGraphics.framework in Frameworks */,
@@ -211,6 +223,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				6D812F32114417A400173980 /* Google */,
 				6D7A547D10FA0164001E9FB1 /* Mapping */,
 				6D82433810C29E490008DC60 /* Utility */,
 				6D7B563110B020FA007942E0 /* Cells */,
@@ -233,6 +246,10 @@
 				6DF00135109E3265006E1AB2 /* EditTripController.m */,
 				6D70783D10B4D20100CDA8FD /* DestinationController.h */,
 				6D70783E10B4D20100CDA8FD /* DestinationController.m */,
+				6D812E2E1143E02900173980 /* DestinationDetailController.h */,
+				6D812E2F1143E02900173980 /* DestinationDetailController.m */,
+				6D812F5E1144230D00173980 /* QueryResultController.h */,
+				6D812F5F1144230D00173980 /* QueryResultController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -330,6 +347,17 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		6D812F32114417A400173980 /* Google */ = {
+			isa = PBXGroup;
+			children = (
+				6D812E6D1143FE3400173980 /* GoogleServices.h */,
+				6D812E6E1143FE3400173980 /* GoogleServices.m */,
+				6D812F39114417E900173980 /* GoogleQuery.h */,
+				6D812F3A114417E900173980 /* GoogleQuery.m */,
+			);
+			name = Google;
+			sourceTree = "<group>";
+		};
 		6D82433810C29E490008DC60 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,7 +423,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				6D8F877E111F2A0D003061A5 /* PBXTargetDependency */,
+				6D04B0B7111F3EC4002DBF3F /* PBXTargetDependency */,
 			);
 			name = Jaunt;
 			productName = Jaunt;
@@ -520,16 +548,20 @@
 				6D8A0CCD10E7DA12007001B5 /* City.m in Sources */,
 				6D7A548010FA0193001E9FB1 /* MapAnnotation.m in Sources */,
 				6D879029110C79E70087BD94 /* ImageHelper.m in Sources */,
+				6D812E301143E02900173980 /* DestinationDetailController.m in Sources */,
+				6D812E6F1143FE3400173980 /* GoogleServices.m in Sources */,
+				6D812F3B114417E900173980 /* GoogleQuery.m in Sources */,
+				6D812F601144230D00173980 /* QueryResultController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6D8F877E111F2A0D003061A5 /* PBXTargetDependency */ = {
+		6D04B0B7111F3EC4002DBF3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GDataTouchStaticLib;
-			targetProxy = 6D8F877D111F2A0D003061A5 /* PBXContainerItemProxy */;
+			targetProxy = 6D04B0B6111F3EC4002DBF3F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -546,6 +578,7 @@
 				GCC_PREFIX_HEADER = Jaunt_Prefix.pch;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Jaunt-Info.plist";
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -577,6 +610,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -588,30 +622,31 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
-					"-libxml2",
 				);
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.0;
-				USER_HEADER_SEARCH_PATHS = "$(GDATA_SRC)/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				HEADER_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.0;
-				USER_HEADER_SEARCH_PATHS = "$(GDATA_SRC)/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};

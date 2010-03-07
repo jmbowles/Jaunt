@@ -18,14 +18,18 @@
 
 	IBOutlet MKMapView *mapView;
 	Trip *trip;
+	
+@private
 	CLLocationManager *locationManager;
 	ActivityManager *activityManager;
+	CLLocation *currentLocation;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) ActivityManager *activityManager;
+@property (nonatomic, retain) CLLocation *currentLocation;
 
 -(void) loadAnnotations:(CLLocation *)aCurrentLocation;
 -(void) adjustMapRegion;
