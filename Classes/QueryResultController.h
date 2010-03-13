@@ -12,7 +12,7 @@
 @class GoogleQuery;
 @class ActivityManager;
 
-@interface QueryResultController : UITableViewController {
+@interface QueryResultController : UITableViewController <UITableViewDelegate, UIActionSheetDelegate> {
 
 	GoogleQuery *googleQuery;
 	CLLocation *currentLocation;

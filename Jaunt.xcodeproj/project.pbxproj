@@ -57,6 +57,7 @@
 		6D8C924810DE8AA000D79F44 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82F0B5109DA82900A03436 /* CoreData.framework */; };
 		6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */; };
 		6D8E4D4710D420080009FD80 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4D4610D420080009FD80 /* ActivityManager.m */; };
+		6D955BC4114BDAA800173CF9 /* QueryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D955BC3114BDAA800173CF9 /* QueryDetailController.m */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
@@ -191,6 +192,8 @@
 		6D8E4D4510D420080009FD80 /* ActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityManager.h; sourceTree = "<group>"; };
 		6D8E4D4610D420080009FD80 /* ActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityManager.m; sourceTree = "<group>"; };
 		6D8F8755111F29A5003061A5 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = GData.xcodeproj; sourceTree = GDATA_SRC; };
+		6D955BC2114BDAA800173CF9 /* QueryDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueryDetailController.h; path = ../QueryDetailController.h; sourceTree = "<group>"; };
+		6D955BC3114BDAA800173CF9 /* QueryDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QueryDetailController.m; path = ../QueryDetailController.m; sourceTree = "<group>"; };
 		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
@@ -248,6 +251,8 @@
 				6D70783E10B4D20100CDA8FD /* DestinationController.m */,
 				6D812E2E1143E02900173980 /* DestinationDetailController.h */,
 				6D812E2F1143E02900173980 /* DestinationDetailController.m */,
+				6D955BC2114BDAA800173CF9 /* QueryDetailController.h */,
+				6D955BC3114BDAA800173CF9 /* QueryDetailController.m */,
 				6D812F5E1144230D00173980 /* QueryResultController.h */,
 				6D812F5F1144230D00173980 /* QueryResultController.m */,
 			);
@@ -552,6 +557,7 @@
 				6D812E6F1143FE3400173980 /* GoogleServices.m in Sources */,
 				6D812F3B114417E900173980 /* GoogleQuery.m in Sources */,
 				6D812F601144230D00173980 /* QueryResultController.m in Sources */,
+				6D955BC4114BDAA800173CF9 /* QueryDetailController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

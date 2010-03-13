@@ -61,7 +61,7 @@
 	GoogleQuery *aQuery = [self.actions objectAtIndex: [indexPath row]];
 	
 	cell.textLabel.text = aQuery.title;	
-	cell.accessoryType = UITableViewCellAccessoryNone;
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return cell;
 }
@@ -90,7 +90,8 @@
 	NSString *latLong = [GoogleServices formatLatitude:self.destination.latitude andLongitude:self.destination.longitude];
 	NSString *hotels = [NSString stringWithFormat:@"hotels [location: @%@ + 10mi]", latLong];
 	
-	GoogleQuery *hotelQuery = [[GoogleQuery alloc] initWithTitle:@"Hotels" andQuery:hotels];
+	GoogleQuery *hotelQuery = [[GoogleQuery alloc] initWithTitle:@"Lodging" andQuery:hotels];
+	[hotelQuery setItemType:@"Hotels"];
 	NSArray *anArray = [[NSArray alloc] initWithObjects:hotelQuery, nil];
 	[self setActions: anArray];
 	[hotelQuery release];

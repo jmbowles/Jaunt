@@ -11,9 +11,14 @@
 
 @implementation GoogleQuery
 
+@synthesize itemType;
 @synthesize title;
 @synthesize query;
 @synthesize address;
+@synthesize price;
+@synthesize detailedDescription;
+@synthesize href;
+@synthesize mapsURL;
 
 
 #pragma mark -
@@ -44,9 +49,14 @@
 
 - (void) dealloc {
 	
+	[itemType release];
 	[title release];
 	[query release];
 	[address release];
+	[price release];
+	[detailedDescription release];
+	[href release];
+	[mapsURL release];
 	[super dealloc];
 }
 

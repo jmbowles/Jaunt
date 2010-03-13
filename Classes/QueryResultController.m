@@ -6,20 +6,16 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <MapKit/MapKit.h>
 #import "QueryResultController.h"
 #import "ActivityManager.h"
 #import "GDataGoogleBase.h"
 #import "GDataUtilities.h"
 #import "GoogleServices.h"
 #import "GoogleQuery.h"
+#import "QueryDetailController.h"
+#import "JauntAppDelegate.h"
 #import "Logger.h"
 
-
-@interface QueryResultController (PrivateMethods) 
-
-
-@end
 
 
 @implementation QueryResultController
@@ -55,23 +51,24 @@
 	
 	for (GDataEntryGoogleBase *entry in [aFeed entries]) {
 	
-		NSString *title = [[entry title] contentStringValue];
-		NSString *address = [entry location];
-		GoogleQuery *aResult = [[GoogleQuery alloc] initWithTitle:title andAddress:address];
-		[queryResults addObject:aResult];
-		[aResult release];
-		
-		//NSArray *attributes = [entry i:@"Hotels" type:nil];
-		
-		//for (GDataGoogleBaseAttribute *value in attributes) {
-		
-		//	[Logger logMessage:[value description] withTitle:@"TextValue"];
-		//}
-		
+		if ([[entry itemType]isEqualToString:[self.googleQuery itemType]]) {
+			
+			NSString *title = [[entry title] contentStringValue];
+			NSString *address = [entry location];
+			NSString *price = [[entry attributeWithName:@"price" type:kGDataGoogleBaseAttributeTypeText] textValue];
+			
+			GoogleQuery *aResult = [[GoogleQuery alloc] initWithTitle:title andAddress:address];
+			[aResult setDetailedDescription:[[entry content] stringValue]];
+			[aResult setPrice: price];
+			[aResult setHref:[[entry alternateLink] href]];
+			[aResult setMapsURL:[GoogleServices mapsURLWithAddress:address andLocation:self.currentLocation]];
+			[queryResults addObject:aResult];
+			[aResult release];
+		}
 	}
 	
 	[self.activityManager hideActivity];
-	self.results = queryResults;
+	[self setResults: queryResults];
 	[self.tableView reloadData];
 	
 	if ([[aFeed entries] count] == 0) {
@@ -99,31 +96,62 @@
 	
 	if (cell == nil) {
 		
-		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:reuseIdentifer] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifer] autorelease];
 	}
 	
 	GoogleQuery *aQuery = [self.results objectAtIndex: [indexPath row]];
 	
 	cell.textLabel.text = aQuery.title;	
-	cell.accessoryType = UITableViewCellAccessoryNone;
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"$%@", aQuery.price];
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
 	return cell;
 }
 
+#pragma mark -
+#pragma mark Table Delegate Methods
 
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
 	
+	self.googleQuery = [self.results objectAtIndex:indexPath.row];
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+													otherButtonTitles:@"Directions", @"Website", nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	actionSheet.cancelButtonIndex = 2;
+	[actionSheet showInView: self.view];
+	[actionSheet release];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	
+	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
+	
 	GoogleQuery *aQuery = [self.results objectAtIndex:indexPath.row];
-	CLLocationCoordinate2D start = self.currentLocation.coordinate;
 	
-	NSString *encoded = [GDataUtilities stringByURLEncodingForURI:aQuery.address];
-	
-	NSString *googleMapsURLString = [NSString stringWithFormat:@"http://maps.google.com/?saddr=%1.6f,%1.6f&daddr=%@",
-									 start.latitude, start.longitude, encoded];
-	
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:googleMapsURLString]];
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	QueryDetailController *aController = [[QueryDetailController alloc] init];
+	[aController setTitle:aQuery.title];
+	[aController setGoogleQuery:aQuery];
+	[aDelegate.navigationController pushViewController:aController animated:YES];
+	[aController release];
+}
+
+#pragma mark -
+#pragma mark ActionSheet Navigation 
+
+- (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex
+{
+	if (buttonIndex == 0)
+	{
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.googleQuery.mapsURL]];
+	}
+	if (buttonIndex == 1)
+	{
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.googleQuery.href]];
+	}
 }
 
 #pragma mark -

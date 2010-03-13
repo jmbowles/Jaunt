@@ -63,4 +63,15 @@
 	return latlong;
 }
 
++(NSString *) mapsURLWithAddress:(NSString *) anAddress andLocation:(CLLocation *) aLocation {
+	
+	CLLocationCoordinate2D start = aLocation.coordinate;
+	NSString *encoded = [GDataUtilities stringByURLEncodingForURI:anAddress];
+	NSString *googleMapsURLString = [NSString stringWithFormat:@"http://maps.google.com/?saddr=%1.6f,%1.6f&daddr=%@",
+									 start.latitude, start.longitude, encoded];
+	
+	return googleMapsURLString;
+	
+}
+
 @end
