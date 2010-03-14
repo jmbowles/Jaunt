@@ -60,6 +60,7 @@
 		6D955BC4114BDAA800173CF9 /* QueryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D955BC3114BDAA800173CF9 /* QueryDetailController.m */; };
 		6D975AD0114D1036001B3E13 /* LodgingEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975ACF114D1036001B3E13 /* LodgingEntry.m */; };
 		6D975AEC114D12F6001B3E13 /* EventEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975AEB114D12F6001B3E13 /* EventEntry.m */; };
+		6D975D3D114DA570001B3E13 /* RestaurantEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975D3C114DA570001B3E13 /* RestaurantEntry.m */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
@@ -201,6 +202,8 @@
 		6D975ACF114D1036001B3E13 /* LodgingEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LodgingEntry.m; sourceTree = "<group>"; };
 		6D975AEA114D12F6001B3E13 /* EventEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventEntry.h; sourceTree = "<group>"; };
 		6D975AEB114D12F6001B3E13 /* EventEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventEntry.m; sourceTree = "<group>"; };
+		6D975D3B114DA570001B3E13 /* RestaurantEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestaurantEntry.h; sourceTree = "<group>"; };
+		6D975D3C114DA570001B3E13 /* RestaurantEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestaurantEntry.m; sourceTree = "<group>"; };
 		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
@@ -371,6 +374,8 @@
 				6D975ACF114D1036001B3E13 /* LodgingEntry.m */,
 				6D975AEA114D12F6001B3E13 /* EventEntry.h */,
 				6D975AEB114D12F6001B3E13 /* EventEntry.m */,
+				6D975D3B114DA570001B3E13 /* RestaurantEntry.h */,
+				6D975D3C114DA570001B3E13 /* RestaurantEntry.m */,
 			);
 			name = Google;
 			sourceTree = "<group>";
@@ -572,6 +577,7 @@
 				6D955BC4114BDAA800173CF9 /* QueryDetailController.m in Sources */,
 				6D975AD0114D1036001B3E13 /* LodgingEntry.m in Sources */,
 				6D975AEC114D12F6001B3E13 /* EventEntry.m in Sources */,
+				6D975D3D114DA570001B3E13 /* RestaurantEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

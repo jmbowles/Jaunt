@@ -1,20 +1,21 @@
 //
-//  LodgingEntry.m
+//  RestaurantEntry.m
 //  Jaunt
 //
 //  Created by John Bowles on 3/14/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "LodgingEntry.h"
+#import "RestaurantEntry.h"
 #import "GDataGoogleBase.h"
+#import "GoogleServices.h"
 
-@implementation LodgingEntry
+
+@implementation RestaurantEntry
 
 @synthesize location;
 @synthesize filter;
 @synthesize name;
-
 
 #pragma mark -
 #pragma mark Construction
@@ -40,36 +41,27 @@
 
 -(NSString *) getItemType {
 	
-	return @"Hotels";
+	return @"Restaurants";
 }
 
 -(NSString *) getQuery {
 	
-	return [NSString stringWithFormat:@"hotels [location: @%@ + 10mi]", self.location];
+	return [NSString stringWithFormat:@"[item type:Restaurants] [location: @%@ + 15mi]", self.location];
 }
 
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
-
+	
 	return [[anEntry title] contentStringValue];
 }
 
 -(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
-
-	NSString *price = [[anEntry attributeWithName:@"price" type:kGDataGoogleBaseAttributeTypeText] textValue];
 	
-	if (price != nil && [price isEqualToString:@""] == NO) {
-		
-		return [NSString stringWithFormat:@"$%@", price];
-		
-	} else {
-		
-		return @"";
-	}
+	return @"";
 }
 
 -(NSString *) formatDetailsWithEntry:(GDataEntryGoogleBase *) anEntry {
-
-	return [[anEntry content] stringValue];
+	
+	return @"";
 }
 
 #pragma mark -
@@ -84,3 +76,4 @@
 }
 
 @end
+

@@ -1,5 +1,5 @@
 //
-//  LodgingEntry.h
+//  RestaurantEntry.h
 //  Jaunt
 //
 //  Created by John Bowles on 3/14/10.
@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "GoogleEntry.h"
 
-@interface LodgingEntry : NSObject <GoogleEntry> {
 
+@interface RestaurantEntry : NSObject <GoogleEntry> {
+	
 	NSString *location;
 	NSString *filter;
 	NSString *name;

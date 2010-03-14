@@ -13,10 +13,14 @@
 @interface EventEntry : NSObject <GoogleEntry> {
 
 	NSString *location;
+	NSString *filter;
+	NSString *name;
 }
 
 @property (nonatomic, retain) NSString *location;
+@property (nonatomic, retain) NSString *filter;
+@property (nonatomic, retain) NSString *name;
 
--(id) initWithLocation:(NSString *) aLocation;
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName andFilter:(NSString *) aFilter;
 
 @end
