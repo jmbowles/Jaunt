@@ -33,11 +33,18 @@
 
 - (void)setupTextView
 {
+	NSString *details = self.googleQuery.detailedDescription;
+	
 	self.textView = [[[UITextView alloc] initWithFrame:self.view.frame] autorelease];
 	self.textView.textColor = [UIColor blackColor];
 	self.textView.font = [UIFont fontWithName:@"Arial" size:16];
 	self.textView.backgroundColor = [UIColor whiteColor];
-	self.textView.text = self.googleQuery.detailedDescription;
+	
+	if (self.googleQuery.detailedDescription == nil || [self.googleQuery.detailedDescription isEqualToString:@""]) {
+		
+		details = @"No details were found";
+	}
+	self.textView.text = details;
 	self.textView.scrollEnabled = YES;
 	self.textView.editable = NO;
 	self.textView.autoresizingMask = UIViewAutoresizingFlexibleHeight;

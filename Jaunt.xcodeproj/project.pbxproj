@@ -58,6 +58,8 @@
 		6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */; };
 		6D8E4D4710D420080009FD80 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4D4610D420080009FD80 /* ActivityManager.m */; };
 		6D955BC4114BDAA800173CF9 /* QueryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D955BC3114BDAA800173CF9 /* QueryDetailController.m */; };
+		6D975AD0114D1036001B3E13 /* LodgingEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975ACF114D1036001B3E13 /* LodgingEntry.m */; };
+		6D975AEC114D12F6001B3E13 /* EventEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975AEB114D12F6001B3E13 /* EventEntry.m */; };
 		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
@@ -194,6 +196,11 @@
 		6D8F8755111F29A5003061A5 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = GData.xcodeproj; sourceTree = GDATA_SRC; };
 		6D955BC2114BDAA800173CF9 /* QueryDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueryDetailController.h; path = ../QueryDetailController.h; sourceTree = "<group>"; };
 		6D955BC3114BDAA800173CF9 /* QueryDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QueryDetailController.m; path = ../QueryDetailController.m; sourceTree = "<group>"; };
+		6D975AC7114D0F0E001B3E13 /* GoogleEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleEntry.h; sourceTree = "<group>"; };
+		6D975ACE114D1036001B3E13 /* LodgingEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LodgingEntry.h; sourceTree = "<group>"; };
+		6D975ACF114D1036001B3E13 /* LodgingEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LodgingEntry.m; sourceTree = "<group>"; };
+		6D975AEA114D12F6001B3E13 /* EventEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventEntry.h; sourceTree = "<group>"; };
+		6D975AEB114D12F6001B3E13 /* EventEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventEntry.m; sourceTree = "<group>"; };
 		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
@@ -359,6 +366,11 @@
 				6D812E6E1143FE3400173980 /* GoogleServices.m */,
 				6D812F39114417E900173980 /* GoogleQuery.h */,
 				6D812F3A114417E900173980 /* GoogleQuery.m */,
+				6D975AC7114D0F0E001B3E13 /* GoogleEntry.h */,
+				6D975ACE114D1036001B3E13 /* LodgingEntry.h */,
+				6D975ACF114D1036001B3E13 /* LodgingEntry.m */,
+				6D975AEA114D12F6001B3E13 /* EventEntry.h */,
+				6D975AEB114D12F6001B3E13 /* EventEntry.m */,
 			);
 			name = Google;
 			sourceTree = "<group>";
@@ -558,6 +570,8 @@
 				6D812F3B114417E900173980 /* GoogleQuery.m in Sources */,
 				6D812F601144230D00173980 /* QueryResultController.m in Sources */,
 				6D955BC4114BDAA800173CF9 /* QueryDetailController.m in Sources */,
+				6D975AD0114D1036001B3E13 /* LodgingEntry.m in Sources */,
+				6D975AEC114D12F6001B3E13 /* EventEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

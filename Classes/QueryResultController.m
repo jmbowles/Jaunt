@@ -12,16 +12,16 @@
 #import "GDataUtilities.h"
 #import "GoogleServices.h"
 #import "GoogleQuery.h"
+#import "GoogleEntry.h"
 #import "QueryDetailController.h"
 #import "JauntAppDelegate.h"
-#import "Logger.h"
-
 
 
 @implementation QueryResultController
 
-@synthesize googleQuery;
+@synthesize googleEntry;
 @synthesize currentLocation;
+@synthesize googleQuery;
 @synthesize results;
 @synthesize activityManager;
 
@@ -38,7 +38,7 @@
 	[anActivityManager release];
 	[self.activityManager showActivity];
 	
-	NSString *aQuery = self.googleQuery.query;
+	NSString *aQuery = [self.googleEntry getQuery];
 	[GoogleServices executeQueryUsingDelegate:self selector:@selector(ticket:finishedWithFeed:error:) query:aQuery];
 }
 
@@ -51,17 +51,17 @@
 	
 	for (GDataEntryGoogleBase *entry in [aFeed entries]) {
 	
-		if ([[entry itemType]isEqualToString:[self.googleQuery itemType]]) {
+		if ([[entry itemType]isEqualToString:[self.googleEntry getItemType]]) {
 			
-			NSString *title = [[entry title] contentStringValue];
-			NSString *address = [entry location];
-			NSString *price = [[entry attributeWithName:@"price" type:kGDataGoogleBaseAttributeTypeText] textValue];
+			GoogleQuery *aResult = [[GoogleQuery alloc] init];
 			
-			GoogleQuery *aResult = [[GoogleQuery alloc] initWithTitle:title andAddress:address];
-			[aResult setDetailedDescription:[[entry content] stringValue]];
-			[aResult setPrice: price];
-			[aResult setHref:[[entry alternateLink] href]];
-			[aResult setMapsURL:[GoogleServices mapsURLWithAddress:address andLocation:self.currentLocation]];
+			aResult.title = [self.googleEntry formatTitleWithEntry:entry];
+			aResult.subTitle = [self.googleEntry formatSubTitleWithEntry:entry];
+			aResult.detailedDescription = [self.googleEntry formatDetailsWithEntry:entry];
+			aResult.address = [entry location];
+			aResult.href = [[entry alternateLink] href];
+			aResult.mapsURL = [GoogleServices mapsURLWithAddress:[entry location] andLocation:self.currentLocation];
+
 			[queryResults addObject:aResult];
 			[aResult release];
 		}
@@ -73,7 +73,7 @@
 	
 	if ([[aFeed entries] count] == 0) {
 	
-		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:self.googleQuery.title message:@"No results found"
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:[self.googleEntry getTitle] message:@"No results found"
 													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[anAlert show];	
 		[anAlert release];
@@ -100,9 +100,8 @@
 	}
 	
 	GoogleQuery *aQuery = [self.results objectAtIndex: [indexPath row]];
-	
-	cell.textLabel.text = aQuery.title;	
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"$%@", aQuery.price];
+	cell.textLabel.text = [aQuery.title capitalizedString];	
+	cell.detailTextLabel.text = [aQuery.subTitle capitalizedString];
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
 	return cell;
@@ -159,8 +158,9 @@
 
 -(void)dealloc {
     
-	[googleQuery release];
+	[googleEntry release];
 	[currentLocation release];
+	[googleQuery release];
 	[results release];
 	[activityManager release];
 	[super dealloc];

@@ -9,21 +9,24 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
+@class GoogleEntry;
 @class GoogleQuery;
 @class ActivityManager;
 
 @interface QueryResultController : UITableViewController <UITableViewDelegate, UIActionSheetDelegate> {
 
-	GoogleQuery *googleQuery;
+	GoogleEntry *googleEntry;
 	CLLocation *currentLocation;
 
 @private
+	GoogleQuery *googleQuery;
 	NSMutableArray *results;
 	ActivityManager *activityManager;
 }
 
-@property (nonatomic, retain) GoogleQuery *googleQuery;
+@property (nonatomic, retain) GoogleEntry *googleEntry;
 @property (nonatomic, retain) CLLocation *currentLocation;
+@property (nonatomic, retain) GoogleQuery *googleQuery;
 @property (nonatomic, retain) NSArray *results;
 @property (nonatomic, retain) ActivityManager *activityManager;
 

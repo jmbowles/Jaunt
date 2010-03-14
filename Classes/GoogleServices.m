@@ -74,4 +74,21 @@
 	
 }
 
++(NSString *) concatenateWith:(NSString *) aConcatenator forEntry:(GDataEntryGoogleBase *) anEntry usingSearchName:(NSString *) aName {
+
+	NSString *attributes = @"";
+	
+	for (GDataGoogleBaseAttribute *attrib in [anEntry attributesWithName:aName type:kGDataGoogleBaseAttributeTypeText]) {
+		
+		attributes = [attributes stringByAppendingFormat:@"%@%@", [attrib textValue], aConcatenator];
+	}
+	
+	if ([attributes isEqualToString:@""] == NO) {
+		
+		NSRange aRange = NSMakeRange([attributes length] - 1, 1);
+		attributes = [attributes stringByReplacingCharactersInRange:aRange withString:@""];
+	}
+	return [attributes capitalizedString];
+}
+
 @end

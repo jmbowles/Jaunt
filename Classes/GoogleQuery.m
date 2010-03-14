@@ -11,50 +11,23 @@
 
 @implementation GoogleQuery
 
-@synthesize itemType;
 @synthesize title;
-@synthesize query;
-@synthesize address;
-@synthesize price;
+@synthesize subTitle;
 @synthesize detailedDescription;
+@synthesize address;
 @synthesize href;
 @synthesize mapsURL;
 
-
-#pragma mark -
-#pragma mark Construction
-
--(id) initWithTitle:(NSString *) aTitle andQuery:(NSString *) aQuery {
-
-	if (self = [super init]) {
-		
-		self.title = aTitle;
-		self.query = aQuery;
-	}
-	return self;
-}
-
--(id) initWithTitle:(NSString *) aTitle andAddress:(NSString *) anAddress {
-	
-	if (self = [super init]) {
-		
-		self.title = aTitle;
-		self.address = anAddress;
-	}
-	return self;
-}
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void) dealloc {
 	
-	[itemType release];
 	[title release];
-	[query release];
-	[address release];
-	[price release];
+	[subTitle release];
 	[detailedDescription release];
+	[address release];
 	[href release];
 	[mapsURL release];
 	[super dealloc];

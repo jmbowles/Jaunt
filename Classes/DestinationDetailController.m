@@ -9,11 +9,12 @@
 #import "DestinationDetailController.h"
 #import "GDataGoogleBase.h"
 #import "GoogleServices.h"
-#import "GoogleQuery.h"
+#import "GoogleEntry.h"
+#import "LodgingEntry.h"
+#import "EventEntry.h"
 #import "Destination.h"
 #import "QueryResultController.h"
 #import "JauntAppDelegate.h"
-#import "Logger.h"
 
 
 @interface DestinationDetailController (PrivateMethods) 
@@ -58,9 +59,8 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:reuseIdentifer] autorelease];
 	}
 	
-	GoogleQuery *aQuery = [self.actions objectAtIndex: [indexPath row]];
-	
-	cell.textLabel.text = aQuery.title;	
+	GoogleEntry *anEntry = [self.actions objectAtIndex: [indexPath row]];
+	cell.textLabel.text = [anEntry getTitle];	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return cell;
@@ -71,12 +71,12 @@
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
 	
-	GoogleQuery *aQuery = [self.actions objectAtIndex:indexPath.row];
+	GoogleEntry *anEntry = [self.actions objectAtIndex:indexPath.row];
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	QueryResultController *aController = [[QueryResultController alloc] init];
 	
-	[aController setTitle:aQuery.title];
-	[aController setGoogleQuery:aQuery];
+	[aController setTitle:[anEntry getTitle]];
+	[aController setGoogleEntry:anEntry];
 	[aController setCurrentLocation: self.currentLocation];
 	[aDelegate.navigationController pushViewController:aController animated:YES];
 	[aController release];
@@ -88,14 +88,13 @@
 -(void) loadActions {
 	
 	NSString *latLong = [GoogleServices formatLatitude:self.destination.latitude andLongitude:self.destination.longitude];
-	NSString *hotels = [NSString stringWithFormat:@"hotels [location: @%@ + 10mi]", latLong];
-	
-	GoogleQuery *hotelQuery = [[GoogleQuery alloc] initWithTitle:@"Lodging" andQuery:hotels];
-	[hotelQuery setItemType:@"Hotels"];
-	NSArray *anArray = [[NSArray alloc] initWithObjects:hotelQuery, nil];
+	GoogleEntry *lodging = [[LodgingEntry alloc] initWithLocation:latLong];
+	GoogleEntry *events = [[EventEntry alloc] initWithLocation:latLong];
+	NSArray *anArray = [[NSArray alloc] initWithObjects:lodging, events, nil];
 	[self setActions: anArray];
-	[hotelQuery release];
 	[anArray release];
+	[lodging release];
+	[events release];
 }
 
 
