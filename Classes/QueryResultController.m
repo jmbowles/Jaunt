@@ -51,20 +51,17 @@
 	
 	for (GDataEntryGoogleBase *entry in [aFeed entries]) {
 	
-		if ([[entry itemType]isEqualToString:[self.googleEntry getItemType]]) {
-			
-			GoogleQuery *aResult = [[GoogleQuery alloc] init];
-			
-			aResult.title = [self.googleEntry formatTitleWithEntry:entry];
-			aResult.subTitle = [self.googleEntry formatSubTitleWithEntry:entry];
-			aResult.detailedDescription = [self.googleEntry formatDetailsWithEntry:entry];
-			aResult.address = [entry location];
-			aResult.href = [[entry alternateLink] href];
-			aResult.mapsURL = [GoogleServices mapsURLWithAddress:[entry location] andLocation:self.currentLocation];
-
-			[queryResults addObject:aResult];
-			[aResult release];
-		}
+		GoogleQuery *aResult = [[GoogleQuery alloc] init];
+		
+		aResult.title = [self.googleEntry formatTitleWithEntry:entry];
+		aResult.subTitle = [self.googleEntry formatSubTitleWithEntry:entry];
+		aResult.detailedDescription = [self.googleEntry formatDetailsWithEntry:entry];
+		aResult.address = [entry location];
+		aResult.href = [[entry alternateLink] href];
+		aResult.mapsURL = [GoogleServices mapsURLWithAddress:[entry location] andLocation:self.currentLocation];
+		
+		[queryResults addObject:aResult];
+		[aResult release];
 	}
 	
 	[self.activityManager hideActivity];

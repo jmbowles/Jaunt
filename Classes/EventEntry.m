@@ -46,7 +46,7 @@
 
 -(NSString *) getQuery {
 	
-	return [NSString stringWithFormat:@"[item type:Events and Activities] [location: @%@ + 30mi] %@", self.location, self.filter];
+	return [NSString stringWithFormat:@"[item type:Events and Activities] [location: @%@ + 20mi] %@", self.location, self.filter];
 }
 
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
@@ -56,14 +56,14 @@
 
 -(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
 	
-	NSString *genre = [GoogleServices concatenateWith:@"," forEntry:anEntry usingSearchName:@"genre"];
+	NSString *price = [[anEntry attributeWithName:@"price" type:kGDataGoogleBaseAttributeTypeText] textValue];
 	
-	if (genre != nil && [genre isEqualToString:@""] == NO) {
+	if (price != nil && [price isEqualToString:@""] == NO) {
 		
-		return [NSString stringWithFormat:@"Genre: %@", genre];
+		return [NSString stringWithFormat:@"$%@", price];
 		
 	} else {
-			
+		
 		return @"";
 	}
 }
@@ -73,7 +73,7 @@
 	NSString *when = @"";
 	NSString *where = [anEntry location];
 	NSString *venue = [[anEntry attributeWithName:@"venue name" type:kGDataGoogleBaseAttributeTypeText] textValue];
-	NSString *summary = [[anEntry content] contentStringValue];
+	NSString *summary = [[anEntry content] contentStringValue] == nil ? @"No details found" : [[anEntry content] contentStringValue];
 	NSString *eventDate = [[anEntry attributeWithName:@"event date range" type:kGDataGoogleBaseAttributeTypeDateTime] textValue];
 	
 	if (eventDate != nil) {

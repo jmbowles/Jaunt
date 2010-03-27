@@ -89,17 +89,24 @@
 -(void) loadActions {
 	
 	NSString *latLong = [GoogleServices formatLatitude:self.destination.latitude andLongitude:self.destination.longitude];
-	GoogleEntry *lodging = [[LodgingEntry alloc] initWithLocation:latLong withName:@"Lodging" andFilter:nil];
+	
+	GoogleEntry *hotels = [[LodgingEntry alloc] initWithLocation:latLong withName:@"Hotels" itemType:@"hotels" andFilter:nil];
+	GoogleEntry *bnb = [[LodgingEntry alloc] initWithLocation:latLong withName:@"Bed & Breakfast" itemType:@"Bed and Breakfast" andFilter:nil];
 	GoogleEntry *food = [[RestaurantEntry alloc] initWithLocation:latLong withName:@"Restaurants" andFilter:nil];
+	GoogleEntry *sightseeing = [[EventEntry alloc] initWithLocation:latLong withName:@"Sightseeing" andFilter:@"[event type:Sightseeing]"];
 	GoogleEntry *concerts = [[EventEntry alloc] initWithLocation:latLong withName:@"Concerts" andFilter:@"[event type:Concerts]"];
 	GoogleEntry *sports = [[EventEntry alloc] initWithLocation:latLong withName:@"Sports" andFilter:@"[event type:Sports]"];
 	GoogleEntry *comedy = [[EventEntry alloc] initWithLocation:latLong withName:@"Comedy" andFilter:@"[event type:Comedy]"];
 	GoogleEntry *arts = [[EventEntry alloc] initWithLocation:latLong withName:@"Performing Arts" andFilter:@"[event type:Performing/Visual Arts]"];
-	NSArray *anArray = [[NSArray alloc] initWithObjects:lodging, food, concerts, sports, comedy, arts, nil];
+	
+	NSArray *anArray = [[NSArray alloc] initWithObjects:hotels, bnb, food, sightseeing, concerts, sports, comedy, arts, nil];
 	[self setActions: anArray];
+	
 	[anArray release];
-	[lodging release];
+	[hotels release];
+	[bnb release];
 	[food release];
+	[sightseeing release];
 	[concerts release];
 	[sports release];
 	[comedy release];

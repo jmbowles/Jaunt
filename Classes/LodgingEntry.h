@@ -14,12 +14,14 @@
 	NSString *location;
 	NSString *filter;
 	NSString *name;
+	NSString *itemType;
 }
 
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *filter;
 @property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *itemType;
 
--(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName andFilter:(NSString *) aFilter;
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName itemType:(NSString *) anItemType andFilter:(NSString *) aFilter;
 
 @end

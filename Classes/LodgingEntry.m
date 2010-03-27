@@ -14,18 +14,20 @@
 @synthesize location;
 @synthesize filter;
 @synthesize name;
+@synthesize itemType;
 
 
 #pragma mark -
 #pragma mark Construction
 
--(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName andFilter:(NSString *) aFilter {
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName itemType:(NSString *) anItemType andFilter:(NSString *) aFilter {
 	
 	if (self = [super init]) {
 		
 		self.location = aLocation;
 		self.filter = aFilter;
 		self.name = aName;
+		self.itemType = anItemType;
 	}
 	return self;
 }
@@ -40,12 +42,12 @@
 
 -(NSString *) getItemType {
 	
-	return @"Hotels";
+	return self.itemType;
 }
 
 -(NSString *) getQuery {
 	
-	return [NSString stringWithFormat:@"hotels [location: @%@ + 10mi]", self.location];
+	return [NSString stringWithFormat:@"[item type: %@] [location: @%@ + 10mi]", self.itemType, self.location];
 }
 
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
@@ -80,6 +82,7 @@
 	[location release];
 	[filter release];
 	[name release];
+	[itemType release];
 	[super dealloc];
 }
 
