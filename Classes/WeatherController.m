@@ -15,11 +15,15 @@
 #import "DateUtils.h"
 #import "Forecast.h";
 #import "ForecastDetail.h"
+#import "ActivityManager.h"
+#import "WeatherDetailController.h"
+#import "JauntAppDelegate.h"
 
 @implementation WeatherController
 
 @synthesize trip;
 @synthesize forecasts;
+@synthesize activityManager;
 
 
 #pragma mark -
@@ -27,11 +31,15 @@
 
 - (void)viewDidLoad {
 	
-	//Destination *destination = [[self.trip.destinations allObjects] objectAtIndex:0];
+	[super viewDidLoad];
+	
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
 	
 	[self setForecasts:[NSMutableArray array]];
 	
-	//NSString *ashville = [NSString stringWithFormat:@"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdBrowserClientByDay.php?listLatLon=%1.3f,%1.3f+%1.3f,%1.3f&format=24+hourly&numDays=7", [destination.latitude doubleValue], [destination.longitude doubleValue],[destination.latitude doubleValue], [destination.longitude doubleValue]];
+	[self.activityManager showActivity];
 	NSString *noaaUrl = [Forecast noaaUrlForDestinations:self.trip.destinations]; 
 	[Logger logMessage:noaaUrl withTitle:@"NOAA Url"];
 	
@@ -74,6 +82,7 @@
 		[aForecast setLongitude:longitude];
 		
 		int index = 1;
+		int dateIndex = 0;
 		
 		for (int i=1; i <= 7; i++) {
 			
@@ -92,7 +101,7 @@
 			
 			NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 			NSDateComponents *components = [[NSDateComponents alloc] init];
-			[components setDay:i];
+			[components setDay: dateIndex++];
 			NSDate *aDate = [aCalendar dateByAddingComponents:components toDate:today options:0];
 			[aCalendar release];
 			[components release];
@@ -112,14 +121,20 @@
 		[aForecast release];
 	}
 	[self.forecasts sortUsingSelector:@selector(compareCity:)];
+	[self.activityManager hideActivity];
+	
 	[self.tableView reloadData];
 	[aDocument release];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-	NSError *error = [request error];
-	[Logger logError:error withMessage:@"Failed to fetch forecast"];
+	[self.activityManager hideActivity];
+	
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Weather Status" message:@"Unable to fetch current weather data"
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
 }
 
 #pragma mark -
@@ -158,18 +173,15 @@
 
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {
-	/**
-	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
+	Forecast *aForecast = [self.forecasts objectAtIndex:indexPath.row];
 	
-	self.selectedTrip = [self.tripsCollection objectAtIndex:indexPath.row];
+	WeatherDetailController	*aController = [[WeatherDetailController alloc] initWithStyle: UITableViewStylePlain];
+	aController.title = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];
+	aController.forecast = aForecast;
 	
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles:@"Map", @"Weather", @"Checklist", @"Reservations", nil];
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	actionSheet.cancelButtonIndex = 4;
-	[actionSheet showInView: self.view];
-	[actionSheet release];
-	 **/
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	[aDelegate.navigationController pushViewController:aController animated:YES];
+	[aController release];
 }
 
 #pragma mark -
@@ -179,6 +191,7 @@
 	
 	[trip release];
 	[forecasts release];
+	[activityManager release];
     [super dealloc];
 }
 

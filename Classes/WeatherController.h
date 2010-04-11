@@ -9,14 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @class Trip;
+@class ActivityManager;
 
 @interface WeatherController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
 
 	Trip *trip;
 	NSMutableArray *forecasts;
+
+@private
+	ActivityManager *activityManager;
 }
 
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) NSMutableArray *forecasts;
+@property (nonatomic, retain) ActivityManager *activityManager;
 
 @end

@@ -20,7 +20,7 @@
 +(NSString *) dayOfWeek:(NSDate *) aDate {
 	
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *weekdayComponents = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *weekdayComponents = [gregorian components:NSWeekdayCalendarUnit fromDate:aDate];
 	[gregorian release];
 	
 	return [DateUtils dayOfWeekName:[weekdayComponents weekday]];
