@@ -20,6 +20,14 @@
 
 
 #pragma mark -
+#pragma mark Method Implementation 
+
+-(NSComparisonResult)compareQuery:(GoogleQuery *) aQuery
+{
+    return [self.title caseInsensitiveCompare:aQuery.title];
+}
+			
+#pragma mark -
 #pragma mark Memory Management
 
 - (void) dealloc {

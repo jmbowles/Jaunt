@@ -64,6 +64,8 @@
 		[aResult release];
 	}
 	
+	[queryResults sortUsingSelector:@selector(compareQuery:)];
+	
 	[self.activityManager hideActivity];
 	[self setResults: queryResults];
 	[self.tableView reloadData];

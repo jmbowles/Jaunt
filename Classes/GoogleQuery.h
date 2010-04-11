@@ -26,4 +26,6 @@
 @property (nonatomic, retain) NSString *href;
 @property (nonatomic, retain) NSString *mapsURL;
 
+-(NSComparisonResult)compareQuery:(GoogleQuery *) aQuery;
+
 @end

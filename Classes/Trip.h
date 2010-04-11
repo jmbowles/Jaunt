@@ -10,6 +10,7 @@
 #import <CoreData/NSManagedObject.h>
 
 @class Photo;
+@class Destination;
 
 @interface Trip : NSManagedObject {
 }
@@ -18,5 +19,7 @@
 @property (nonatomic, retain) NSSet *destinations;
 @property (nonatomic, retain) UIImage *thumbNail;
 @property (nonatomic, retain) Photo *photo;
+
+-(Destination *) findDestinationWithLatitude:(NSString *) aLatitude andLongitude:(NSString *) aLongitude;
 
 @end
