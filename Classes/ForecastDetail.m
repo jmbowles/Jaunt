@@ -11,7 +11,7 @@
 
 @implementation ForecastDetail
 
-
+@synthesize summary;
 @synthesize dayOfWeek;
 @synthesize date;
 @synthesize maxTemp;
@@ -31,6 +31,7 @@
 
 - (void)dealloc {
 	
+	[summary release];
 	[dayOfWeek release];
 	[date release];
 	[maxTemp release];

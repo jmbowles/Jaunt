@@ -11,6 +11,7 @@
 
 @interface ForecastDetail : NSObject {
 
+	NSString *summary;
 	NSDate *date;
 	NSString *dayOfWeek;
 	NSString *maxTemp;
@@ -18,6 +19,7 @@
 	NSString *probabilityOfPrecipitation;
 }
 
+@property (nonatomic, retain) NSString *summary;
 @property (nonatomic, retain) NSDate *date;
 @property (nonatomic, retain) NSString *dayOfWeek;
 @property (nonatomic, retain) NSString *maxTemp;

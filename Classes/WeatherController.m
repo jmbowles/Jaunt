@@ -85,6 +85,10 @@
 		int dateIndex = 0;
 		
 		for (int i=1; i <= 7; i++) {
+
+			NSString *summaryXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/weather/weather-conditions[position()=%i]", [key stringValue], i];
+			GDataXMLElement *condition = [[aDocument nodesForXPath:summaryXPath error:&error] objectAtIndex:0];
+			NSString *summary = [[condition attributeForName:@"weather-summary"] stringValue];
 			
 			NSString *maxTempsXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/temperature[@type='maximum']/value[position()=%i]", [key stringValue], i];
 			NSString *minTempsXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/temperature[@type='minimum']/value[position()=%i]", [key stringValue], i];
@@ -107,6 +111,7 @@
 			[components release];
 			
 			ForecastDetail *aDetail = [[ForecastDetail alloc] init];
+			[aDetail setSummary:summary];
 			[aDetail setDate:aDate];
 			[aDetail setDayOfWeek:[DateUtils dayOfWeek:aDate]];
 			[aDetail setMaxTemp:maxTemp];
@@ -161,8 +166,7 @@
 	cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];	
 	
 	ForecastDetail *todaysForecast = [aForecast todaysForecast];
-	NSString *hiLow = [NSString stringWithFormat:@"High/Low: %@ / %@\u2070 F", todaysForecast.maxTemp, todaysForecast.minTemp];
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@  Precipitation: %@%%", hiLow, todaysForecast.probabilityOfPrecipitation];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", todaysForecast.summary];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return cell;
