@@ -17,6 +17,8 @@
 	NSString *maxTemp;
 	NSString *minTemp;
 	NSString *probabilityOfPrecipitation;
+	NSString *imageKey;
+	UIImage *image;
 }
 
 @property (nonatomic, retain) NSString *summary;
@@ -25,6 +27,8 @@
 @property (nonatomic, retain) NSString *maxTemp;
 @property (nonatomic, retain) NSString *minTemp;
 @property (nonatomic, retain) NSString *probabilityOfPrecipitation;
+@property (nonatomic, retain) NSString *imageKey;
+@property (nonatomic, retain) UIImage *image;
 
 -(NSComparisonResult)compareDate:(ForecastDetail *) aDetail;
 

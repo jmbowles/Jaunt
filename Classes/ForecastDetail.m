@@ -17,6 +17,8 @@
 @synthesize maxTemp;
 @synthesize minTemp;
 @synthesize probabilityOfPrecipitation;
+@synthesize imageKey;
+@synthesize image;
 
 #pragma mark -
 #pragma mark Implementaton
@@ -37,6 +39,8 @@
 	[maxTemp release];
 	[minTemp release];
 	[probabilityOfPrecipitation release];
+	[imageKey release];
+	[imageKey release];
     [super dealloc];
 }
 

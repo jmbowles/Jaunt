@@ -67,6 +67,7 @@
 	cell.textLabel.text = [NSString stringWithFormat:@"%@", aDate];	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@, Precip: %@%%", aForecastDetail.summary, hiLow, aForecastDetail.probabilityOfPrecipitation];
 	cell.accessoryType = UITableViewCellAccessoryNone;
+	cell.imageView.image = aForecastDetail.image;
 	
 	return cell;
 }

@@ -24,6 +24,7 @@
 @synthesize trip;
 @synthesize forecasts;
 @synthesize activityManager;
+@synthesize iconDictionary;
 
 
 #pragma mark -
@@ -38,12 +39,11 @@
 	[anActivityManager release];
 	
 	[self setForecasts:[NSMutableArray array]];
+	[self setIconDictionary:[NSMutableDictionary dictionary]];
 	
 	[self.activityManager showActivity];
-	NSString *noaaUrl = [Forecast noaaUrlForDestinations:self.trip.destinations]; 
-	[Logger logMessage:noaaUrl withTitle:@"NOAA Url"];
 	
-	NSURL *url = [NSURL URLWithString:noaaUrl];
+	NSURL *url = [NSURL URLWithString:[Forecast noaaUrlForDestinations:self.trip.destinations]];
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
 	[request setDelegate:self];
 	[request startAsynchronous];
@@ -52,16 +52,50 @@
 #pragma mark -
 #pragma mark ASIHTTP Callbacks
 
+- (void) downloadImage:(NSString *) urlString
+{
+    NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
+	
+	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
+	UIImage *anImage = [[UIImage alloc] initWithData:data];
+    [self performSelectorOnMainThread:@selector(imageLoaded:) withObject:anImage waitUntilDone:YES];
+    [anImage release];
+    [pool drain];
+}
+
+- (void)downloadImageOnThread:(NSString *)url
+{
+    [NSThread detachNewThreadSelector:@selector(downloadImage:) toTarget:self withObject:url];
+}
+
+- (void)imageLoaded:(UIImage *)anImage withName:(NSString *) aName
+{
+	// this wont work because of the second value
+    [self.iconDictionary setValue:anImage forKey:aName];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-	NSString *responseString = [request responseString];
-	[Logger logMessage:responseString withTitle:@"ASIResponse"];
+	[Logger logMessage:[request responseString] withTitle:@"NOAA Response"];
 	
 	NSData *xmlData = [request responseData];
-	
 	NSError *error;
 	GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
 	NSArray *locations = [aDocument nodesForXPath:@"//location" error:&error];
+	NSArray *icons = [aDocument nodesForXPath:@"//conditions-icon/icon-link" error:&error];
+	
+	for(GDataXMLElement *anIcon in icons) {
+		
+		if ([self.iconDictionary objectForKey:[anIcon stringValue]] == nil) {
+			
+			NSURL *url = [NSURL URLWithString:[anIcon stringValue]];
+			NSData *data = [NSData dataWithContentsOfURL:url];
+			UIImage *anImage = [[UIImage alloc] initWithData:data];
+			[self.iconDictionary setValue:anImage forKey:[anIcon stringValue]];
+			[anImage release];
+		}
+	}
+		
 	NSDate *today = [NSDate date];
 	int destinationIndex = 0;
 	NSArray *destinations = [self.trip.destinations allObjects];
@@ -72,12 +106,16 @@
 		GDataXMLElement *point = [[aLocation elementsForName:@"point"] objectAtIndex:0];
 		NSString *latitude = [[point attributeForName:@"latitude"] stringValue];
 		NSString *longitude = [[point attributeForName:@"longitude"] stringValue];
+		NSString *iconXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/conditions-icon/icon-link[1]", [key stringValue]];
+		NSString *iconName = [[[aDocument nodesForXPath:iconXPath error:&error] objectAtIndex:0] stringValue];
 		
 		Destination *aDestination = [destinations objectAtIndex:destinationIndex++];
 		
 		Forecast *aForecast = [[Forecast alloc] init];
+		[aForecast setImage:[self.iconDictionary objectForKey:iconName]];
 		[aForecast setCity:aDestination.city];
 		[aForecast setState:aDestination.state];
+		[aForecast setCurrentTemperature:[Forecast currentTemperatureForDestination:aDestination]];
 		[aForecast setLatitude:latitude];
 		[aForecast setLongitude:longitude];
 		
@@ -101,6 +139,9 @@
 			int precip2 = [[[[aDocument nodesForXPath:precip2XPath error:&error] objectAtIndex:0] stringValue] intValue];
 			int averageProbability = (precip1 + precip2) / 2;
 			
+			NSString *iconDetailXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/conditions-icon/icon-link[position()=%i]", [key stringValue], i];
+			NSString *iconDetailName = [[[aDocument nodesForXPath:iconDetailXPath error:&error] objectAtIndex:0] stringValue];
+			
 			index +=2;
 			
 			NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -111,6 +152,7 @@
 			[components release];
 			
 			ForecastDetail *aDetail = [[ForecastDetail alloc] init];
+			[aDetail setImage:[self.iconDictionary objectForKey:iconDetailName]];
 			[aDetail setSummary:summary];
 			[aDetail setDate:aDate];
 			[aDetail setDayOfWeek:[DateUtils dayOfWeek:aDate]];
@@ -164,10 +206,9 @@
 	Forecast *aForecast = [self.forecasts objectAtIndex: [indexPath row]];
 	
 	cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];	
-	
-	ForecastDetail *todaysForecast = [aForecast todaysForecast];
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", todaysForecast.summary];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", aForecast.currentTemperature];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.imageView.image = aForecast.image;
 	
 	return cell;
 }
@@ -196,6 +237,7 @@
 	[trip release];
 	[forecasts release];
 	[activityManager release];
+	[iconDictionary release];
     [super dealloc];
 }
 

@@ -18,10 +18,12 @@
 
 @private
 	ActivityManager *activityManager;
+	NSMutableDictionary *iconDictionary;
 }
 
 @property (nonatomic, retain) Trip *trip;
 @property (nonatomic, retain) NSMutableArray *forecasts;
 @property (nonatomic, retain) ActivityManager *activityManager;
+@property (nonatomic, retain) NSMutableDictionary *iconDictionary;
 
 @end
