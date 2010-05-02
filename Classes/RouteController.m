@@ -31,32 +31,43 @@
     
 	[super viewDidLoad];
 	
-	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.mapView];
-	self.activityManager = anActivityManager;
-	[anActivityManager release];
-	
-	CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
-	aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
-	aLocationManager.distanceFilter = kCLDistanceFilterNone;
-	aLocationManager.delegate = self;
-	self.locationManager = aLocationManager;
-	[aLocationManager release];
-
-	if (self.locationManager.locationServicesEnabled == YES)
-	{
-		[self.activityManager showActivity];
-		[self.locationManager startUpdatingLocation];
+	if ([self.trip.destinations count] > 0) {
 		
-		UIBarButtonItem *aRefreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performRefresh)];
-		self.navigationItem.rightBarButtonItem = aRefreshButton;
-		[aRefreshButton release];
+		ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.mapView];
+		self.activityManager = anActivityManager;
+		[anActivityManager release];
+		
+		CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
+		aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
+		aLocationManager.distanceFilter = kCLDistanceFilterNone;
+		aLocationManager.delegate = self;
+		self.locationManager = aLocationManager;
+		[aLocationManager release];
+		
+		if (self.locationManager.locationServicesEnabled == YES)
+		{
+			[self.activityManager showActivity];
+			[self.locationManager startUpdatingLocation];
+			
+			UIBarButtonItem *aRefreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performRefresh)];
+			self.navigationItem.rightBarButtonItem = aRefreshButton;
+			[aRefreshButton release];
+			
+		} else {
+			
+			[self loadAnnotations:nil];
+		}
+		
+		[self.mapView setDelegate:self];
 		
 	} else {
 		
-		[self loadAnnotations:nil];
+		NSString *aMessage = @"At least one destination needs to be added to view the map";
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Map Status" message:aMessage
+														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[anAlert show];	
+		[anAlert release];
 	}
-		
-	[self.mapView setDelegate:self];
 }
 
 -(void) performRefresh {

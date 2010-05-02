@@ -10,11 +10,13 @@
 
 @class Forecast;
 
-@interface WeatherDetailController : UITableViewController <UITableViewDataSource> {
+@interface WeatherDetailController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
 
 	Forecast *forecast;
+	NSMutableDictionary *iconDictionary;
 }
 
 @property (nonatomic, retain) Forecast *forecast;
+@property (nonatomic, retain) NSMutableDictionary *iconDictionary;
 
 @end

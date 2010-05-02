@@ -12,8 +12,8 @@
 @implementation ForecastDetail
 
 @synthesize summary;
-@synthesize dayOfWeek;
 @synthesize date;
+@synthesize dayOfWeek;
 @synthesize maxTemp;
 @synthesize minTemp;
 @synthesize probabilityOfPrecipitation;
@@ -34,13 +34,13 @@
 - (void)dealloc {
 	
 	[summary release];
-	[dayOfWeek release];
 	[date release];
+	[dayOfWeek release];
 	[maxTemp release];
 	[minTemp release];
 	[probabilityOfPrecipitation release];
 	[imageKey release];
-	[imageKey release];
+	[image release];
     [super dealloc];
 }
 

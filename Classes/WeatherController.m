@@ -18,6 +18,8 @@
 #import "ActivityManager.h"
 #import "WeatherDetailController.h"
 #import "JauntAppDelegate.h"
+#import "ImageKeyValue.h"
+
 
 @implementation WeatherController
 
@@ -25,6 +27,7 @@
 @synthesize forecasts;
 @synthesize activityManager;
 @synthesize iconDictionary;
+@synthesize queue;
 
 
 #pragma mark -
@@ -34,23 +37,40 @@
 	
 	[super viewDidLoad];
 	
-	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
-	self.activityManager = anActivityManager;
-	[anActivityManager release];
-	
-	[self setForecasts:[NSMutableArray array]];
-	[self setIconDictionary:[NSMutableDictionary dictionary]];
-	
-	[self.activityManager showActivity];
-	
-	NSURL *url = [NSURL URLWithString:[Forecast noaaUrlForDestinations:self.trip.destinations]];
-	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-	[request setDelegate:self];
-	[request startAsynchronous];
+	if ([self.trip.destinations count] > 0) {
+		
+		ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
+		self.activityManager = anActivityManager;
+		[anActivityManager release];
+		
+		NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
+		[aQueue setMaxConcurrentOperationCount:5];
+		self.queue = aQueue;
+		[aQueue release];
+		
+		[self setForecasts:[NSMutableArray array]];
+		[self setIconDictionary:[NSMutableDictionary dictionary]];
+		
+		[self.activityManager showActivity];
+		
+		NSURL *url = [NSURL URLWithString:[Forecast noaaUrlForDestinations:self.trip.destinations]];
+		ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:url];
+		[aRequest setTimeOutSeconds:20];
+		[aRequest setDelegate:self];
+		[aRequest startAsynchronous];
+		
+	} else {
+		
+		NSString *aMessage = @"At least one destination needs to be added to determine the forecast";
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Weather Status" message:aMessage
+									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[anAlert show];	
+		[anAlert release];
+	}
 }
 
 #pragma mark -
-#pragma mark ASIHTTP Callbacks
+#pragma mark ASIHTTP / Async Callbacks
 
 - (void) downloadImage:(NSString *) urlString
 {
@@ -58,20 +78,36 @@
 	
 	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
 	UIImage *anImage = [[UIImage alloc] initWithData:data];
-    [self performSelectorOnMainThread:@selector(imageLoaded:) withObject:anImage waitUntilDone:YES];
-    [anImage release];
-    [pool drain];
+	ImageKeyValue *anImageKeyValuePair = [[ImageKeyValue alloc] init];
+	[anImageKeyValuePair setKeyName:urlString];
+	[anImageKeyValuePair setImageValue:anImage];
+	[anImage release];
+    [self performSelectorOnMainThread:@selector(imageLoaded:) withObject:anImageKeyValuePair waitUntilDone:YES];
+    [anImageKeyValuePair release];
+	
+    [pool release];
 }
 
-- (void)downloadImageOnThread:(NSString *)url
+- (void)downloadImages:(NSDictionary *) aDictionary
 {
-    [NSThread detachNewThreadSelector:@selector(downloadImage:) toTarget:self withObject:url];
+	for (NSString *urlKey in aDictionary) {
+    
+		NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadImage:) object:urlKey];
+		[self.queue addOperation:operation];
+		[operation release];
+	}
 }
 
-- (void)imageLoaded:(UIImage *)anImage withName:(NSString *) aName
+- (void)imageLoaded:(ImageKeyValue *) anImageKeyValuePair
 {
-	// this wont work because of the second value
-    [self.iconDictionary setValue:anImage forKey:aName];
+    [self.iconDictionary setValue:[anImageKeyValuePair imageValue] forKey:[anImageKeyValuePair keyName]];
+	
+	// The operations count will be 0 AFTER this method exists, since it is the designated callback
+	if ([[self.queue operations] count] == 1) {
+		
+		[self.activityManager hideActivity];
+	}
+	[self.tableView reloadData];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -88,17 +124,16 @@
 		
 		if ([self.iconDictionary objectForKey:[anIcon stringValue]] == nil) {
 			
-			NSURL *url = [NSURL URLWithString:[anIcon stringValue]];
-			NSData *data = [NSData dataWithContentsOfURL:url];
-			UIImage *anImage = [[UIImage alloc] initWithData:data];
-			[self.iconDictionary setValue:anImage forKey:[anIcon stringValue]];
-			[anImage release];
+			[self.iconDictionary setValue:[UIImage imageNamed:@"bkn.jpg"] forKey:[anIcon stringValue]];
 		}
 	}
-		
+	
+	[self downloadImages:self.iconDictionary];
+	
 	NSDate *today = [NSDate date];
 	int destinationIndex = 0;
 	NSArray *destinations = [self.trip.destinations allObjects];
+	NSMutableDictionary *currentTemperatures = [Forecast currentTemperaturesForDestinations:self.trip.destinations];
 	
 	for (GDataXMLElement *aLocation in locations) {
 		
@@ -112,10 +147,10 @@
 		Destination *aDestination = [destinations objectAtIndex:destinationIndex++];
 		
 		Forecast *aForecast = [[Forecast alloc] init];
-		[aForecast setImage:[self.iconDictionary objectForKey:iconName]];
+		[aForecast setCurrentTemperature:[currentTemperatures objectForKey:[key stringValue]]];
+		[aForecast setImageKey:iconName];
 		[aForecast setCity:aDestination.city];
 		[aForecast setState:aDestination.state];
-		[aForecast setCurrentTemperature:[Forecast currentTemperatureForDestination:aDestination]];
 		[aForecast setLatitude:latitude];
 		[aForecast setLongitude:longitude];
 		
@@ -152,7 +187,7 @@
 			[components release];
 			
 			ForecastDetail *aDetail = [[ForecastDetail alloc] init];
-			[aDetail setImage:[self.iconDictionary objectForKey:iconDetailName]];
+			[aDetail setImageKey:iconDetailName];
 			[aDetail setSummary:summary];
 			[aDetail setDate:aDate];
 			[aDetail setDayOfWeek:[DateUtils dayOfWeek:aDate]];
@@ -162,23 +197,20 @@
 			
 			[aForecast.forecastDetails addObject:aDetail];
 			[aDetail release];
-			
 		}
 		[self.forecasts addObject:aForecast];
 		[aForecast release];
 	}
 	[self.forecasts sortUsingSelector:@selector(compareCity:)];
-	[self.activityManager hideActivity];
-	
-	[self.tableView reloadData];
 	[aDocument release];
+	[self.tableView reloadData];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
 	[self.activityManager hideActivity];
 	
-	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Weather Status" message:@"Unable to fetch current weather data"
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Weather Status" message:@"Unable to determine current forecasts"
 													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 	[anAlert show];	
 	[anAlert release];
@@ -208,7 +240,7 @@
 	cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", aForecast.currentTemperature];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.imageView.image = aForecast.image;
+	cell.imageView.image = [self.iconDictionary objectForKey:aForecast.imageKey];
 	
 	return cell;
 }
@@ -223,6 +255,7 @@
 	WeatherDetailController	*aController = [[WeatherDetailController alloc] initWithStyle: UITableViewStylePlain];
 	aController.title = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];
 	aController.forecast = aForecast;
+	aController.iconDictionary = self.iconDictionary;
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	[aDelegate.navigationController pushViewController:aController animated:YES];
@@ -238,6 +271,7 @@
 	[forecasts release];
 	[activityManager release];
 	[iconDictionary release];
+	[queue release];
     [super dealloc];
 }
 

@@ -166,7 +166,7 @@
 -(void) showActions:(id) sender {
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles:@"Add Current Location", @"Add Photo", @"Publish Facebook", @"Add Note", nil];
+													otherButtonTitles:@"Add Current Location", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	actionSheet.cancelButtonIndex = 4;
 	[actionSheet showInView: self.view];
@@ -182,18 +182,6 @@
 	{
 		[self.activityManager showActivity];
 		[self.locationManager startUpdatingLocation];
-		
-	}
-	if (buttonIndex == 1)
-	{
-		
-	}
-	if (buttonIndex == 2)
-	{
-		
-	}
-	if (buttonIndex == 3)
-	{
 		
 	}
 }

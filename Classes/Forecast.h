@@ -21,6 +21,7 @@
 	NSString *imageKey;
 	UIImage *image;
 	NSMutableArray *forecastDetails;
+	NSMutableArray *hourlyDetails;
 }
 
 @property (nonatomic, retain) NSString *latitude;
@@ -31,9 +32,11 @@
 @property (nonatomic, retain) NSString *imageKey;
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) NSMutableArray *forecastDetails;
+@property (nonatomic, retain) NSMutableArray *hourlyDetails;
 
 +(NSString *) noaaUrlForDestinations:(NSSet *) destinations;
-+(NSString *) currentTemperatureForDestination:(Destination *) aDestination;
++(NSString *) noaaHourlyUrlForLatitude:(NSString *) latitude andLongitude:(NSString *) longitude;
++(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations;
 -(id) init;
 -(ForecastDetail *) todaysForecast;
 -(NSComparisonResult)compareCity:(Forecast *) aForecast;

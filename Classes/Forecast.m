@@ -13,6 +13,14 @@
 #import "GDataXMLNode.h"
 #import "Logger.h"
 
+@interface Forecast (PrivateMethods)
+
++(NSString *) buildPointsForDestinations:(NSSet *) destinations;
++(NSString *) buildPointForDestination:(Destination *) destination;
+
+@end
+
+
 @implementation Forecast
 
 @synthesize latitude;
@@ -23,6 +31,8 @@
 @synthesize imageKey;
 @synthesize image;
 @synthesize forecastDetails;
+@synthesize hourlyDetails;
+
 
 #pragma mark -
 #pragma mark Construction
@@ -32,6 +42,7 @@
 	if (self = [super init]) {
 		
 		self.forecastDetails = [NSMutableArray array];
+		self.hourlyDetails = [NSMutableArray array];
 	}
 	return self;
 }
@@ -43,6 +54,29 @@
 	
 	NSString *baseUrl = @"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdBrowserClientByDay.php?listLatLon=";
 	NSString *products = @"&format=24+hourly&numDays=7";
+	NSString *points = [Forecast buildPointsForDestinations:destinations];
+	NSString *url = [NSString stringWithFormat:@"%@%@%@", baseUrl, points, products];
+	
+	return url;
+}
+
++(NSString *) noaaHourlyUrlForLatitude:(NSString *) latitude andLongitude:(NSString *) longitude {
+	
+	NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
+	[aFormatter setDateFormat:@"yyyy-MM-dd"];
+	NSString *lastHour = [NSString stringWithFormat:@"&end=%@T%@", [aFormatter stringFromDate:[NSDate date]], @"23:00:00"];
+	[aFormatter release];
+	
+	NSString *baseUrl = [NSString stringWithFormat:@"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdXMLclient.php?lat=%@&lon=%@", latitude, longitude];
+	NSString *products = @"&product=time-series&appt=appt&wspd=wspd&wdir=wdir&icons=icons";
+	NSString *url = [NSString stringWithFormat:@"%@%@%@", baseUrl, lastHour, products];
+	
+	[Logger logMessage:url withTitle:@"Hourly URL"];
+	return url;
+}
+
++(NSString *) buildPointsForDestinations:(NSSet *) destinations {
+	
 	NSString *points = @"";
 	
 	NSArray *anArray = [destinations allObjects];
@@ -54,71 +88,80 @@
 		
 		if ([aDestination.latitude doubleValue] > 0) {
 			
-			NSString *point = [NSString stringWithFormat:@"%1.3f,%1.3f", [aDestination.latitude doubleValue], [aDestination.longitude doubleValue]];
-		
-			if (i + 1 < totalItems) {
+			NSString *point = [Forecast buildPointForDestination:aDestination];
 			
+			if (i + 1 < totalItems) {
+				
 				point = [point stringByAppendingString:@"+"];
 				points = [points stringByAppendingString:point];
-			
+				
 			} else {
-			
+				
 				points = [points stringByAppendingString:point];
 			}
 		}
 	}
-	
-	NSString *url = [NSString stringWithFormat:@"%@%@%@", baseUrl, points, products];
-	
-	return url;
+	return points;
 }
 
-+(NSString *) currentTemperatureForDestination:(Destination *) aDestination {
++(NSString *) buildPointForDestination:(Destination *) destination {
 	
-	NSString *baseUrl = @"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdXMLclient.php?listLatLon=";
-	NSString *products = nil;
 	NSString *point = nil;
+	
+	if ([destination.latitude doubleValue] > 0) {
+		
+		point = [NSString stringWithFormat:@"%1.3f,%1.3f", [destination.latitude doubleValue], [destination.longitude doubleValue]];
+	}
+	return point;
+}
+
++(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations {
+	
+	NSMutableDictionary *temperatures = [NSMutableDictionary dictionaryWithCapacity:[destinations count]];
+	NSString *baseUrl = @"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdXMLclient.php?listLatLon=";
+	NSString *points = [Forecast buildPointsForDestinations:destinations];
+	NSString *products = nil;
 	NSString *temperature = nil;
 	
-	if ([aDestination.latitude doubleValue] > 0) {
+	NSDate *now = [NSDate date];
+	NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [[NSDateComponents alloc] init];
+	[components setHour: 1];
+	NSDate *nextHour = [aCalendar dateByAddingComponents:components toDate:now options:0];
+	[aCalendar release];
+	[components release];
+	
+	NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
+	[aFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+	NSString *beginDate = [aFormatter stringFromDate:now];
+	NSString *endDate = [aFormatter stringFromDate:nextHour];
+	[aFormatter release];
+	
+	products = [NSString stringWithFormat:@"&begin=%@&end=%@&product=time-series&appt=appt", beginDate, endDate];
+	
+	NSString *noaaUrl = [NSString stringWithFormat:@"%@%@%@", baseUrl, points, products];
+	
+	ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:noaaUrl]];
+	[aRequest startSynchronous];
+	NSError *error = [aRequest error];
+	
+	if (!error) {
 		
-		point = [NSString stringWithFormat:@"%1.3f,%1.3f", [aDestination.latitude doubleValue], [aDestination.longitude doubleValue]];
+		NSData *xmlData = [aRequest responseData];
+		NSError *error;
+		GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
+		NSArray *locations = [aDocument nodesForXPath:@"//location" error:&error];
 		
-		NSDate *now = [NSDate date];
-		NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *components = [[NSDateComponents alloc] init];
-		[components setHour: 1];
-		NSDate *nextHour = [aCalendar dateByAddingComponents:components toDate:now options:0];
-		[aCalendar release];
-		[components release];
-		
-		NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
-		[aFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
-		NSString *beginDate = [aFormatter stringFromDate:now];
-		NSString *endDate = [aFormatter stringFromDate:nextHour];
-		[aFormatter release];
-		
-		products = [NSString stringWithFormat:@"&begin=%@&end=%@&product=time-series&appt=appt", beginDate, endDate];
-		
-		NSString *noaaUrl = [NSString stringWithFormat:@"%@%@%@", baseUrl, point, products];
-		ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:noaaUrl]];
-		[aRequest startSynchronous];
-		NSError *error = [aRequest error];
-		
-		if (!error) {
+		for (GDataXMLElement *aLocation in locations) {
 			
-			NSData *xmlData = [aRequest responseData];
-			NSError *error;
-			GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
-			GDataXMLElement *aLocation = [[aDocument nodesForXPath:@"//location" error:&error] objectAtIndex:0];
 			GDataXMLElement *key = [[aLocation elementsForName:@"location-key"] objectAtIndex:0];
 			NSString *currentTempXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/temperature[@type='apparent']/value", [key stringValue]];
 			temperature = [[[aDocument nodesForXPath:currentTempXPath error:&error] objectAtIndex:0] stringValue];
-			
-			[aDocument release];
+			[temperatures setValue:temperature forKey:[key stringValue]];
 		}
+		[aDocument release];
 	}
-	return temperature;
+	return temperatures;
 }
 
 -(ForecastDetail *) todaysForecast {
@@ -145,6 +188,7 @@
 	[imageKey release];
 	[image release];
 	[forecastDetails release];
+	[hourlyDetails release];
 	[super dealloc];
 }
 

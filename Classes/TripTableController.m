@@ -196,7 +196,7 @@
 	if (buttonIndex == 1)
 	{
 		WeatherController *aController = [[WeatherController alloc] initWithNibName:@"WeatherView" bundle:[NSBundle mainBundle]];
-		aController.title = @"Weather";
+		aController.title = @"NOAA Weather";
 		[aController setTrip:self.selectedTrip];
 		[aDelegate.navigationController pushViewController:aController animated:YES];
 		[aController release];
