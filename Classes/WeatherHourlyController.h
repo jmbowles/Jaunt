@@ -14,14 +14,16 @@
 @interface WeatherHourlyController : UITableViewController <UITableViewDataSource> {
 	
 	Forecast *forecast;
-	NSMutableDictionary *iconDictionary;
-
+	
 @private
 	ActivityManager *activityManager;
+	NSMutableDictionary *iconDictionary;
+	NSOperationQueue *queue;
 }
 
 @property (nonatomic, retain) Forecast *forecast;
 @property (nonatomic, retain) NSMutableDictionary *iconDictionary;
 @property (nonatomic, retain) ActivityManager *activityManager;
+@property (nonatomic, retain) NSOperationQueue *queue;
 
 @end

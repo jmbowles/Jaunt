@@ -14,7 +14,8 @@
 #import "ASIHTTPRequest.h"
 #import "Logger.h"
 #import "ActivityManager.h"
-
+#import "DateUtils.h"
+#import "ImageKeyValue.h";
 
 
 @implementation WeatherHourlyController
@@ -22,6 +23,7 @@
 @synthesize forecast;
 @synthesize iconDictionary;
 @synthesize activityManager;
+@synthesize queue;
 
 
 #pragma mark -
@@ -35,6 +37,12 @@
 	self.activityManager = anActivityManager;
 	[anActivityManager release];
 	
+	NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
+	[aQueue setMaxConcurrentOperationCount:3];
+	self.queue = aQueue;
+	[aQueue release];
+	
+	self.iconDictionary = [NSMutableDictionary dictionary];
 	[self.activityManager showActivity];
 	
 	NSURL *url = [NSURL URLWithString:[Forecast noaaHourlyUrlForLatitude:self.forecast.latitude andLongitude:self.forecast.longitude]];
@@ -48,6 +56,45 @@
 #pragma mark -
 #pragma mark ASIHTTP / Async Callbacks
 
+- (void) downloadImage:(NSString *) urlString
+{
+    NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
+	
+	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
+	UIImage *anImage = [[UIImage alloc] initWithData:data];
+	ImageKeyValue *anImageKeyValuePair = [[ImageKeyValue alloc] init];
+	[anImageKeyValuePair setKeyName:urlString];
+	[anImageKeyValuePair setImageValue:anImage];
+	[anImage release];
+    [self performSelectorOnMainThread:@selector(imageLoaded:) withObject:anImageKeyValuePair waitUntilDone:YES];
+    [anImageKeyValuePair release];
+	
+    [pool release];
+}
+
+- (void)downloadImages:(NSDictionary *) aDictionary
+{
+	for (NSString *urlKey in aDictionary) {
+		
+		NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadImage:) object:urlKey];
+		[self.queue addOperation:operation];
+		[operation release];
+	}
+}
+
+- (void)imageLoaded:(ImageKeyValue *) anImageKeyValuePair
+{
+    [self.iconDictionary setValue:[anImageKeyValuePair imageValue] forKey:[anImageKeyValuePair keyName]];
+	
+	// The operations count will be 0 AFTER this method exists, since it is the designated callback
+	if ([[self.queue operations] count] == 1) {
+		
+		[self.activityManager hideActivity];
+	}
+	[self.tableView reloadData];
+}
+
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
 	[Logger logMessage:[request responseString] withTitle:@"NOAA Hourly Response"];
@@ -57,18 +104,28 @@
 	GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
 	GDataXMLElement *aLocation = [[aDocument nodesForXPath:@"//location" error:&error] objectAtIndex:0];
 	
+	NSArray *icons = [aDocument nodesForXPath:@"//conditions-icon/icon-link" error:&error];
+	
+	for(GDataXMLElement *anIcon in icons) {
+		
+		if ([self.iconDictionary objectForKey:[anIcon stringValue]] == nil) {
+			
+			[self.iconDictionary setValue:[UIImage imageNamed:@"bkn.jpg"] forKey:[anIcon stringValue]];
+		}
+	}
+	
+	[self downloadImages:self.iconDictionary];
+	
 	GDataXMLElement *key = [[aLocation elementsForName:@"location-key"] objectAtIndex:0];
 	NSString *totalNodesXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/temperature[@type='apparent']", [key stringValue]];
 	NSUInteger totalNodes = [[[aDocument nodesForXPath:totalNodesXPath error:&error] objectAtIndex:0] childCount]-1;
 	int hoursPerNode = 3;
-	NSUInteger totalHours = totalNodes * hoursPerNode;
-	[Logger logMessage:[NSString stringWithFormat:@"%i", totalNodes] withTitle:@"Total Nodes"];
+	int totalHours = totalNodes * hoursPerNode;
+	int startingHour = 24 - totalHours - 1;
 	
 	for(int i=1; i <= totalHours; i++) {
 		
 		int index = ceil(i / hoursPerNode) == 0 ? 1 : ceil(i / hoursPerNode);
-		
-		[Logger logMessage:[NSString stringWithFormat:@"%i", index] withTitle:@"Ceiling"];
 		
 		NSString *currentTempXPath = [NSString stringWithFormat:@"/dwml/data/parameters[@applicable-location='%@']/temperature[@type='apparent']/value[position()=%i]", [key stringValue], index];
 		NSString *temperature = [[[aDocument nodesForXPath:currentTempXPath error:&error] objectAtIndex:0] stringValue];
@@ -80,7 +137,8 @@
 		NSString *iconName = [[[aDocument nodesForXPath:iconXPath error:&error] objectAtIndex:0] stringValue];
 		
 		HourlyDetail *anHourlyDetail = [[HourlyDetail alloc] init];
-		[anHourlyDetail setHour:[NSString stringWithFormat:@"%i", i]];
+		int hour = startingHour + i;
+		[anHourlyDetail setHour:[NSString stringWithFormat:@"%i %@", hour - 12, [DateUtils morningOrEvening:hour]]];
 		[anHourlyDetail setWindDirection:windDirection];
 		[anHourlyDetail setWindSpeed:windSpeed];
 		[anHourlyDetail setTemperature:temperature];
@@ -132,13 +190,11 @@
 	cell.detailTextLabel.numberOfLines = 0;
 	
 	HourlyDetail *anHourlyDetail = [self.forecast.hourlyDetails objectAtIndex: [indexPath row]];
-	
-	cell.textLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", anHourlyDetail.temperature];	
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"Wind Speed: %@, Direction: %@", anHourlyDetail.windSpeed, anHourlyDetail.windDirection];
+
+	cell.textLabel.text = [NSString stringWithFormat:@"%@", anHourlyDetail.hour];	
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\u2070 F, Wind: %@ MPH, Direction: %@", anHourlyDetail.temperature, anHourlyDetail.windSpeed, [Forecast windDirectionUsingBearing:[anHourlyDetail.windDirection intValue]]];
 	cell.accessoryType = UITableViewCellAccessoryNone;
-	[Logger logMessage:anHourlyDetail.imageKey withTitle:@"ImageKey"];
-	//cell.imageView.image = [self.iconDictionary objectForKey:anHourlyDetail.imageKey];
-	cell.imageView.image = [UIImage imageNamed:@"bkn.jpg"];
+	cell.imageView.image = [self.iconDictionary objectForKey:anHourlyDetail.imageKey];
 	
 	return cell;
 }
@@ -152,6 +208,7 @@
 	[forecast release];
 	[iconDictionary release];
 	[activityManager release];
+	[queue release];
 	[super dealloc];
 }
 

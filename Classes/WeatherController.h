@@ -10,8 +10,9 @@
 
 @class Trip;
 @class ActivityManager;
+@class Forecast;
 
-@interface WeatherController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface WeatherController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 
 	Trip *trip;
 	NSMutableArray *forecasts;
@@ -20,6 +21,7 @@
 	ActivityManager *activityManager;
 	NSMutableDictionary *iconDictionary;
 	NSOperationQueue *queue;
+	Forecast *selectedForecast;
 }
 
 @property (nonatomic, retain) Trip *trip;
@@ -27,5 +29,6 @@
 @property (nonatomic, retain) ActivityManager *activityManager;
 @property (nonatomic, retain) NSMutableDictionary *iconDictionary;
 @property (nonatomic, retain) NSOperationQueue *queue;
+@property (nonatomic, retain) Forecast *selectedForecast;
 
 @end

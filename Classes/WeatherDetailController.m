@@ -62,7 +62,7 @@
 	NSString *hiLow = [NSString stringWithFormat:@"High/Low: %@/%@\u2070 F", aForecastDetail.maxTemp, aForecastDetail.minTemp];
 	cell.textLabel.text = [NSString stringWithFormat:@"%@", aDate];	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", aForecastDetail.summary, hiLow];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.accessoryType = UITableViewCellAccessoryNone;
 	cell.imageView.image = [self.iconDictionary objectForKey:aForecastDetail.imageKey];
 	
 	return cell;
@@ -74,9 +74,8 @@
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {	
 	WeatherHourlyController	*aController = [[WeatherHourlyController alloc] initWithStyle: UITableViewStylePlain];
-	aController.title = [NSString stringWithFormat:@"%@ - Hourly", self.forecast.city];
+	aController.title = [NSString stringWithFormat:@"%@, %@", self.forecast.city, self.forecast.state];
 	aController.forecast = self.forecast;
-	aController.iconDictionary = self.iconDictionary;
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	[aDelegate.navigationController pushViewController:aController animated:YES];

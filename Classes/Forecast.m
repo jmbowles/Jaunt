@@ -164,6 +164,37 @@
 	return temperatures;
 }
 
++(NSString *) windDirectionUsingBearing:(NSUInteger) aBearing {
+
+	NSString *direction = @"";
+	
+	if (aBearing == 0 || aBearing == 360) {
+		direction = @"N";
+	}
+	if (aBearing == 90) {
+		direction = @"E";
+	}
+	if (aBearing == 180) {
+		direction = @"S";
+	}
+	if (aBearing == 270) {
+		direction = @"W";
+	}
+	if (aBearing > 0 && aBearing < 90) {
+		direction = @"NE";
+	}
+	if (aBearing > 90 && aBearing < 180) {
+		direction = @"SE";
+	}
+	if (aBearing > 180 && aBearing < 270) {
+		direction = @"SW";
+	}
+	if (aBearing > 270 && aBearing < 360) {
+		direction = @"NW";
+	}
+	return direction;
+}
+
 -(ForecastDetail *) todaysForecast {
 
 	NSArray *sortedArray =[self.forecastDetails sortedArrayUsingSelector:@selector(compareDate:)];

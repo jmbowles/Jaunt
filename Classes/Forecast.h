@@ -37,6 +37,7 @@
 +(NSString *) noaaUrlForDestinations:(NSSet *) destinations;
 +(NSString *) noaaHourlyUrlForLatitude:(NSString *) latitude andLongitude:(NSString *) longitude;
 +(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations;
++(NSString *) windDirectionUsingBearing:(NSUInteger) aBearing;
 -(id) init;
 -(ForecastDetail *) todaysForecast;
 -(NSComparisonResult)compareCity:(Forecast *) aForecast;

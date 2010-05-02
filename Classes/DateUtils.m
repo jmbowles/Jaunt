@@ -26,6 +26,12 @@
 	return [DateUtils dayOfWeekName:[weekdayComponents weekday]];
 }
 
++(NSString *) morningOrEvening:(NSUInteger) hour {
+	
+	NSString *amPm = hour > 12 ? @"PM" : @"AM";
+	return amPm;
+}
+
 +(NSString *) dayOfWeekName:(NSInteger) weekDay {
 	
 	NSString *dayOfWeekName = nil;

@@ -14,6 +14,6 @@
 }
 
 +(NSString *) dayOfWeek:(NSDate *) aDate;
-	
++(NSString *) morningOrEvening:(NSUInteger) hour;	
 
 @end

@@ -19,6 +19,7 @@
 #import "WeatherDetailController.h"
 #import "JauntAppDelegate.h"
 #import "ImageKeyValue.h"
+#import "WeatherHourlyController.h"
 
 
 @implementation WeatherController
@@ -28,6 +29,7 @@
 @synthesize activityManager;
 @synthesize iconDictionary;
 @synthesize queue;
+@synthesize selectedForecast;
 
 
 #pragma mark -
@@ -239,7 +241,7 @@
 	
 	cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", aForecast.currentTemperature];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	cell.imageView.image = [self.iconDictionary objectForKey:aForecast.imageKey];
 	
 	return cell;
@@ -250,6 +252,20 @@
 
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {
+	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
+	
+	self.selectedForecast = [self.forecasts objectAtIndex:indexPath.row];
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+													otherButtonTitles:@"Hourly", nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	actionSheet.cancelButtonIndex = 1;
+	[actionSheet showInView: self.view];
+	[actionSheet release];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	
 	Forecast *aForecast = [self.forecasts objectAtIndex:indexPath.row];
 	
 	WeatherDetailController	*aController = [[WeatherDetailController alloc] initWithStyle: UITableViewStylePlain];
@@ -263,6 +279,24 @@
 }
 
 #pragma mark -
+#pragma mark ActionSheet Navigation 
+
+- (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex
+{
+	if (buttonIndex == 0)
+	{
+		WeatherHourlyController	*aController = [[WeatherHourlyController alloc] initWithStyle: UITableViewStylePlain];
+		aController.title = [NSString stringWithFormat:@"%@, %@", self.selectedForecast.city, self.selectedForecast.state];
+		aController.forecast = self.selectedForecast;
+		
+		JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+		[aDelegate.navigationController pushViewController:aController animated:YES];
+		[aController release];
+	}
+}
+
+
+#pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {
@@ -272,6 +306,7 @@
 	[activityManager release];
 	[iconDictionary release];
 	[queue release];
+	[selectedForecast release];
     [super dealloc];
 }
 
