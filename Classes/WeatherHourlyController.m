@@ -52,6 +52,11 @@
 	[aRequest startAsynchronous];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+	
+	[super viewDidLoad];
+	[self.forecast.hourlyDetails removeAllObjects];
+}
 
 #pragma mark -
 #pragma mark ASIHTTP / Async Callbacks
@@ -121,7 +126,11 @@
 	NSUInteger totalNodes = [[[aDocument nodesForXPath:totalNodesXPath error:&error] objectAtIndex:0] childCount]-1;
 	int hoursPerNode = 3;
 	int totalHours = totalNodes * hoursPerNode;
-	int startingHour = 24 - totalHours - 1;
+	
+	NSString *dayOfWeek = @"";
+	NSDate *now = [NSDate date];
+	NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *hourlyComponents = [[NSDateComponents alloc] init];
 	
 	for(int i=1; i <= totalHours; i++) {
 		
@@ -137,8 +146,25 @@
 		NSString *iconName = [[[aDocument nodesForXPath:iconXPath error:&error] objectAtIndex:0] stringValue];
 		
 		HourlyDetail *anHourlyDetail = [[HourlyDetail alloc] init];
-		int hour = startingHour + i;
-		[anHourlyDetail setHour:[NSString stringWithFormat:@"%i %@", hour - 12, [DateUtils morningOrEvening:hour]]];
+		
+		[hourlyComponents setHour: i];
+		NSDate *endingDate = [aCalendar dateByAddingComponents:hourlyComponents toDate:now options:0];
+		NSDateComponents *endingHourComponents = [aCalendar components:NSHourCalendarUnit fromDate:endingDate];
+		NSInteger endingHour = [endingHourComponents hour];
+		
+		if (endingHour == 0) {
+		
+			NSDateFormatter *aDateFormatter = [[NSDateFormatter alloc] init];
+			[aDateFormatter setDateFormat:@"EEEE"];
+			dayOfWeek = [aDateFormatter stringFromDate:endingDate];
+			[aDateFormatter release];
+			
+		} else {
+		
+			dayOfWeek = @"";
+		}
+		
+		[anHourlyDetail setHour:[NSString stringWithFormat:@"%i:00 %@", endingHour, dayOfWeek]];
 		[anHourlyDetail setWindDirection:windDirection];
 		[anHourlyDetail setWindSpeed:windSpeed];
 		[anHourlyDetail setTemperature:temperature];
@@ -148,6 +174,8 @@
 		[anHourlyDetail release];
 	}
 	
+	[hourlyComponents release];
+	[aCalendar release];
 	[aDocument release];
 	[self.activityManager hideActivity];
 	[self.tableView reloadData];

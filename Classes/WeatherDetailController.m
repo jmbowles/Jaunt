@@ -69,20 +69,6 @@
 }
 
 #pragma mark -
-#pragma mark Table Delegate Methods
-
-- (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
-{	
-	WeatherHourlyController	*aController = [[WeatherHourlyController alloc] initWithStyle: UITableViewStylePlain];
-	aController.title = [NSString stringWithFormat:@"%@, %@", self.forecast.city, self.forecast.state];
-	aController.forecast = self.forecast;
-	
-	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	[aDelegate.navigationController pushViewController:aController animated:YES];
-	[aController release];
-}
-
-#pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {

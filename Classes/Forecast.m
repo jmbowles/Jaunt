@@ -62,10 +62,20 @@
 
 +(NSString *) noaaHourlyUrlForLatitude:(NSString *) latitude andLongitude:(NSString *) longitude {
 	
+	NSDate *now = [NSDate date];
+	NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *hourlyComponents = [[NSDateComponents alloc] init];
+	[hourlyComponents setHour: 24];
+	NSDate *endingDate = [aCalendar dateByAddingComponents:hourlyComponents toDate:now options:0];
+	NSDateComponents *endingHourComponents = [aCalendar components:NSHourCalendarUnit fromDate:endingDate];
+	
 	NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
 	[aFormatter setDateFormat:@"yyyy-MM-dd"];
-	NSString *lastHour = [NSString stringWithFormat:@"&end=%@T%@", [aFormatter stringFromDate:[NSDate date]], @"23:00:00"];
+	NSString *lastHour = [NSString stringWithFormat:@"&end=%@T%i:00:00", [aFormatter stringFromDate:endingDate], [endingHourComponents hour]];
+
 	[aFormatter release];
+	[aCalendar release];
+	[hourlyComponents release];
 	
 	NSString *baseUrl = [NSString stringWithFormat:@"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdXMLclient.php?lat=%@&lon=%@", latitude, longitude];
 	NSString *products = @"&product=time-series&appt=appt&wspd=wspd&wdir=wdir&icons=icons";

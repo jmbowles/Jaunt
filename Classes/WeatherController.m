@@ -240,7 +240,11 @@
 	Forecast *aForecast = [self.forecasts objectAtIndex: [indexPath row]];
 	
 	cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", aForecast.city, aForecast.state];	
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", aForecast.currentTemperature];
+	
+	if (aForecast.currentTemperature != nil) {
+		
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", aForecast.currentTemperature];
+	}
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	cell.imageView.image = [self.iconDictionary objectForKey:aForecast.imageKey];
 	

@@ -28,7 +28,7 @@
 
 +(NSString *) morningOrEvening:(NSUInteger) hour {
 	
-	NSString *amPm = hour > 12 ? @"PM" : @"AM";
+	NSString *amPm = hour >= 12 ? @"PM" : @"AM";
 	return amPm;
 }
 
