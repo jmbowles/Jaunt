@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ChecklistController : UIViewController {
+@interface ChecklistController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 
+	NSMutableArray *items;
 }
 
+@property (nonatomic, retain) NSMutableArray *items;
 
+-(void) addItem;
+-(void) loadItems; 
 
 @end

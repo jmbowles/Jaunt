@@ -149,10 +149,10 @@
 	CGFloat toolbarHeight = [aToolbar frame].size.height;
 	CGRect aRectangle = self.tableView.bounds;
 	[aToolbar setFrame:CGRectMake(CGRectGetMinX(aRectangle),
-								  CGRectGetMinY(aRectangle) + CGRectGetHeight(aRectangle) - (toolbarHeight * 2.0) + 2.0,
+								  CGRectGetMinY(aRectangle) + CGRectGetHeight(aRectangle) - (toolbarHeight * .60),
 								  CGRectGetWidth(aRectangle),
-								  58.0)];
-	
+								  48.0)];
+
 	NSArray *items = [NSArray arrayWithObjects: aBarButtonItem, nil];
 	[aToolbar setItems:items animated:NO];
 	

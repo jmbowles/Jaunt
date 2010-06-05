@@ -13,7 +13,6 @@
 @implementation JauntAppDelegate
 
 @synthesize window;
-@synthesize rootController;
 @synthesize navigationController;
 @synthesize managedObjectModel;
 @synthesize managedObjectContext;
@@ -25,7 +24,7 @@
 
 - (void) applicationDidFinishLaunching:(UIApplication *)application {    
 	
-	[window addSubview: rootController.view];
+	[window addSubview: navigationController.view];
     [window makeKeyAndVisible];
 }
 
@@ -116,7 +115,6 @@
 
 - (void)dealloc {
     
-	[rootController release];
 	[navigationController release];
     [window release];
 	[managedObjectContext release];
