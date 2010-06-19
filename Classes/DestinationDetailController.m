@@ -21,6 +21,7 @@
 @interface DestinationDetailController (PrivateMethods) 
 
 -(void) loadActions;
+-(void) loadIcons;
 
 @end
 
@@ -30,6 +31,7 @@
 @synthesize destination;
 @synthesize currentLocation;
 @synthesize actions;
+@synthesize icons;
 
 
 #pragma mark -
@@ -39,6 +41,7 @@
 	
     [super viewDidLoad];
 	[self loadActions];
+	[self loadIcons];
 }
 
 #pragma mark -
@@ -63,6 +66,7 @@
 	GoogleEntry *anEntry = [self.actions objectAtIndex: [indexPath row]];
 	cell.textLabel.text = [anEntry getTitle];	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.imageView.image = [self.icons objectAtIndex: [indexPath row]];
 	
 	return cell;
 }
@@ -113,6 +117,21 @@
 	[arts release];
 }
 
+-(void) loadIcons {
+	
+	UIImage *hotels = [UIImage imageNamed:@"hotel.png"];
+	UIImage *bnb = [UIImage imageNamed:@"bednbreakfast.png"];
+	UIImage *food = [UIImage imageNamed:@"food.png"];
+	UIImage *sightseeing = [UIImage imageNamed:@"sightseeing.png"];
+	UIImage *concerts = [UIImage imageNamed:@"concerts.png"];
+	UIImage *sports = [UIImage imageNamed:@"football.png"];
+	UIImage *comedy = [UIImage imageNamed:@"comedy.png"];
+	UIImage *arts = [UIImage imageNamed:@"arts.png"];
+
+	NSArray *anArray = [[NSArray alloc] initWithObjects:hotels, bnb, food, sightseeing, concerts, sports, comedy, arts, nil];
+	[self setIcons: anArray];
+}
+
 
 #pragma mark -
 #pragma mark Memory Management
@@ -122,6 +141,7 @@
 	[destination release];
 	[currentLocation release];
 	[actions release];
+	[icons release];
 	[super dealloc];
 }
 

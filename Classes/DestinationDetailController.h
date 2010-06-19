@@ -19,11 +19,12 @@
 	
 @private
 	NSArray *actions;
-	
+	NSArray *icons;
 }
 
 @property (nonatomic, retain) Destination *destination;
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, retain) NSArray *actions;
+@property (nonatomic, retain) NSArray *icons;
 
 @end

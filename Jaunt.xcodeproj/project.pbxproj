@@ -87,6 +87,14 @@
 		6D975AD0114D1036001B3E13 /* LodgingEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975ACF114D1036001B3E13 /* LodgingEntry.m */; };
 		6D975AEC114D12F6001B3E13 /* EventEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975AEB114D12F6001B3E13 /* EventEntry.m */; };
 		6D975D3D114DA570001B3E13 /* RestaurantEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975D3C114DA570001B3E13 /* RestaurantEntry.m */; };
+		6D9BA58811CD134E006B2B19 /* hotel.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA58711CD134E006B2B19 /* hotel.png */; };
+		6D9BA59611CD168C006B2B19 /* food.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA59511CD168C006B2B19 /* food.png */; };
+		6D9BA59811CD16E2006B2B19 /* sightseeing.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA59711CD16E2006B2B19 /* sightseeing.png */; };
+		6D9BA59D11CD17AD006B2B19 /* bednbreakfast.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA59C11CD17AD006B2B19 /* bednbreakfast.png */; };
+		6D9BA5A711CD1938006B2B19 /* concerts.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5A611CD1938006B2B19 /* concerts.png */; };
+		6D9BA5A911CD19A9006B2B19 /* football.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5A811CD19A9006B2B19 /* football.png */; };
+		6D9BA5AB11CD19E6006B2B19 /* comedy.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5AA11CD19E6006B2B19 /* comedy.png */; };
+		6D9BA5AD11CD1AA4006B2B19 /* arts.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5AC11CD1AA4006B2B19 /* arts.png */; };
 		6D9EBBDF1184AE76004B67F5 /* few.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6D9EBBDE1184AE76004B67F5 /* few.jpg */; };
 		6D9EBBF41184B662004B67F5 /* bkn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6D9EBBF31184B662004B67F5 /* bkn.jpg */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
@@ -280,6 +288,14 @@
 		6D975AEB114D12F6001B3E13 /* EventEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventEntry.m; sourceTree = "<group>"; };
 		6D975D3B114DA570001B3E13 /* RestaurantEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestaurantEntry.h; sourceTree = "<group>"; };
 		6D975D3C114DA570001B3E13 /* RestaurantEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestaurantEntry.m; sourceTree = "<group>"; };
+		6D9BA58711CD134E006B2B19 /* hotel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hotel.png; sourceTree = "<group>"; };
+		6D9BA59511CD168C006B2B19 /* food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = food.png; sourceTree = "<group>"; };
+		6D9BA59711CD16E2006B2B19 /* sightseeing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sightseeing.png; sourceTree = "<group>"; };
+		6D9BA59C11CD17AD006B2B19 /* bednbreakfast.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bednbreakfast.png; sourceTree = "<group>"; };
+		6D9BA5A611CD1938006B2B19 /* concerts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = concerts.png; sourceTree = "<group>"; };
+		6D9BA5A811CD19A9006B2B19 /* football.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = football.png; sourceTree = "<group>"; };
+		6D9BA5AA11CD19E6006B2B19 /* comedy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = comedy.png; path = "../../../../Desktop/IPhone/icons/043372-blue-jelly-icon-sports-hobbies-full-set/comedy.png"; sourceTree = SOURCE_ROOT; };
+		6D9BA5AC11CD1AA4006B2B19 /* arts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arts.png; sourceTree = "<group>"; };
 		6D9EBBDE1184AE76004B67F5 /* few.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = few.jpg; sourceTree = "<group>"; };
 		6D9EBBF31184B662004B67F5 /* bkn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bkn.jpg; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
@@ -400,6 +416,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6D9BA5A611CD1938006B2B19 /* concerts.png */,
+				6D9BA59711CD16E2006B2B19 /* sightseeing.png */,
+				6D9BA5AA11CD19E6006B2B19 /* comedy.png */,
+				6D9BA5A811CD19A9006B2B19 /* football.png */,
+				6D9BA59511CD168C006B2B19 /* food.png */,
+				6D9BA5AC11CD1AA4006B2B19 /* arts.png */,
+				6D9BA59C11CD17AD006B2B19 /* bednbreakfast.png */,
+				6D9BA58711CD134E006B2B19 /* hotel.png */,
 				6D86175611C4212D00BDB988 /* Jaunt.sqlite */,
 				6D936C4111BB1805006C9661 /* blue_uc_j.png */,
 				6D936C1A11BB1533006C9661 /* orange_compass.png */,
@@ -681,6 +705,14 @@
 				6D936C1B11BB1533006C9661 /* orange_compass.png in Resources */,
 				6D936C4211BB1805006C9661 /* blue_uc_j.png in Resources */,
 				6D86175711C4212D00BDB988 /* Jaunt.sqlite in Resources */,
+				6D9BA58811CD134E006B2B19 /* hotel.png in Resources */,
+				6D9BA59611CD168C006B2B19 /* food.png in Resources */,
+				6D9BA59811CD16E2006B2B19 /* sightseeing.png in Resources */,
+				6D9BA59D11CD17AD006B2B19 /* bednbreakfast.png in Resources */,
+				6D9BA5A711CD1938006B2B19 /* concerts.png in Resources */,
+				6D9BA5A911CD19A9006B2B19 /* football.png in Resources */,
+				6D9BA5AB11CD19E6006B2B19 /* comedy.png in Resources */,
+				6D9BA5AD11CD1AA4006B2B19 /* arts.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
