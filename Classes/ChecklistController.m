@@ -8,13 +8,18 @@
 
 #import "CoreData/CoreData.h"
 #import "ChecklistController.h"
+#import "AddChecklistGroupController.h"
+#import "EditChecklistGroupController.h"
+#import "Trip.h"
+#import "ChecklistGroup.h"
 #import "CoreDataManager.h"
 #import "JauntAppDelegate.h"
 #import "Logger.h"
 
 @implementation ChecklistController
 
-@synthesize items;
+@synthesize trip;
+@synthesize selectedGroup;
 
 
 #pragma mark -
@@ -28,16 +33,13 @@
 	
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem)];
 	addButton.enabled = YES;
-	
-    self.navigationItem.rightBarButtonItem = addButton;
-	
+	self.navigationItem.rightBarButtonItem = addButton;
 	[addButton release];
 }
 
 - (void) viewWillAppear:(BOOL) animated {
 	
 	[super viewWillAppear:animated];
-	[self loadItems];
 	[self.tableView reloadData];
 }
 
@@ -52,30 +54,18 @@
     return aContext;
 }
 
-- (void) loadItems {
-	
-	//NSMutableArray *results = [CoreDataManager executeFetch:[self getManagedObjectContext] forEntity:@"ChecklistItem" withPredicate:nil usingFilter:@"name"];
-	//[self setItems: results];
-	
-	NSArray *dummy = [NSArray arrayWithObjects:@"Fee",@"Fie",@"Foe",@"Fum",nil];
-	NSMutableArray *dummyValues = [NSMutableArray array];
-	[dummyValues addObjectsFromArray:dummy];
-	[self setItems:dummyValues];
-}
-
 #pragma mark -
 #pragma mark Methods
 
 - (void) addItem {
 	
-	/**
-	AddTripController *addTripController = [[AddTripController alloc] initWithStyle: UITableViewStyleGrouped];
-	addTripController.title = @"Add Trip";
+	AddChecklistGroupController *aController = [[AddChecklistGroupController alloc] initWithStyle: UITableViewStyleGrouped];
+	aController.trip = self.trip;
+	aController.title = @"Add Checklist";
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	[aDelegate.navigationController pushViewController:addTripController animated:YES];
-	[addTripController release];
-	 **/
+	[aDelegate.navigationController pushViewController:aController animated:YES];
+	[aController release];
 }
 
 #pragma mark -
@@ -83,12 +73,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
-	return [self.items count];
+	return [self.trip.checklistGroups count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *reuseIdentifer = @"ItemNameCell";
+	static NSString *reuseIdentifer = @"ChecklistGroupNameCell";
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: reuseIdentifer];
 	
@@ -97,47 +87,21 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:reuseIdentifer] autorelease];
 	}
 	
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	cell.textLabel.text = [self.items objectAtIndex: [indexPath row]];
 	
-	/**
-	Trip *aTrip = [self.tripsCollection objectAtIndex: [indexPath row]];
-	
-	cell.textLabel.text = [aTrip name];	
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
-	if (aTrip.photo.image == nil) {
+	ChecklistGroup *aGroup = [[self.trip.checklistGroups allObjects] objectAtIndex:[indexPath row]];
+	cell.textLabel.text = [aGroup name];
+	
+	if ([aGroup allItemsChecked] == YES) {
 		
-		UIImage *anImage = [UIImage imageNamed:@"GenericContact.png"];
-		cell.imageView.image = [ImageHelper image:anImage fillSize:CGSizeMake(88.0, 66.0)];
+		cell.imageView.image = [UIImage imageNamed:@"blue_checkmark.png"];
 		
 	} else {
-		
-		cell.imageView.image = aTrip.thumbNail;
+		cell.imageView.image = nil;
 	}
-	 **/
+	
 	return cell;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-		
-		NSManagedObjectContext *aContext = [self getManagedObjectContext];
-		
-		NSManagedObject *trip = [self.items objectAtIndex:indexPath.row];
-		[aContext deleteObject:trip];
-		
-        [self.items removeObjectAtIndex: indexPath.row];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject: indexPath] withRowAnimation:YES];
-		
-		NSError *error;
-		
-		if (![aContext save:&error]) {
-			
-			[Logger logError:error withMessage:@"Failed to delete checklist item"];
-		}
-    }   
 }
 
 #pragma mark -
@@ -146,41 +110,73 @@
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
+	self.selectedGroup = [[self.trip.checklistGroups allObjects] objectAtIndex:indexPath.row];
 	
-	/**
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles:@"Delete Item", nil];
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Checklist"
+													otherButtonTitles:@"Clear Checklist", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	actionSheet.cancelButtonIndex = 1;
+	actionSheet.cancelButtonIndex = 2;
 	[actionSheet showInView: self.view];
 	[actionSheet release];
-	 **/
-		
-		
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath]; 
-	
-	if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
-		
-		cell.accessoryType = UITableViewCellAccessoryNone;
-		
-	} else {
-		
-		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	}
-	
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	
+	EditChecklistGroupController *aController = [[EditChecklistGroupController alloc] initWithStyle: UITableViewStyleGrouped];
+	aController.title = @"Edit Checklist";
+	aController.trip = self.trip;
+	aController.group = [[self.trip.checklistGroups allObjects] objectAtIndex:indexPath.row];
+	
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	[aDelegate.navigationController pushViewController:aController animated:YES];
+	
+	[aController release];
+}
 
 #pragma mark -
 #pragma mark ActionSheet Navigation 
 
 - (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex
 {
-	//JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *aContext = [aDelegate getManagedObjectContext];
 	
 	if (buttonIndex == 0)
 	{
+		[aContext deleteObject: self.selectedGroup];
+		NSMutableSet *aSet = [self.trip mutableSetValueForKey:@"checklistGroups"];
+		[aSet removeObject:self.selectedGroup];
 		
+		NSError *error;
+		
+		if (![aContext save: &error]) {
+			
+			[Logger logError:error withMessage:@"Failed to delete checklist group"];
+		}
+		[self.tableView reloadData];
+	}
+	
+	if (buttonIndex == 1)
+	{
+		NSEnumerator *anEnumerator = [[self.selectedGroup checklistItems] objectEnumerator];
+		
+		NSManagedObject *item;
+		
+		while ((item = [anEnumerator nextObject])) {
+			
+			[aContext deleteObject: item];
+		}
+		
+		NSMutableSet *aSet = [self.selectedGroup mutableSetValueForKey:@"checklistItems"];
+		[aSet removeAllObjects];
+		
+		NSError *error;
+		
+		if (![aContext save: &error]) {
+			
+			[Logger logError:error withMessage:@"Failed to remove all checklist items"];
+		}
+		[self.tableView reloadData];
 	}
 }
 
@@ -189,7 +185,8 @@
 
 - (void)dealloc {
 	
-	[items release];
+	[trip release];
+	[selectedGroup release];
     [super dealloc];
 }
 

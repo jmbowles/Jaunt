@@ -13,7 +13,6 @@
 		6D0BA06D111F5E9100AF7773 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8F8776111F29BF003061A5 /* libGDataTouchStaticLib.a */; };
 		6D488D8310D544C900F90D44 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D488D8210D544C900F90D44 /* CameraController.m */; };
 		6D4C0423117D27230065A54F /* ImageKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D4C0422117D27230065A54F /* ImageKeyValue.m */; };
-		6D503D7F10F8D79D00921BAC /* Jaunt.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6D503D7E10F8D79D00921BAC /* Jaunt.sqlite */; };
 		6D632B08108256F1009769E5 /* RouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B07108256F1009769E5 /* RouteController.m */; };
 		6D632B0B10825703009769E5 /* WeatherController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B0A10825703009769E5 /* WeatherController.m */; };
 		6D632B1110825724009769E5 /* ReservationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B1010825724009769E5 /* ReservationController.m */; };
@@ -45,8 +44,11 @@
 		6D812F601144230D00173980 /* QueryResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D812F5F1144230D00173980 /* QueryResultController.m */; };
 		6D82433B10C29E6E0008DC60 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82433A10C29E6D0008DC60 /* Logger.m */; };
 		6D82441F10C2B0300008DC60 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82441E10C2B0300008DC60 /* CoreDataManager.m */; };
-		6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */; };
 		6D82EFFD109DA66400A03436 /* Trip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D82EFFC109DA66400A03436 /* Trip.m */; };
+		6D839A6B11BBC00300B601EA /* ChecklistGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D839A6A11BBC00300B601EA /* ChecklistGroup.m */; };
+		6D839A7011BBC0B300B601EA /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D839A6F11BBC0B300B601EA /* ChecklistItem.m */; };
+		6D8615F911C3C9C600BDB988 /* EditChecklistItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8615F811C3C9C600BDB988 /* EditChecklistItemController.m */; };
+		6D86175711C4212D00BDB988 /* Jaunt.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6D86175611C4212D00BDB988 /* Jaunt.sqlite */; };
 		6D86B76610F0C88B00FC366A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D86B76510F0C88B00FC366A /* CoreLocation.framework */; };
 		6D879029110C79E70087BD94 /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D879028110C79E70087BD94 /* ImageHelper.m */; };
 		6D879039110C7A540087BD94 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D879038110C7A540087BD94 /* QuartzCore.framework */; };
@@ -59,11 +61,17 @@
 		6D8C924610DE8A8800D79F44 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		6D8C924710DE8A9900D79F44 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D632C6510828ECA009769E5 /* MapKit.framework */; };
 		6D8C924810DE8AA000D79F44 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82F0B5109DA82900A03436 /* CoreData.framework */; };
+		6D8D465C11C046FC00FEBBF3 /* Checklist.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8D465B11C046FC00FEBBF3 /* Checklist.m */; };
 		6D8E4CF310D3D4CB0009FD80 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */; };
 		6D8E4D4710D420080009FD80 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E4D4610D420080009FD80 /* ActivityManager.m */; };
 		6D90F3851170B38D006B2690 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D90F3841170B38D006B2690 /* DateUtils.m */; };
 		6D90F3C21170BC85006B2690 /* Forecast.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D90F3C11170BC85006B2690 /* Forecast.m */; };
 		6D90F4C011710145006B2690 /* ForecastDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D90F4BF11710145006B2690 /* ForecastDetail.m */; };
+		6D936B7411BAEEB3006C9661 /* blue_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D936B7311BAEEB3006C9661 /* blue_checkmark.png */; };
+		6D936B9A11BAF3B9006C9661 /* AddChecklistGroupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D936B9911BAF3B9006C9661 /* AddChecklistGroupController.m */; };
+		6D936BC211BAF845006C9661 /* EditChecklistGroupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D936BC111BAF845006C9661 /* EditChecklistGroupController.m */; };
+		6D936C1B11BB1533006C9661 /* orange_compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D936C1A11BB1533006C9661 /* orange_compass.png */; };
+		6D936C4211BB1805006C9661 /* blue_uc_j.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D936C4111BB1805006C9661 /* blue_uc_j.png */; };
 		6D946ACC1166082200CA3206 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D946AC01166082200CA3206 /* ASIAuthenticationDialog.m */; };
 		6D946ACD1166082200CA3206 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D946AC21166082200CA3206 /* ASIFormDataRequest.m */; };
 		6D946ACE1166082200CA3206 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D946AC41166082200CA3206 /* ASIHTTPRequest.m */; };
@@ -81,8 +89,8 @@
 		6D975D3D114DA570001B3E13 /* RestaurantEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D975D3C114DA570001B3E13 /* RestaurantEntry.m */; };
 		6D9EBBDF1184AE76004B67F5 /* few.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6D9EBBDE1184AE76004B67F5 /* few.jpg */; };
 		6D9EBBF41184B662004B67F5 /* bkn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6D9EBBF31184B662004B67F5 /* bkn.jpg */; };
-		6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DA07D5D109A7CCC0071D22C /* blue_blank.png */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
+		6DA601D711BBED0F00AAC70D /* Jaunt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6DA601D611BBED0F00AAC70D /* Jaunt.xcdatamodeld */; };
 		6DD7220F10933F93008E5906 /* AddTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7220E10933F93008E5906 /* AddTripController.m */; };
 		6DF00136109E3265006E1AB2 /* EditTripController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF00135109E3265006E1AB2 /* EditTripController.m */; };
 /* End PBXBuildFile section */
@@ -147,7 +155,6 @@
 		6D488DC010D556B700F90D44 /* CameraControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraControllerDelegate.h; sourceTree = "<group>"; };
 		6D4C0421117D27230065A54F /* ImageKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageKeyValue.h; sourceTree = "<group>"; };
 		6D4C0422117D27230065A54F /* ImageKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageKeyValue.m; sourceTree = "<group>"; };
-		6D503D7E10F8D79D00921BAC /* Jaunt.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jaunt.sqlite; sourceTree = "<group>"; };
 		6D632B06108256F1009769E5 /* RouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteController.h; sourceTree = "<group>"; };
 		6D632B07108256F1009769E5 /* RouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteController.m; sourceTree = "<group>"; };
 		6D632B0910825703009769E5 /* WeatherController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherController.h; sourceTree = "<group>"; };
@@ -207,6 +214,13 @@
 		6D82EFFB109DA66400A03436 /* Trip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trip.h; sourceTree = "<group>"; };
 		6D82EFFC109DA66400A03436 /* Trip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trip.m; sourceTree = "<group>"; };
 		6D82F0B5109DA82900A03436 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		6D839A6911BBC00300B601EA /* ChecklistGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistGroup.h; sourceTree = "<group>"; };
+		6D839A6A11BBC00300B601EA /* ChecklistGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistGroup.m; sourceTree = "<group>"; };
+		6D839A6E11BBC0B300B601EA /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
+		6D839A6F11BBC0B300B601EA /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
+		6D8615F711C3C9C600BDB988 /* EditChecklistItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditChecklistItemController.h; sourceTree = "<group>"; };
+		6D8615F811C3C9C600BDB988 /* EditChecklistItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditChecklistItemController.m; sourceTree = "<group>"; };
+		6D86175611C4212D00BDB988 /* Jaunt.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jaunt.sqlite; sourceTree = "<group>"; };
 		6D86B76510F0C88B00FC366A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = ../../../../../../System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		6D879027110C79E70087BD94 /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
 		6D879028110C79E70087BD94 /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
@@ -218,6 +232,8 @@
 		6D8B455610BCB67A00FE4212 /* IndexedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexedTextField.m; sourceTree = "<group>"; };
 		6D8C91181172357000A0C550 /* WeatherDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherDetailController.h; sourceTree = "<group>"; };
 		6D8C91191172357000A0C550 /* WeatherDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherDetailController.m; sourceTree = "<group>"; };
+		6D8D465A11C046FC00FEBBF3 /* Checklist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Checklist.h; sourceTree = "<group>"; };
+		6D8D465B11C046FC00FEBBF3 /* Checklist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Checklist.m; sourceTree = "<group>"; };
 		6D8E4CF110D3D4CB0009FD80 /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
 		6D8E4CF210D3D4CB0009FD80 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
 		6D8E4D4510D420080009FD80 /* ActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityManager.h; sourceTree = "<group>"; };
@@ -229,6 +245,13 @@
 		6D90F3C11170BC85006B2690 /* Forecast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forecast.m; sourceTree = "<group>"; };
 		6D90F4BE11710145006B2690 /* ForecastDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForecastDetail.h; sourceTree = "<group>"; };
 		6D90F4BF11710145006B2690 /* ForecastDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForecastDetail.m; sourceTree = "<group>"; };
+		6D936B7311BAEEB3006C9661 /* blue_checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_checkmark.png; sourceTree = "<group>"; };
+		6D936B9811BAF3B9006C9661 /* AddChecklistGroupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddChecklistGroupController.h; sourceTree = "<group>"; };
+		6D936B9911BAF3B9006C9661 /* AddChecklistGroupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddChecklistGroupController.m; sourceTree = "<group>"; };
+		6D936BC011BAF845006C9661 /* EditChecklistGroupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditChecklistGroupController.h; sourceTree = "<group>"; };
+		6D936BC111BAF845006C9661 /* EditChecklistGroupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditChecklistGroupController.m; sourceTree = "<group>"; };
+		6D936C1A11BB1533006C9661 /* orange_compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_compass.png; sourceTree = "<group>"; };
+		6D936C4111BB1805006C9661 /* blue_uc_j.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_uc_j.png; sourceTree = "<group>"; };
 		6D946ABF1166082200CA3206 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		6D946AC01166082200CA3206 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		6D946AC11166082200CA3206 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIFormDataRequest.h; sourceTree = "<group>"; };
@@ -259,9 +282,9 @@
 		6D975D3C114DA570001B3E13 /* RestaurantEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestaurantEntry.m; sourceTree = "<group>"; };
 		6D9EBBDE1184AE76004B67F5 /* few.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = few.jpg; sourceTree = "<group>"; };
 		6D9EBBF31184B662004B67F5 /* bkn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bkn.jpg; sourceTree = "<group>"; };
-		6DA07D5D109A7CCC0071D22C /* blue_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_blank.png; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
 		6DA1827910AEE95B0084CFAE /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
+		6DA601D811BBED0F00AAC70D /* Jaunt 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jaunt 2.xcdatamodel"; sourceTree = "<group>"; };
 		6DD7220D10933F93008E5906 /* AddTripController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTripController.h; sourceTree = "<group>"; };
 		6DD7220E10933F93008E5906 /* AddTripController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTripController.m; sourceTree = "<group>"; };
 		6DF00134109E3265006E1AB2 /* EditTripController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTripController.h; sourceTree = "<group>"; };
@@ -330,6 +353,12 @@
 				6D8C91191172357000A0C550 /* WeatherDetailController.m */,
 				6D7BC160118DC022003E9435 /* WeatherHourlyController.h */,
 				6D7BC161118DC022003E9435 /* WeatherHourlyController.m */,
+				6D936B9811BAF3B9006C9661 /* AddChecklistGroupController.h */,
+				6D936B9911BAF3B9006C9661 /* AddChecklistGroupController.m */,
+				6D936BC011BAF845006C9661 /* EditChecklistGroupController.h */,
+				6D936BC111BAF845006C9661 /* EditChecklistGroupController.m */,
+				6D8615F711C3C9C600BDB988 /* EditChecklistItemController.h */,
+				6D8615F811C3C9C600BDB988 /* EditChecklistItemController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -371,11 +400,13 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6D86175611C4212D00BDB988 /* Jaunt.sqlite */,
+				6D936C4111BB1805006C9661 /* blue_uc_j.png */,
+				6D936C1A11BB1533006C9661 /* orange_compass.png */,
+				6D936B7311BAEEB3006C9661 /* blue_checkmark.png */,
 				6D9EBBF31184B662004B67F5 /* bkn.jpg */,
 				6D9EBBDE1184AE76004B67F5 /* few.jpg */,
-				6D503D7E10F8D79D00921BAC /* Jaunt.sqlite */,
 				6D7768DE10CAE8E30047C8C6 /* GenericContact.png */,
-				6DA07D5D109A7CCC0071D22C /* blue_blank.png */,
 				6D632B2810825F1F009769E5 /* Route.png */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Jaunt-Info.plist */,
@@ -384,7 +415,7 @@
 				6D632B18108257C7009769E5 /* ReservationView.xib */,
 				6D7DCF29108B3CE200DFFDFE /* Checklist.xib */,
 				6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */,
-				6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */,
+				6DA601D611BBED0F00AAC70D /* Jaunt.xcdatamodeld */,
 				6D7B564710B02331007942E0 /* TextFieldCell.xib */,
 				6D7B570610B04AC0007942E0 /* NonEditableCell.xib */,
 			);
@@ -490,6 +521,12 @@
 				6DA1827910AEE95B0084CFAE /* Destination.m */,
 				6D8A0CCB10E7DA12007001B5 /* City.h */,
 				6D8A0CCC10E7DA12007001B5 /* City.m */,
+				6D839A6911BBC00300B601EA /* ChecklistGroup.h */,
+				6D839A6A11BBC00300B601EA /* ChecklistGroup.m */,
+				6D839A6E11BBC0B300B601EA /* ChecklistItem.h */,
+				6D839A6F11BBC0B300B601EA /* ChecklistItem.m */,
+				6D8D465A11C046FC00FEBBF3 /* Checklist.h */,
+				6D8D465B11C046FC00FEBBF3 /* Checklist.m */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -635,13 +672,15 @@
 				6D632B2910825F1F009769E5 /* Route.png in Resources */,
 				6D7DCF2A108B3CE200DFFDFE /* Checklist.xib in Resources */,
 				6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */,
-				6DA07D5E109A7CCC0071D22C /* blue_blank.png in Resources */,
 				6D7B564810B02331007942E0 /* TextFieldCell.xib in Resources */,
 				6D7B570710B04AC0007942E0 /* NonEditableCell.xib in Resources */,
 				6D7768DF10CAE8E30047C8C6 /* GenericContact.png in Resources */,
-				6D503D7F10F8D79D00921BAC /* Jaunt.sqlite in Resources */,
 				6D9EBBDF1184AE76004B67F5 /* few.jpg in Resources */,
 				6D9EBBF41184B662004B67F5 /* bkn.jpg in Resources */,
+				6D936B7411BAEEB3006C9661 /* blue_checkmark.png in Resources */,
+				6D936C1B11BB1533006C9661 /* orange_compass.png in Resources */,
+				6D936C4211BB1805006C9661 /* blue_uc_j.png in Resources */,
+				6D86175711C4212D00BDB988 /* Jaunt.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,7 +699,7 @@
 				6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */,
 				6D7DD030108B813B00DFFDFE /* TripTableController.m in Sources */,
 				6DD7220F10933F93008E5906 /* AddTripController.m in Sources */,
-				6D82EFF7109DA5F800A03436 /* Jaunt.xcdatamodel in Sources */,
+				6DA601D711BBED0F00AAC70D /* Jaunt.xcdatamodeld in Sources */,
 				6D82EFFD109DA66400A03436 /* Trip.m in Sources */,
 				6DF00136109E3265006E1AB2 /* EditTripController.m in Sources */,
 				6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */,
@@ -704,6 +743,12 @@
 				6D4C0423117D27230065A54F /* ImageKeyValue.m in Sources */,
 				6D7BC162118DC022003E9435 /* WeatherHourlyController.m in Sources */,
 				6D7BC19D118DD1D9003E9435 /* HourlyDetail.m in Sources */,
+				6D936B9A11BAF3B9006C9661 /* AddChecklistGroupController.m in Sources */,
+				6D936BC211BAF845006C9661 /* EditChecklistGroupController.m in Sources */,
+				6D839A6B11BBC00300B601EA /* ChecklistGroup.m in Sources */,
+				6D839A7011BBC0B300B601EA /* ChecklistItem.m in Sources */,
+				6D8D465C11C046FC00FEBBF3 /* Checklist.m in Sources */,
+				6D8615F911C3C9C600BDB988 /* EditChecklistItemController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,6 +869,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6DA601D611BBED0F00AAC70D /* Jaunt.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6D82EFF6109DA5F800A03436 /* Jaunt.xcdatamodel */,
+				6DA601D811BBED0F00AAC70D /* Jaunt 2.xcdatamodel */,
+			);
+			currentVersion = 6DA601D811BBED0F00AAC70D /* Jaunt 2.xcdatamodel */;
+			path = Jaunt.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

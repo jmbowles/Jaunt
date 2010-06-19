@@ -205,6 +205,7 @@
 	{
 		ChecklistController *aController = [[ChecklistController alloc] initWithNibName:@"Checklist" bundle:[NSBundle mainBundle]];
 		aController.title = @"Checklist";
+		[aController setTrip:self.selectedTrip];
 		[aDelegate.navigationController pushViewController:aController animated:YES];
 		[aController release];
 	}

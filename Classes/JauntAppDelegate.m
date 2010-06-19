@@ -75,18 +75,32 @@
     
 	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Jaunt.sqlite"];
 	
+	// Make changes to the database schema by selecting model and choosing 'Add Model Version', select model with number, then 'Set Current Version'
+	// Perform a clean / build
+	// Backup/copy Jaunt.sqlite from Resources directory to iPhone folder.
+	// Delete app from simulator 
+	// Comment this block of code out. It allows the new database to be created and copied to storePath 
+	// Run app
+	// Open new database from simulator path using MesaSQLite 
+	// Import ZCITY.csv and ZChecklist from iPhone Import folder
+	// Add index to destination and city tables.  Use backup of database as a reference
+	// Copy database to Resources folder, uncomment block of code
+	// Run app
+
+	// Start comment here
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	
 	if (![fileManager fileExistsAtPath:storePath]) {
 		
-		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Jaunt" ofType:@"sqlite"];
+		NSString *databaseDeployedWithAppPath = [[NSBundle mainBundle] pathForResource:@"Jaunt" ofType:@"sqlite"];
 		
-		if (defaultStorePath) {
-			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+		if (databaseDeployedWithAppPath) {
+			[fileManager copyItemAtPath:databaseDeployedWithAppPath toPath:storePath error:NULL];
 		}
 	}
-	
+
+	// End comment here
 	
 	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
 	NSError *error;

@@ -15,6 +15,7 @@
 
 @dynamic name;
 @dynamic destinations;
+@dynamic checklistGroups;
 @dynamic thumbNail;
 @dynamic photo;
 

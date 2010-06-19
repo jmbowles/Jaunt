@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>blue_blank.png</string>
+	<string>blue_uc_j.png</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.johnbowles.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

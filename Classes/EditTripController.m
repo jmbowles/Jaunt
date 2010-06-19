@@ -170,7 +170,6 @@
 - (void) save {
 	
 	[self.activityManager startTaskWithTarget:self selector:@selector(asyncSave) object:nil];
-	
 }
 
 - (void) asyncSave {

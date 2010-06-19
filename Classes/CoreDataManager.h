@@ -20,4 +20,7 @@
 +(NSFetchedResultsController *)fetchedResultsController:(NSManagedObjectContext*) aContext forEntity:(NSString*) 
 								anEntity columnName:(NSString *) aColumnName delegate:(id) aDelegate;
 
++(BOOL) doesContext:(NSManagedObjectContext*) aContext withEntity:(NSString *) anEntity containValue:(NSString *) 
+			aRowValue forColumn:(NSString *) aColumnName;
+
 @end

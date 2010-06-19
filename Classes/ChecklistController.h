@@ -8,15 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@class Trip;
+@class ChecklistGroup;
 
 @interface ChecklistController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 
-	NSMutableArray *items;
+	Trip *trip;
+
+@private
+	
+	ChecklistGroup *selectedGroup;
 }
 
-@property (nonatomic, retain) NSMutableArray *items;
+@property (nonatomic, retain) Trip *trip;
+@property (nonatomic, retain) ChecklistGroup *selectedGroup;
 
 -(void) addItem;
--(void) loadItems; 
 
 @end

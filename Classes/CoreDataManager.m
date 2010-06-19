@@ -54,4 +54,51 @@
 	return [aFetchedResultsController autorelease];
 }
 
++(BOOL) doesContext:(NSManagedObjectContext*) aContext withEntity:(NSString *) anEntity containValue:(NSString *) 
+			aRowValue forColumn:(NSString *) aColumnName {
+	
+	BOOL containsValue = NO;
+	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:anEntity inManagedObjectContext:aContext];
+	[fetchRequest setEntity:entity];
+	
+	NSSortDescriptor *aDescriptor = [[NSSortDescriptor alloc] initWithKey:aColumnName ascending:YES];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:aDescriptor, nil];
+	[fetchRequest setSortDescriptors:sortDescriptors];
+	
+	NSFetchedResultsController *aController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+												managedObjectContext:aContext sectionNameKeyPath:nil cacheName:nil];
+	
+	NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"%K beginswith[cd]%@", aColumnName, aRowValue];
+	[aController.fetchRequest setPredicate:aPredicate];
+	
+	NSError *error;
+		
+	if([aController performFetch:&error]) {
+		
+		NSArray *results = [aController fetchedObjects];
+		
+		if ([results count] > 0) {
+				
+			containsValue = YES;
+			
+		} else {
+				
+			containsValue = NO;
+		}
+		
+	} else {
+		
+		// Error occurred, so, default
+		containsValue = YES;
+	}
+
+	[fetchRequest release];
+	[aDescriptor release];
+	[sortDescriptors release];
+	[aController release];
+	
+	return containsValue;
+}
 @end

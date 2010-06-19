@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSSet *destinations;
+@property (nonatomic, retain) NSSet *checklistGroups;
 @property (nonatomic, retain) UIImage *thumbNail;
 @property (nonatomic, retain) Photo *photo;
 
