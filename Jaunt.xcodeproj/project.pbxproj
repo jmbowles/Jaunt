@@ -34,6 +34,7 @@
 		6D7B58BD10B08D4A007942E0 /* CellExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B58BC10B08D4A007942E0 /* CellExtension.m */; };
 		6D7BC162118DC022003E9435 /* WeatherHourlyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7BC161118DC022003E9435 /* WeatherHourlyController.m */; };
 		6D7BC19D118DD1D9003E9435 /* HourlyDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7BC19C118DD1D9003E9435 /* HourlyDetail.m */; };
+		6D7CE46511D76F53006B2F59 /* QueryDetailWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7CE46411D76F53006B2F59 /* QueryDetailWebViewController.m */; };
 		6D7DCF2A108B3CE200DFFDFE /* Checklist.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7DCF29108B3CE200DFFDFE /* Checklist.xib */; };
 		6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */; };
 		6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */; };
@@ -199,6 +200,8 @@
 		6D7BC161118DC022003E9435 /* WeatherHourlyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherHourlyController.m; sourceTree = "<group>"; };
 		6D7BC19B118DD1D9003E9435 /* HourlyDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HourlyDetail.h; sourceTree = "<group>"; };
 		6D7BC19C118DD1D9003E9435 /* HourlyDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HourlyDetail.m; sourceTree = "<group>"; };
+		6D7CE46311D76F53006B2F59 /* QueryDetailWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryDetailWebViewController.h; sourceTree = "<group>"; };
+		6D7CE46411D76F53006B2F59 /* QueryDetailWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryDetailWebViewController.m; sourceTree = "<group>"; };
 		6D7DCF29108B3CE200DFFDFE /* Checklist.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Checklist.xib; sourceTree = "<group>"; };
 		6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Trips.xib; sourceTree = "<group>"; };
 		6D7DCF32108B3E4400DFFDFE /* ChecklistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistController.h; sourceTree = "<group>"; };
@@ -375,6 +378,8 @@
 				6D936BC111BAF845006C9661 /* EditChecklistGroupController.m */,
 				6D8615F711C3C9C600BDB988 /* EditChecklistItemController.h */,
 				6D8615F811C3C9C600BDB988 /* EditChecklistItemController.m */,
+				6D7CE46311D76F53006B2F59 /* QueryDetailWebViewController.h */,
+				6D7CE46411D76F53006B2F59 /* QueryDetailWebViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -781,6 +786,7 @@
 				6D839A7011BBC0B300B601EA /* ChecklistItem.m in Sources */,
 				6D8D465C11C046FC00FEBBF3 /* Checklist.m in Sources */,
 				6D8615F911C3C9C600BDB988 /* EditChecklistItemController.m in Sources */,
+				6D7CE46511D76F53006B2F59 /* QueryDetailWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

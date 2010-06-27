@@ -14,6 +14,7 @@
 #import "GoogleQuery.h"
 #import "GoogleEntry.h"
 #import "QueryDetailController.h"
+#import "QueryDetailWebViewController.h"
 #import "JauntAppDelegate.h"
 
 
@@ -148,7 +149,14 @@
 	}
 	if (buttonIndex == 1)
 	{
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.googleQuery.href]];
+		//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.googleQuery.href]];
+		
+		JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
+		QueryDetailWebViewController *aController = [[QueryDetailWebViewController alloc] init];
+		[aController setTitle:self.googleQuery.title];
+		[aController setQueryDetailUrl:self.googleQuery.href];
+		[aDelegate.navigationController pushViewController:aController animated:YES];
+		[aController release];
 	}
 }
 
