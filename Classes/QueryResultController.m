@@ -149,8 +149,6 @@
 	}
 	if (buttonIndex == 1)
 	{
-		//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.googleQuery.href]];
-		
 		JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 		QueryDetailWebViewController *aController = [[QueryDetailWebViewController alloc] init];
 		[aController setTitle:self.googleQuery.title];

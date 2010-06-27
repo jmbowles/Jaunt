@@ -9,10 +9,20 @@
 #import "QueryDetailWebViewController.h"
 #import "Logger.h"
 
+@interface QueryDetailWebViewController (PrivateMethods) 
+
+-(void) configureToolBar;
+-(void) goBack;
+-(void) goForward;
+-(void) openWithSafari;
+
+@end
+
 
 @implementation QueryDetailWebViewController
 
 @synthesize queryDetailUrl;
+@synthesize toolBar;
 @synthesize webView;
 
 
@@ -28,17 +38,21 @@
 	UIWebView *aWebView = [[UIWebView alloc] initWithFrame:aFrame];
 	aWebView.backgroundColor = [UIColor whiteColor];
 	aWebView.scalesPageToFit = YES;
+	aWebView.dataDetectorTypes = UIDataDetectorTypeAll;
 	aWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	self.webView = aWebView;
 	[aWebView release];
 	[self.view addSubview: self.webView];
 	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.queryDetailUrl]]];
+	
+	[self configureToolBar];
 }
 
 - (void) viewDidUnLoad {
     
 	[super viewDidUnload];
-	[self.view removeFromSuperview];
+	[self.webView removeFromSuperview];
+	[self.toolBar removeFromSuperview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -56,6 +70,53 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark Method Implementations
+
+-(void) configureToolBar {
+	
+	UIBarButtonItem *goBackButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(goBack)];
+	UIBarButtonItem *goForwardButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStyleBordered target:self action:@selector(goForward)];
+	UIBarButtonItem *safariButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Safari" style:UIBarButtonItemStyleBordered target:self action:@selector(openWithSafari)];
+	
+	UIToolbar *aToolbar = [[UIToolbar alloc] init];
+	aToolbar.barStyle = UIBarStyleDefault;
+	[aToolbar sizeToFit];
+	
+	CGFloat toolbarHeight = [aToolbar frame].size.height;
+	CGRect aRectangle = self.view.bounds;
+	[aToolbar setFrame:CGRectMake(CGRectGetMinX(aRectangle),
+								  CGRectGetMinY(aRectangle) + CGRectGetHeight(aRectangle) - (toolbarHeight * .60),
+								  CGRectGetWidth(aRectangle),
+								  48.0)];
+	
+	NSArray *items = [NSArray arrayWithObjects: goBackButtonItem, goForwardButtonItem, safariButtonItem, nil];
+	[aToolbar setItems:items animated:NO];
+	
+	[self.navigationController.view addSubview:aToolbar];
+	self.toolBar = aToolbar;
+	
+	[aToolbar release];
+	[goBackButtonItem release];
+	[goForwardButtonItem release];
+	[safariButtonItem release];
+}
+
+-(void) goBack {
+
+	[self.webView goBack];
+}
+
+-(void) goForward {
+	
+	[self.webView goForward];
+}
+
+-(void) openWithSafari {
+	
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.queryDetailUrl]];
 }
 
 #pragma mark -
@@ -87,6 +148,7 @@
 - (void)dealloc {
 	
 	[queryDetailUrl release];
+	[toolBar release];
 	[webView release];
     [super dealloc];
 }
