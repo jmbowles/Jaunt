@@ -48,13 +48,6 @@
 	[self configureToolBar];
 }
 
-- (void) viewDidUnLoad {
-    
-	[super viewDidUnload];
-	[self.webView removeFromSuperview];
-	[self.toolBar removeFromSuperview];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	self.webView.delegate = self;	
@@ -64,6 +57,8 @@
 {
     [self.webView stopLoading];
 	self.webView.delegate = nil;	
+	[self.webView removeFromSuperview];
+	[self.toolBar removeFromSuperview];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -106,11 +101,15 @@
 
 -(void) goBack {
 
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[self.webView stopLoading];
 	[self.webView goBack];
 }
 
 -(void) goForward {
 	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[self.webView stopLoading];
 	[self.webView goForward];
 }
 
@@ -136,10 +135,13 @@
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Website" message:@"Unable to load website"
-													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-	[anAlert show];	
-	[anAlert release];
+	if ([error code] != NSURLErrorCancelled) {
+		
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Website" message:@"Unable to load website"
+														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[anAlert show];	
+		[anAlert release];
+	}
 }
 
 #pragma mark -
