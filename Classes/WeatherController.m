@@ -21,6 +21,11 @@
 #import "ImageKeyValue.h"
 #import "WeatherHourlyController.h"
 
+@interface WeatherController (PrivateMethods)
+
+-(void) fetchWeatherForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex;
+
+@end
 
 @implementation WeatherController
 
@@ -52,14 +57,7 @@
 		
 		[self setForecasts:[NSMutableArray array]];
 		[self setIconDictionary:[NSMutableDictionary dictionary]];
-		
-		[self.activityManager showActivity];
-		
-		NSURL *url = [NSURL URLWithString:[Forecast noaaUrlForDestinations:self.trip.destinations]];
-		ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:url];
-		[aRequest setTimeOutSeconds:20];
-		[aRequest setDelegate:self];
-		[aRequest startAsynchronous];
+		[self fetchWeatherForDestinations:self.trip.destinations startingIndex:0 endingIndex:[self.trip.destinations count]];
 		
 	} else {
 		
@@ -83,6 +81,7 @@
 	ImageKeyValue *anImageKeyValuePair = [[ImageKeyValue alloc] init];
 	[anImageKeyValuePair setKeyName:urlString];
 	[anImageKeyValuePair setImageValue:anImage];
+	[anImageKeyValuePair setLoaded:YES];
 	[anImage release];
     [self performSelectorOnMainThread:@selector(imageLoaded:) withObject:anImageKeyValuePair waitUntilDone:YES];
     [anImageKeyValuePair release];
@@ -94,15 +93,20 @@
 {
 	for (NSString *urlKey in aDictionary) {
     
-		NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadImage:) object:urlKey];
-		[self.queue addOperation:operation];
-		[operation release];
+		ImageKeyValue *anImageKeyValuePair = [aDictionary objectForKey:urlKey];
+		
+		if ([anImageKeyValuePair loaded] == NO) {
+			
+			NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadImage:) object:urlKey];
+			[self.queue addOperation:operation];
+			[operation release];
+		}
 	}
 }
 
 - (void)imageLoaded:(ImageKeyValue *) anImageKeyValuePair
 {
-    [self.iconDictionary setValue:[anImageKeyValuePair imageValue] forKey:[anImageKeyValuePair keyName]];
+	[self.iconDictionary setValue:anImageKeyValuePair forKey:[anImageKeyValuePair keyName]];
 	
 	// The operations count will be 0 AFTER this method exists, since it is the designated callback
 	if ([[self.queue operations] count] == 1) {
@@ -110,6 +114,17 @@
 		[self.activityManager hideActivity];
 	}
 	[self.tableView reloadData];
+}
+
+-(void) fetchWeatherForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex {
+	
+	[self.activityManager showActivity];
+	
+	NSURL *url = [NSURL URLWithString:[Forecast noaaUrlForDestinations:destinations startingIndex:startingIndex endingIndex:endingIndex]];
+	ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:url];
+	[aRequest setTimeOutSeconds:20];
+	[aRequest setDelegate:self];
+	[aRequest startAsynchronous];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -126,7 +141,12 @@
 		
 		if ([self.iconDictionary objectForKey:[anIcon stringValue]] == nil) {
 			
-			[self.iconDictionary setValue:[UIImage imageNamed:@"bkn.jpg"] forKey:[anIcon stringValue]];
+			ImageKeyValue *anImageKeyValuePair = [[ImageKeyValue alloc] init];
+			[anImageKeyValuePair setKeyName:[anIcon stringValue]];
+			[anImageKeyValuePair setImageValue:[UIImage imageNamed:@"bkn.jpg"]];
+			[anImageKeyValuePair setLoaded:NO];
+			[self.iconDictionary setValue:anImageKeyValuePair forKey:[anIcon stringValue]];
+			[anImageKeyValuePair release];
 		}
 	}
 	
@@ -135,7 +155,7 @@
 	NSDate *today = [NSDate date];
 	int destinationIndex = 0;
 	NSArray *destinations = [self.trip.destinations allObjects];
-	NSMutableDictionary *currentTemperatures = [Forecast currentTemperaturesForDestinations:self.trip.destinations];
+	NSMutableDictionary *currentTemperatures = [Forecast currentTemperaturesForDestinations:self.trip.destinations startingIndex:0 endingIndex:[self.trip.destinations count]];
 	
 	for (GDataXMLElement *aLocation in locations) {
 		
@@ -246,7 +266,9 @@
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"Temperature: %@\u2070 F", aForecast.currentTemperature];
 	}
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	cell.imageView.image = [self.iconDictionary objectForKey:aForecast.imageKey];
+	
+	ImageKeyValue *anImageKeyValuePair = [self.iconDictionary objectForKey:aForecast.imageKey];
+	cell.imageView.image = [anImageKeyValuePair imageValue];
 	
 	return cell;
 }

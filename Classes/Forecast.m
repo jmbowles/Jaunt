@@ -16,6 +16,7 @@
 @interface Forecast (PrivateMethods)
 
 +(NSString *) buildPointsForDestinations:(NSSet *) destinations;
++(NSString *) buildPointsForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex;
 +(NSString *) buildPointForDestination:(Destination *) destination;
 
 @end
@@ -50,11 +51,11 @@
 #pragma mark -
 #pragma mark Implementaton
 
-+(NSString *) noaaUrlForDestinations:(NSSet *) destinations {
++(NSString *) noaaUrlForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex {
 	
 	NSString *baseUrl = @"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdBrowserClientByDay.php?listLatLon=";
 	NSString *products = @"&format=24+hourly&numDays=7";
-	NSString *points = [Forecast buildPointsForDestinations:destinations];
+	NSString *points = [Forecast buildPointsForDestinations:destinations startingIndex:startingIndex endingIndex:endingIndex];
 	NSString *url = [NSString stringWithFormat:@"%@%@%@", baseUrl, points, products];
 	
 	return url;
@@ -114,6 +115,34 @@
 	return points;
 }
 
++(NSString *) buildPointsForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex {
+	
+	NSString *points = @"";
+	
+	NSArray *anArray = [destinations allObjects];
+	
+	for (int i = startingIndex; i < endingIndex; i++) {
+		
+		Destination *aDestination = [anArray objectAtIndex:i];
+		
+		if ([aDestination.latitude doubleValue] > 0) {
+			
+			NSString *point = [Forecast buildPointForDestination:aDestination];
+			
+			if (i + 1 < endingIndex) {
+				
+				point = [point stringByAppendingString:@"+"];
+				points = [points stringByAppendingString:point];
+				
+			} else {
+				
+				points = [points stringByAppendingString:point];
+			}
+		}
+	}
+	return points;
+}
+
 +(NSString *) buildPointForDestination:(Destination *) destination {
 	
 	NSString *point = nil;
@@ -125,11 +154,11 @@
 	return point;
 }
 
-+(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations {
++(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex {
 	
 	NSMutableDictionary *temperatures = [NSMutableDictionary dictionaryWithCapacity:[destinations count]];
 	NSString *baseUrl = @"http://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdXMLclient.php?listLatLon=";
-	NSString *points = [Forecast buildPointsForDestinations:destinations];
+	NSString *points = [Forecast buildPointsForDestinations:destinations startingIndex:startingIndex endingIndex:endingIndex];
 	NSString *products = nil;
 	NSString *temperature = nil;
 	

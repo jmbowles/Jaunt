@@ -121,7 +121,7 @@
 			aCoordinate.longitude = longitude;
 			
 			MapAnnotation *anAnnotation = [[MapAnnotation alloc] initWithCoordinate:aCoordinate];
-			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.city, aDestination.state];
+			anAnnotation.title = [NSString stringWithFormat:@"%@, %@", aDestination.name, aDestination.state];
 			anAnnotation.subtitle = [self titleFromCurrentLocation:aCurrentLocation toDestination:aDestination];
 			anAnnotation.destination = aDestination;
 

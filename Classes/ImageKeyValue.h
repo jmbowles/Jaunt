@@ -13,9 +13,11 @@
 
 	NSString *keyName;
 	UIImage *imageValue;
+	BOOL loaded;
 }
 
 @property (nonatomic, retain) NSString *keyName;
 @property (nonatomic, retain) UIImage *imageValue;
+@property (nonatomic) BOOL loaded;
 
 @end

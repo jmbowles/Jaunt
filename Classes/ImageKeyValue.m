@@ -13,7 +13,7 @@
 
 @synthesize keyName;
 @synthesize imageValue;
-
+@synthesize loaded;
 
 #pragma mark -
 #pragma mark Memory Management

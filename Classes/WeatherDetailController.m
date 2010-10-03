@@ -9,6 +9,7 @@
 #import "WeatherDetailController.h"
 #import "Forecast.h"
 #import "ForecastDetail.h"
+#import "ImageKeyValue.h"
 #import "WeatherHourlyController.h";
 #import "JauntAppDelegate.h"
 
@@ -63,7 +64,9 @@
 	cell.textLabel.text = [NSString stringWithFormat:@"%@", aDate];	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", aForecastDetail.summary, hiLow];
 	cell.accessoryType = UITableViewCellAccessoryNone;
-	cell.imageView.image = [self.iconDictionary objectForKey:aForecastDetail.imageKey];
+	
+	ImageKeyValue *anImageKeyValuePair = [self.iconDictionary objectForKey:aForecastDetail.imageKey];
+	cell.imageView.image = [anImageKeyValuePair imageValue];
 	
 	return cell;
 }

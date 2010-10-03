@@ -34,9 +34,9 @@
 @property (nonatomic, retain) NSMutableArray *forecastDetails;
 @property (nonatomic, retain) NSMutableArray *hourlyDetails;
 
-+(NSString *) noaaUrlForDestinations:(NSSet *) destinations;
++(NSString *) noaaUrlForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex;
 +(NSString *) noaaHourlyUrlForLatitude:(NSString *) latitude andLongitude:(NSString *) longitude;
-+(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations;
++(NSMutableDictionary *) currentTemperaturesForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex;
 +(NSString *) windDirectionUsingBearing:(NSUInteger) aBearing;
 -(id) init;
 -(ForecastDetail *) todaysForecast;
