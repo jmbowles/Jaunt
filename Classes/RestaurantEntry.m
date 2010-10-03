@@ -46,7 +46,7 @@
 
 -(NSString *) getQuery {
 	
-	return [NSString stringWithFormat:@"[item type:Restaurants] [location: @%@ + 20mi]", self.location];
+	return [NSString stringWithFormat:@"[item type:Restaurants] [location: @%@ + 10mi]", self.location];
 }
 
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
@@ -61,7 +61,13 @@
 
 -(NSString *) formatDetailsWithEntry:(GDataEntryGoogleBase *) anEntry {
 	
-	return @"";
+	NSString *content = @"";
+	
+	if ([anEntry content] != nil && [[anEntry content] stringValue] != nil) {
+		
+		content = [[anEntry content] stringValue];
+	}
+	return content;
 }
 
 #pragma mark -

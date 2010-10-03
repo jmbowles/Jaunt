@@ -15,5 +15,7 @@
 
 +(NSString *) dayOfWeek:(NSDate *) aDate;
 +(NSString *) morningOrEvening:(NSUInteger) hour;	
++(NSDate *) addDays:(NSUInteger) days toDate:(NSDate *) aDate;
++(NSDate *) addDaysToCurrentDate:(NSUInteger) days;
 
 @end

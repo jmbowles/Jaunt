@@ -64,4 +64,23 @@
 	return dayOfWeekName;
 }
 
++(NSDate *) addDays:(NSUInteger) days toDate:(NSDate *) aDate {
+	
+	NSCalendar *aCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [[NSDateComponents alloc] init];
+	[components setDay: days];
+	NSDate *endingDate = [aCalendar dateByAddingComponents:components toDate:aDate options:0];
+	
+	[aCalendar release];
+	[components release];
+	
+	return endingDate;
+	
+}
+
++(NSDate *) addDaysToCurrentDate:(NSUInteger) days {
+	
+	return [[self class] addDays:days toDate:[NSDate date]];
+}
+
 @end

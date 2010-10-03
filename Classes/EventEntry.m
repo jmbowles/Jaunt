@@ -9,6 +9,8 @@
 #import "EventEntry.h"
 #import "GDataGoogleBase.h"
 #import "GoogleServices.h"
+#import "DateUtils.h"
+#import "GoogleQuery.h"
 
 
 @implementation EventEntry
@@ -46,7 +48,11 @@
 
 -(NSString *) getQuery {
 	
-	return [NSString stringWithFormat:@"[item type:Events and Activities] [location: @%@ + 20mi] %@", self.location, self.filter];
+	NSDate *startingDate = [NSDate date];
+	NSDate *endingDate = [DateUtils addDays:7 toDate:startingDate];
+	NSString *dateRange = [GoogleQuery formatDateTimeRangeFromStartingDate:startingDate andEndingDate:endingDate];
+	
+	return [NSString stringWithFormat:@"[item type:Events and Activities] [event date range:%@] [location: @%@ + 10mi] %@", dateRange, self.location, self.filter];
 }
 
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
@@ -64,7 +70,16 @@
 		
 	} else {
 		
-		return @"";
+		NSString *where = [[anEntry attributeWithName:@"venue name" type:kGDataGoogleBaseAttributeTypeText] textValue];
+		
+		if (where != nil) {
+		
+			return where;
+			
+		} else {
+			
+			return @"";
+		}
 	}
 }
 

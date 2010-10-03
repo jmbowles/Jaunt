@@ -27,5 +27,6 @@
 @property (nonatomic, retain) NSString *mapsURL;
 
 -(NSComparisonResult)compareQuery:(GoogleQuery *) aQuery;
++(NSString *) formatDateTimeRangeFromStartingDate:(NSDate *) startingDate andEndingDate:(NSDate *) endingDate;
 
 @end

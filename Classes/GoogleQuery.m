@@ -26,7 +26,18 @@
 {
     return [self.title caseInsensitiveCompare:aQuery.title];
 }
-			
+	
++(NSString *) formatDateTimeRangeFromStartingDate:(NSDate *) startingDate andEndingDate:(NSDate *) endingDate {
+
+	NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
+	[aFormatter setDateFormat:@"yyyy-MM-dd"];
+	NSString *dateTimeRange = [NSString stringWithFormat:@"%@..%@", [aFormatter stringFromDate:startingDate], [aFormatter stringFromDate:endingDate]];
+	
+	[aFormatter release];
+	
+	return dateTimeRange;
+}
+
 #pragma mark -
 #pragma mark Memory Management
 
