@@ -18,20 +18,25 @@
 @synthesize location;
 @synthesize filter;
 @synthesize name;
+@synthesize currentLocation;
+
 
 #pragma mark -
 #pragma mark Construction
 
--(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName andFilter:(NSString *) aFilter {
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName 
+			 andFilter:(NSString *) aFilter andCurrentLocation:(CLLocation *) aCurrentLocation {
 	
 	if (self = [super init]) {
 		
 		self.location = aLocation;
 		self.filter = aFilter;
 		self.name = aName;
+		self.currentLocation = aCurrentLocation;
 	}
 	return self;
 }
+
 
 #pragma mark -
 #pragma mark GoogleEntry Protocol
@@ -55,18 +60,24 @@
 	return [NSString stringWithFormat:@"[item type:Events and Activities] [event date range:%@] [location: @%@ + 10mi] %@", dateRange, self.location, self.filter];
 }
 
+-(NSString *) getOrderBy {
+	
+	return [GoogleServices orderByLocation:self.currentLocation];
+}
+
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
 	
 	return [[anEntry title] contentStringValue];
 }
 
--(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
+-(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry andAddress:(NSString *) anAddress {
 	
 	NSString *price = [[anEntry attributeWithName:@"price" type:kGDataGoogleBaseAttributeTypeText] textValue];
+	NSString *miles = [GoogleServices calculateDistanceWithEntry:anEntry fromLocation:self.currentLocation];
 	
 	if (price != nil && [price isEqualToString:@""] == NO) {
 		
-		return [NSString stringWithFormat:@"$%@", price];
+		return [NSString stringWithFormat:@"$%@, %@", price, miles];
 		
 	} else {
 		
@@ -74,11 +85,11 @@
 		
 		if (where != nil) {
 		
-			return where;
+			return [NSString stringWithFormat:@"%@, %@", where, miles];
 			
 		} else {
 			
-			return @"";
+			return miles;
 		}
 	}
 }
@@ -88,6 +99,7 @@
 	NSString *when = @"";
 	NSString *where = [anEntry location];
 	NSString *venue = [[anEntry attributeWithName:@"venue name" type:kGDataGoogleBaseAttributeTypeText] textValue];
+	venue = venue == nil ? @"" : venue;
 	NSString *summary = [[anEntry content] contentStringValue] == nil ? @"No details found" : [[anEntry content] contentStringValue];
 	NSString *eventDate = [[anEntry attributeWithName:@"event date range" type:kGDataGoogleBaseAttributeTypeDateTime] textValue];
 	
@@ -116,6 +128,7 @@
 	[location release];
 	[filter release];
 	[name release];
+	[currentLocation release];
 	[super dealloc];
 }
 

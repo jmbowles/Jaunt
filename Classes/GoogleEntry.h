@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 @class GDataEntryGoogleBase;
 
@@ -16,7 +17,11 @@
 -(NSString *) getItemType;
 -(NSString *) getQuery;
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry;
--(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry;
+-(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry andAddress:(NSString *) anAddress;
 -(NSString *) formatDetailsWithEntry:(GDataEntryGoogleBase *) anEntry;
+
+@optional
+-(CLLocation *) getCurrentPosition;
+-(NSString *) getOrderBy;
 
 @end

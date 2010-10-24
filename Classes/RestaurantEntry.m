@@ -9,6 +9,7 @@
 #import "RestaurantEntry.h"
 #import "GDataGoogleBase.h"
 #import "GoogleServices.h"
+#import "Logger.h"
 
 
 @implementation RestaurantEntry
@@ -16,17 +17,21 @@
 @synthesize location;
 @synthesize filter;
 @synthesize name;
+@synthesize currentLocation;
+
 
 #pragma mark -
 #pragma mark Construction
 
--(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName andFilter:(NSString *) aFilter {
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName 
+			 andFilter:(NSString *) aFilter andCurrentLocation:(CLLocation *) aCurrentLocation {
 	
 	if (self = [super init]) {
 		
 		self.location = aLocation;
 		self.filter = aFilter;
 		self.name = aName;
+		self.currentLocation = aCurrentLocation;
 	}
 	return self;
 }
@@ -46,7 +51,18 @@
 
 -(NSString *) getQuery {
 	
-	return [NSString stringWithFormat:@"[item type:Restaurants] [location: @%@ + 10mi]", self.location];
+	NSString *baseSnippet = [NSString stringWithFormat:@"[item type:Restaurants] [location: @%@ + 3mi]", self.location];
+	return baseSnippet;
+}
+
+-(NSString *) getOrderBy {
+	
+	return [GoogleServices orderByLocation:self.currentLocation];
+}
+
+-(CLLocation *) getCurrentPosition {
+	
+	return self.currentLocation;
 }
 
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
@@ -54,9 +70,9 @@
 	return [[anEntry title] contentStringValue];
 }
 
--(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
+-(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry andAddress:(NSString *) anAddress {
 	
-	return @"";
+	return [GoogleServices calculateDistanceWithEntry:anEntry fromLocation:self.currentLocation];
 }
 
 -(NSString *) formatDetailsWithEntry:(GDataEntryGoogleBase *) anEntry {
@@ -78,6 +94,7 @@
 	[location release];
 	[filter release];
 	[name release];
+	[currentLocation release];
 	[super dealloc];
 }
 

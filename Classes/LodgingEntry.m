@@ -7,6 +7,7 @@
 //
 
 #import "LodgingEntry.h"
+#import "GoogleServices.h"
 #import "GDataGoogleBase.h"
 
 @implementation LodgingEntry
@@ -15,12 +16,14 @@
 @synthesize filter;
 @synthesize name;
 @synthesize itemType;
+@synthesize currentLocation;
 
 
 #pragma mark -
 #pragma mark Construction
 
--(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName itemType:(NSString *) anItemType andFilter:(NSString *) aFilter {
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName itemType:(NSString *) anItemType 
+			 andFilter:(NSString *) aFilter andCurrentLocation:(CLLocation *) aCurrentLocation {
 	
 	if (self = [super init]) {
 		
@@ -28,6 +31,7 @@
 		self.filter = aFilter;
 		self.name = aName;
 		self.itemType = anItemType;
+		self.currentLocation = aCurrentLocation;
 	}
 	return self;
 }
@@ -50,22 +54,28 @@
 	return [NSString stringWithFormat:@"[item type: %@] [location: @%@ + 10mi]", self.itemType, self.location];
 }
 
+-(NSString *) getOrderBy {
+	
+	return [GoogleServices orderByLocation:self.currentLocation];
+}
+
 -(NSString *) formatTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
 
 	return [[anEntry title] contentStringValue];
 }
 
--(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry {
+-(NSString *) formatSubTitleWithEntry:(GDataEntryGoogleBase *) anEntry andAddress:(NSString *) anAddress {
 
 	NSString *price = [[anEntry attributeWithName:@"price" type:kGDataGoogleBaseAttributeTypeText] textValue];
+	NSString *miles = [GoogleServices calculateDistanceWithEntry:anEntry fromLocation:self.currentLocation];
 	
 	if (price != nil && [price isEqualToString:@""] == NO) {
 		
-		return [NSString stringWithFormat:@"$%@", price];
+		return [NSString stringWithFormat:@"$%@, %@", price, miles];
 		
 	} else {
 		
-		return @"";
+		return miles;
 	}
 }
 
@@ -83,6 +93,7 @@
 	[filter release];
 	[name release];
 	[itemType release];
+	[currentLocation release];
 	[super dealloc];
 }
 

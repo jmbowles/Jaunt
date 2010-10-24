@@ -8,14 +8,15 @@
 
 #import "QueryResultController.h"
 #import "ActivityManager.h"
-#import "GDataGoogleBase.h"
 #import "GDataUtilities.h"
 #import "GoogleServices.h"
 #import "GoogleQuery.h"
 #import "GoogleEntry.h"
+#import "GDataGoogleBase.h"
 #import "QueryDetailController.h"
 #import "QueryDetailWebViewController.h"
 #import "JauntAppDelegate.h"
+#import "Logger.h"
 
 
 @implementation QueryResultController
@@ -39,8 +40,10 @@
 	[anActivityManager release];
 	[self.activityManager showActivity];
 	
-	NSString *aQuery = [self.googleEntry getQuery];
-	[GoogleServices executeQueryUsingDelegate:self selector:@selector(ticket:finishedWithFeed:error:) query:aQuery];
+	NSString *baseQuery = [self.googleEntry getQuery];
+	NSString *orderBy = [self.googleEntry getOrderBy];
+	
+	[GoogleServices executeQueryUsingDelegate:self selector:@selector(ticket:finishedWithFeed:error:) baseQuery:baseQuery orderBy:orderBy];
 }
 
 #pragma mark -
@@ -55,17 +58,17 @@
 		GoogleQuery *aResult = [[GoogleQuery alloc] init];
 		
 		aResult.title = [self.googleEntry formatTitleWithEntry:entry];
-		aResult.subTitle = [self.googleEntry formatSubTitleWithEntry:entry];
+		aResult.subTitle = [self.googleEntry formatSubTitleWithEntry:entry andAddress: [entry location]];
 		aResult.detailedDescription = [self.googleEntry formatDetailsWithEntry:entry];
 		aResult.address = [entry location];
 		aResult.href = [[entry alternateLink] href];
-		aResult.mapsURL = [GoogleServices mapsURLWithAddress:[entry location] andLocation:self.currentLocation];
+		aResult.mapsURL = [GoogleServices mapsURLWithAddress:[entry location] andLocation:[self currentLocation]];
 		
 		[queryResults addObject:aResult];
 		[aResult release];
 	}
 	
-	[queryResults sortUsingSelector:@selector(compareQuery:)];
+	//[queryResults sortUsingSelector:@selector(compareQuery:)];
 	
 	[self.activityManager hideActivity];
 	[self setResults: queryResults];

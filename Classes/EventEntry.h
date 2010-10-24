@@ -15,12 +15,15 @@
 	NSString *location;
 	NSString *filter;
 	NSString *name;
+	CLLocation *currentLocation;
 }
 
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *filter;
 @property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) CLLocation *currentLocation;
 
--(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName andFilter:(NSString *) aFilter;
+-(id) initWithLocation:(NSString *) aLocation withName:(NSString *) aName 
+			 andFilter:(NSString *) aFilter andCurrentLocation:(CLLocation *) aCurrentLocation;
 
 @end
