@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "ReachabilityDelegate.h"
 
 @class Trip;
 @class Destination;
 @class ActivityManager;
+@class ReachabilityManager;
 
 
-@interface RouteController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate> {
+@interface RouteController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, ReachabilityDelegate> {
 
 	IBOutlet MKMapView *mapView;
 	Trip *trip;
@@ -23,6 +25,7 @@
 	CLLocationManager *locationManager;
 	ActivityManager *activityManager;
 	CLLocation *currentLocation;
+	ReachabilityManager *reachability;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -30,6 +33,7 @@
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) ActivityManager *activityManager;
 @property (nonatomic, retain) CLLocation *currentLocation;
+@property (nonatomic, retain) ReachabilityManager *reachability;
 
 -(void) loadAnnotations:(CLLocation *)aCurrentLocation;
 -(void) adjustMapRegion;

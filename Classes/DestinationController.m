@@ -204,7 +204,6 @@
 
 -(void) notReachable {
 	
-	//self.toolBar.hidden = YES;
 	UIBarButtonItem *aBarButtonItem = [self.toolBar.items objectAtIndex:0];
 	aBarButtonItem.enabled = NO;
 	
@@ -219,7 +218,6 @@
 	
 	UIBarButtonItem *aBarButtonItem = [self.toolBar.items objectAtIndex:0];
 	aBarButtonItem.enabled = YES;
-	self.toolBar.hidden = NO;
 }
 
 

@@ -78,6 +78,19 @@
 	[self.reachable stopNotifier];
 }
 
+-(BOOL) isCurrentlyReachable {
+
+	BOOL isReachable = YES;
+	
+	NetworkStatus aStatus = [self.reachable currentReachabilityStatus];
+	
+	if (aStatus == NotReachable) {
+		
+		isReachable = NO;
+	}
+	return isReachable;
+}
+
 #pragma mark -
 #pragma mark Memory Management
 

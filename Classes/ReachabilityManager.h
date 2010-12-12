@@ -29,5 +29,6 @@
 -(id) initWithWiFi;
 -(void) startListener;
 -(void) stopListener;
+-(BOOL) isCurrentlyReachable;
 
 @end

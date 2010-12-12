@@ -14,6 +14,7 @@
 #import "DestinationDetailController.h"
 #import "JauntAppDelegate.h"
 #import "ActivityManager.h"
+#import "ReachabilityManager.h"
 
 
 
@@ -24,6 +25,8 @@
 @synthesize locationManager;
 @synthesize activityManager;
 @synthesize currentLocation;
+@synthesize reachability;
+
 
 #pragma mark -
 #pragma mark View Management
@@ -32,49 +35,88 @@
     
 	[super viewDidLoad];
 	
-	if ([self.trip.destinations count] > 0) {
-		
-		ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.mapView];
-		self.activityManager = anActivityManager;
-		[anActivityManager release];
-		
-		CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
-		aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
-		aLocationManager.distanceFilter = kCLDistanceFilterNone;
-		aLocationManager.delegate = self;
-		self.locationManager = aLocationManager;
-		[aLocationManager release];
-		
-		if (self.locationManager.locationServicesEnabled == YES)
-		{
-			[self.activityManager showActivity];
-			[self.locationManager startUpdatingLocation];
-			
-			UIBarButtonItem *aRefreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performRefresh)];
-			self.navigationItem.rightBarButtonItem = aRefreshButton;
-			[aRefreshButton release];
-			
-		} else {
-			
-			[self loadAnnotations:nil];
-		}
-		
-		[self.mapView setDelegate:self];
-		
-	} else {
-		
-		NSString *aMessage = @"At least one destination needs to be added to view the map";
-		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Map Status" message:aMessage
-														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-		[anAlert show];	
-		[anAlert release];
-	}
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.mapView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
+	
+	CLLocationManager *aLocationManager = [[CLLocationManager alloc] init];
+	aLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
+	aLocationManager.distanceFilter = kCLDistanceFilterNone;
+	aLocationManager.delegate = self;
+	self.locationManager = aLocationManager;
+	[aLocationManager release];
+	
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithInternet];
+	aReachability.delegate = self;
+	self.reachability = aReachability;
+	[aReachability release];
+	
+	UIBarButtonItem *aRefreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performRefresh)];
+	self.navigationItem.rightBarButtonItem = aRefreshButton;
+	[aRefreshButton release];
+	
+	[self performRefresh];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+	
+	[self.reachability startListener];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+	
+	[self.reachability stopListener];
+	[self.locationManager stopUpdatingLocation];
 }
 
 -(void) performRefresh {
 	
-	[self.activityManager showActivity];
-	[self.locationManager startUpdatingLocation];
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		if ([self.trip.destinations count] > 0) {
+			
+			if (self.locationManager.locationServicesEnabled == YES) {
+				
+				[self.activityManager showActivity];
+				[self.locationManager startUpdatingLocation];
+				
+			} else {
+				
+				[self loadAnnotations:nil];
+			}
+			
+		} else {
+			
+			NSString *aMessage = @"At least one destination needs to be added to view the map";
+			UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Map Status" message:aMessage
+															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[anAlert show];	
+			[anAlert release];
+		}
+	} else {
+		
+		[self notReachable];
+	}
+}
+
+#pragma mark -
+#pragma mark ReachabilityDelegate Callback
+
+-(void) notReachable {
+	
+	[self.activityManager hideActivity];
+	[self.locationManager stopUpdatingLocation];
+	
+	NSString *aMessage = @"Unable to connect to the network to display the map of trip destinations.";
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" message:aMessage
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
+}
+
+-(void) reachable {
+	
+	[self performRefresh];
 }
 
 #pragma mark -
@@ -233,6 +275,7 @@
 	[locationManager release];
 	[activityManager release];
 	[currentLocation release];
+	[reachability release];
     [super dealloc];
 }
 
