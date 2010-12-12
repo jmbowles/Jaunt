@@ -96,6 +96,7 @@
 		6D9BA5A911CD19A9006B2B19 /* football.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5A811CD19A9006B2B19 /* football.png */; };
 		6D9BA5AB11CD19E6006B2B19 /* comedy.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5AA11CD19E6006B2B19 /* comedy.png */; };
 		6D9BA5AD11CD1AA4006B2B19 /* arts.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5AC11CD1AA4006B2B19 /* arts.png */; };
+		6D9EB82D12B500950002709E /* ReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D9EB82C12B500950002709E /* ReachabilityManager.m */; };
 		6D9EBBDF1184AE76004B67F5 /* few.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6D9EBBDE1184AE76004B67F5 /* few.jpg */; };
 		6D9EBBF41184B662004B67F5 /* bkn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6D9EBBF31184B662004B67F5 /* bkn.jpg */; };
 		6DA1827A10AEE95B0084CFAE /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1827910AEE95B0084CFAE /* Destination.m */; };
@@ -299,6 +300,9 @@
 		6D9BA5A811CD19A9006B2B19 /* football.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = football.png; sourceTree = "<group>"; };
 		6D9BA5AA11CD19E6006B2B19 /* comedy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = comedy.png; path = "../../../../Desktop/IPhone/icons/043372-blue-jelly-icon-sports-hobbies-full-set/comedy.png"; sourceTree = SOURCE_ROOT; };
 		6D9BA5AC11CD1AA4006B2B19 /* arts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arts.png; sourceTree = "<group>"; };
+		6D9EB82112B4FF710002709E /* ReachabilityDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityDelegate.h; sourceTree = "<group>"; };
+		6D9EB82B12B500950002709E /* ReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityManager.h; sourceTree = "<group>"; };
+		6D9EB82C12B500950002709E /* ReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityManager.m; sourceTree = "<group>"; };
 		6D9EBBDE1184AE76004B67F5 /* few.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = few.jpg; sourceTree = "<group>"; };
 		6D9EBBF31184B662004B67F5 /* bkn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bkn.jpg; sourceTree = "<group>"; };
 		6DA1827810AEE95B0084CFAE /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
@@ -533,6 +537,9 @@
 				6D90F3841170B38D006B2690 /* DateUtils.m */,
 				6D4C0421117D27230065A54F /* ImageKeyValue.h */,
 				6D4C0422117D27230065A54F /* ImageKeyValue.m */,
+				6D9EB82112B4FF710002709E /* ReachabilityDelegate.h */,
+				6D9EB82B12B500950002709E /* ReachabilityManager.h */,
+				6D9EB82C12B500950002709E /* ReachabilityManager.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -787,6 +794,7 @@
 				6D8D465C11C046FC00FEBBF3 /* Checklist.m in Sources */,
 				6D8615F911C3C9C600BDB988 /* EditChecklistItemController.m in Sources */,
 				6D7CE46511D76F53006B2F59 /* QueryDetailWebViewController.m in Sources */,
+				6D9EB82D12B500950002709E /* ReachabilityManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

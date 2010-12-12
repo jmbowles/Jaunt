@@ -19,6 +19,7 @@
 @implementation ChecklistController
 
 @synthesize trip;
+@synthesize sortedGroups;
 @synthesize selectedGroup;
 
 
@@ -40,6 +41,13 @@
 - (void) viewWillAppear:(BOOL) animated {
 	
 	[super viewWillAppear:animated];
+	
+	NSSortDescriptor *aDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+	NSArray *aSortDescriptor = [NSArray arrayWithObject:aDescriptor];
+	[aDescriptor release];
+	NSArray *groups = [[self.trip.checklistGroups allObjects] sortedArrayUsingDescriptors:aSortDescriptor];
+	self.sortedGroups = groups;
+	
 	[self.tableView reloadData];
 }
 
@@ -73,7 +81,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
-	return [self.trip.checklistGroups count];
+	return [self.sortedGroups count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -90,7 +98,7 @@
 	
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
-	ChecklistGroup *aGroup = [[self.trip.checklistGroups allObjects] objectAtIndex:[indexPath row]];
+	ChecklistGroup *aGroup = [self.sortedGroups objectAtIndex:[indexPath row]];
 	cell.textLabel.text = [aGroup name];
 	
 	if ([aGroup allItemsChecked] == YES) {
@@ -110,7 +118,7 @@
 - (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath 
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
-	self.selectedGroup = [[self.trip.checklistGroups allObjects] objectAtIndex:indexPath.row];
+	self.selectedGroup = [self.sortedGroups objectAtIndex:indexPath.row];
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Checklist"
 													otherButtonTitles:@"Clear Checklist", nil];
@@ -125,7 +133,7 @@
 	EditChecklistGroupController *aController = [[EditChecklistGroupController alloc] initWithStyle: UITableViewStyleGrouped];
 	aController.title = @"Edit Checklist";
 	aController.trip = self.trip;
-	aController.group = [[self.trip.checklistGroups allObjects] objectAtIndex:indexPath.row];
+	aController.group = [self.sortedGroups objectAtIndex:indexPath.row];
 	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	[aDelegate.navigationController pushViewController:aController animated:YES];
@@ -186,6 +194,7 @@
 - (void)dealloc {
 	
 	[trip release];
+	[sortedGroups release];
 	[selectedGroup release];
     [super dealloc];
 }

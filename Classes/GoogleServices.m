@@ -10,6 +10,7 @@
 #import "GDataGoogleBase.h"
 
 
+
 @interface GoogleServices (PrivateMethods) 
 
 +(GDataServiceGoogleBase *) googleBaseService;
@@ -121,24 +122,32 @@
 
 +(NSString *) calculateDistanceWithEntry:(GDataEntryGoogleBase *) anEntry fromLocation:(CLLocation *) aLocation {
 	
+	NSString *distance = @"";
 	GDataGoogleBaseAttribute *attr = [anEntry attributeWithName:@"location" type:kGDataGoogleBaseAttributeTypeLocation];
-	NSString *aStringLat = [[[attr subAttributes] objectAtIndex:0] textValue];
-    NSString *aStringLong = [[[attr subAttributes] objectAtIndex:1] textValue];
 	
-	double latitude = [aStringLat doubleValue];
-	double longitude = [aStringLong doubleValue];
-	
-	CLLocation *anEntryLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-	CLLocationDistance miles = ([aLocation getDistanceFrom:anEntryLocation] * 3.28f) / 5280;
-	[anEntryLocation release];
-	
-	NSNumberFormatter *aNumberFormatter = [[NSNumberFormatter alloc] init];
-	[aNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-	[aNumberFormatter setMaximumFractionDigits:1];
-	NSString *mileage = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:miles]];
-	[aNumberFormatter release];
-	
-	NSString *distance = [NSString stringWithFormat:@"%@ miles", mileage];
+	if (attr != nil) {
+		
+		NSString *aStringLat = [[[attr subAttributes] objectAtIndex:0] textValue];
+		NSString *aStringLong = [[[attr subAttributes] objectAtIndex:1] textValue];
+		
+		if (aStringLat != nil && aStringLong != nil) {
+			
+			double latitude = [aStringLat doubleValue];
+			double longitude = [aStringLong doubleValue];
+			
+			CLLocation *anEntryLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+			CLLocationDistance miles = ([aLocation getDistanceFrom:anEntryLocation] * 3.28f) / 5280;
+			[anEntryLocation release];
+			
+			NSNumberFormatter *aNumberFormatter = [[NSNumberFormatter alloc] init];
+			[aNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+			[aNumberFormatter setMaximumFractionDigits:1];
+			NSString *mileage = [aNumberFormatter stringFromNumber:[NSNumber numberWithDouble:miles]];
+			[aNumberFormatter release];
+			
+			distance = [NSString stringWithFormat:@"%@ miles", mileage];
+		}
+	} 
 	
 	return distance;
 }

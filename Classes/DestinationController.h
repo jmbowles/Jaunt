@@ -10,16 +10,18 @@
 #import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
+#import "ReachabilityDelegate.h"
 
 @class CellManager;
 @class Trip;
 @class Destination;
 @class ActivityManager;
+@class ReachabilityManager;
 
 
 @interface DestinationController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate, 
 															UISearchDisplayDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate, 
-														    CLLocationManagerDelegate, MKReverseGeocoderDelegate> {
+														    CLLocationManagerDelegate, MKReverseGeocoderDelegate, ReachabilityDelegate> {
 
 	Trip *trip;
 	Destination *destination;
@@ -36,6 +38,7 @@
 	ActivityManager *activityManager;
 	NSOperationQueue *queue;
 	MKReverseGeocoder *reverseGeoCoder;
+	ReachabilityManager *reachability;
 }
 
 @property (nonatomic, retain) UIToolbar *toolBar;
@@ -51,6 +54,7 @@
 @property (nonatomic, retain) ActivityManager *activityManager;
 @property (nonatomic, retain) NSOperationQueue *queue;
 @property (nonatomic, retain) MKReverseGeocoder *reverseGeoCoder;
+@property (nonatomic, retain) ReachabilityManager *reachability;
 
 
 -(void) save;

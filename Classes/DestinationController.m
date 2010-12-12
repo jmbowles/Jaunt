@@ -19,6 +19,8 @@
 #import	"Logger.h"
 #import "CoreDataManager.h"
 #import "ActivityManager.h"
+#import "ReachabilityManager.h"
+
 
 @implementation DestinationController
 
@@ -35,6 +37,7 @@
 @synthesize activityManager;
 @synthesize queue;
 @synthesize reverseGeoCoder;
+@synthesize reachability;
 
 
 #pragma mark -
@@ -65,6 +68,11 @@
 	self.queue = aQueue;
 	[aQueue release];
 	
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithHost:@"www.apple.com"];
+	aReachability.delegate = self;
+	self.reachability = aReachability;
+	[aReachability release];
+	
 	[self loadTitles];
 	[self loadCells];
 	[self loadValues];
@@ -72,8 +80,14 @@
 	[self configureToolBar];
 }
 
+-(void) viewWillAppear:(BOOL)animated {
+	
+	[self.reachability startListener];
+}
+
 -(void) viewWillDisappear:(BOOL)animated {
 	
+	[self.reachability stopListener];
 	[self.toolBar removeFromSuperview];
 }
 
@@ -182,9 +196,32 @@
 	{
 		[self.activityManager showActivity];
 		[self.locationManager startUpdatingLocation];
-		
 	}
 }
+
+#pragma mark -
+#pragma mark ReachabilityDelegate Callback
+
+-(void) notReachable {
+	
+	//self.toolBar.hidden = YES;
+	UIBarButtonItem *aBarButtonItem = [self.toolBar.items objectAtIndex:0];
+	aBarButtonItem.enabled = NO;
+	
+	NSString *aMessage = @"Unable to connect to the network. However, you can still add a destination manually via the search feature.";
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" message:aMessage
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
+}
+
+-(void) reachable {
+	
+	UIBarButtonItem *aBarButtonItem = [self.toolBar.items objectAtIndex:0];
+	aBarButtonItem.enabled = YES;
+	self.toolBar.hidden = NO;
+}
+
 
 #pragma mark -
 #pragma mark Persistence
@@ -204,7 +241,6 @@
 		
 		[Logger logError:error withMessage:@"Failed to save destination"];
 	}
-	
 	UINavigationController *aController = [delegate navigationController];
 	[aController popViewControllerAnimated:YES];
 }
@@ -463,6 +499,7 @@
 	[activityManager release];
 	[queue release];
 	[reverseGeoCoder release];
+	[reachability release];
 	[super dealloc];
 }
 

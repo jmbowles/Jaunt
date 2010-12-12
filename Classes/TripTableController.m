@@ -22,6 +22,7 @@
 #import "ImageHelper.h"
 
 
+
 @implementation TripTableController
 
 @synthesize tripsCollection;

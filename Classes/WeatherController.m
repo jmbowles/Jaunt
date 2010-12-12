@@ -11,7 +11,6 @@
 #import "Trip.h"
 #import "Destination.h"
 #import "ASIHTTPRequest.h"
-#import "Logger.h"
 #import "DateUtils.h"
 #import "Forecast.h";
 #import "ForecastDetail.h"
@@ -129,8 +128,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-	[Logger logMessage:[request responseString] withTitle:@"NOAA Response"];
-	
 	NSData *xmlData = [request responseData];
 	NSError *error;
 	GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];

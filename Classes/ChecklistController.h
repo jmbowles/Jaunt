@@ -17,10 +17,12 @@
 
 @private
 	
+	NSArray	*sortedGroups;
 	ChecklistGroup *selectedGroup;
 }
 
 @property (nonatomic, retain) Trip *trip;
+@property (nonatomic, retain) NSArray *sortedGroups;
 @property (nonatomic, retain) ChecklistGroup *selectedGroup;
 
 -(void) addItem;
