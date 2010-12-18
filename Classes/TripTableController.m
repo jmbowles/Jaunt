@@ -158,9 +158,9 @@
 	self.selectedTrip = [self.tripsCollection objectAtIndex:indexPath.row];
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles:@"Map", @"Weather", @"Checklist", @"Reservations", nil];
+													otherButtonTitles:@"Map", @"Weather", @"Checklist", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	actionSheet.cancelButtonIndex = 4;
+	actionSheet.cancelButtonIndex = 3;
 	[actionSheet showInView: self.view];
 	[actionSheet release];
 }
@@ -207,13 +207,6 @@
 		ChecklistController *aController = [[ChecklistController alloc] initWithNibName:@"Checklist" bundle:[NSBundle mainBundle]];
 		aController.title = @"Checklist";
 		[aController setTrip:self.selectedTrip];
-		[aDelegate.navigationController pushViewController:aController animated:YES];
-		[aController release];
-	}
-	if (buttonIndex == 3)
-	{
-		ReservationController *aController = [[ReservationController alloc] initWithNibName:@"ReservationView" bundle:[NSBundle mainBundle]];
-		aController.title = @"Reservations";
 		[aDelegate.navigationController pushViewController:aController animated:YES];
 		[aController release];
 	}

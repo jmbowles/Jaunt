@@ -15,10 +15,8 @@
 		6D4C0423117D27230065A54F /* ImageKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D4C0422117D27230065A54F /* ImageKeyValue.m */; };
 		6D632B08108256F1009769E5 /* RouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B07108256F1009769E5 /* RouteController.m */; };
 		6D632B0B10825703009769E5 /* WeatherController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B0A10825703009769E5 /* WeatherController.m */; };
-		6D632B1110825724009769E5 /* ReservationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B1010825724009769E5 /* ReservationController.m */; };
 		6D632B131082578E009769E5 /* RouteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B121082578E009769E5 /* RouteView.xib */; };
 		6D632B15108257A0009769E5 /* WeatherView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B14108257A0009769E5 /* WeatherView.xib */; };
-		6D632B19108257C7009769E5 /* ReservationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B18108257C7009769E5 /* ReservationView.xib */; };
 		6D632B2910825F1F009769E5 /* Route.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B2810825F1F009769E5 /* Route.png */; };
 		6D70783F10B4D20100CDA8FD /* DestinationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D70783E10B4D20100CDA8FD /* DestinationController.m */; };
 		6D755F9610CBDD33004D36F2 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D755F9510CBDD33004D36F2 /* Photo.m */; };
@@ -169,11 +167,8 @@
 		6D632B07108256F1009769E5 /* RouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteController.m; sourceTree = "<group>"; };
 		6D632B0910825703009769E5 /* WeatherController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherController.h; sourceTree = "<group>"; };
 		6D632B0A10825703009769E5 /* WeatherController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherController.m; sourceTree = "<group>"; };
-		6D632B0F10825724009769E5 /* ReservationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationController.h; sourceTree = "<group>"; };
-		6D632B1010825724009769E5 /* ReservationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationController.m; sourceTree = "<group>"; };
 		6D632B121082578E009769E5 /* RouteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteView.xib; sourceTree = "<group>"; };
 		6D632B14108257A0009769E5 /* WeatherView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherView.xib; sourceTree = "<group>"; };
-		6D632B18108257C7009769E5 /* ReservationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReservationView.xib; sourceTree = "<group>"; };
 		6D632B2810825F1F009769E5 /* Route.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = Route.png; sourceTree = "<group>"; };
 		6D632C6510828ECA009769E5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6D70783D10B4D20100CDA8FD /* DestinationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationController.h; sourceTree = "<group>"; };
@@ -354,8 +349,6 @@
 				6D632B07108256F1009769E5 /* RouteController.m */,
 				6D632B0910825703009769E5 /* WeatherController.h */,
 				6D632B0A10825703009769E5 /* WeatherController.m */,
-				6D632B0F10825724009769E5 /* ReservationController.h */,
-				6D632B1010825724009769E5 /* ReservationController.m */,
 				6D7DCF32108B3E4400DFFDFE /* ChecklistController.h */,
 				6D7DCF33108B3E4400DFFDFE /* ChecklistController.m */,
 				6D7DD02E108B813B00DFFDFE /* TripTableController.h */,
@@ -445,7 +438,6 @@
 				8D1107310486CEB800E47090 /* Jaunt-Info.plist */,
 				6D632B121082578E009769E5 /* RouteView.xib */,
 				6D632B14108257A0009769E5 /* WeatherView.xib */,
-				6D632B18108257C7009769E5 /* ReservationView.xib */,
 				6D7DCF29108B3CE200DFFDFE /* Checklist.xib */,
 				6D7DCF2B108B3CEC00DFFDFE /* Trips.xib */,
 				6DA601D611BBED0F00AAC70D /* Jaunt.xcdatamodeld */,
@@ -704,7 +696,6 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				6D632B131082578E009769E5 /* RouteView.xib in Resources */,
 				6D632B15108257A0009769E5 /* WeatherView.xib in Resources */,
-				6D632B19108257C7009769E5 /* ReservationView.xib in Resources */,
 				6D632B2910825F1F009769E5 /* Route.png in Resources */,
 				6D7DCF2A108B3CE200DFFDFE /* Checklist.xib in Resources */,
 				6D7DCF2C108B3CEC00DFFDFE /* Trips.xib in Resources */,
@@ -739,7 +730,6 @@
 				1D3623260D0F684500981E51 /* JauntAppDelegate.m in Sources */,
 				6D632B08108256F1009769E5 /* RouteController.m in Sources */,
 				6D632B0B10825703009769E5 /* WeatherController.m in Sources */,
-				6D632B1110825724009769E5 /* ReservationController.m in Sources */,
 				6D7DCF34108B3E4400DFFDFE /* ChecklistController.m in Sources */,
 				6D7DD030108B813B00DFFDFE /* TripTableController.m in Sources */,
 				6DD7220F10933F93008E5906 /* AddTripController.m in Sources */,
