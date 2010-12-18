@@ -69,36 +69,6 @@
 	[self.locationManager stopUpdatingLocation];
 }
 
--(void) performRefresh {
-	
-	if ([self.reachability isCurrentlyReachable] == YES) {
-		
-		if ([self.trip.destinations count] > 0) {
-			
-			if (self.locationManager.locationServicesEnabled == YES) {
-				
-				[self.activityManager showActivity];
-				[self.locationManager startUpdatingLocation];
-				
-			} else {
-				
-				[self loadAnnotations:nil];
-			}
-			
-		} else {
-			
-			NSString *aMessage = @"At least one destination needs to be added to view the map";
-			UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Map Status" message:aMessage
-															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-			[anAlert show];	
-			[anAlert release];
-		}
-	} else {
-		
-		[self notReachable];
-	}
-}
-
 #pragma mark -
 #pragma mark ReachabilityDelegate Callback
 
@@ -116,7 +86,38 @@
 
 -(void) reachable {
 	
-	[self performRefresh];
+	if ([self.trip.destinations count] > 0) {
+		
+		if (self.locationManager.locationServicesEnabled == YES) {
+			
+			[self.activityManager showActivity];
+			[self.locationManager startUpdatingLocation];
+			
+		} else {
+			
+			[self loadAnnotations:nil];
+		}
+		
+	} else {
+		
+		NSString *aMessage = @"At least one destination needs to be added to view the map";
+		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Map Status" message:aMessage
+														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[anAlert show];	
+		[anAlert release];
+	}
+}
+
+-(void) performRefresh {
+	
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		[self reachable];
+		
+	} else {
+		
+		[self notReachable];
+	}
 }
 
 #pragma mark -

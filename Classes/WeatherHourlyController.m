@@ -16,6 +16,13 @@
 #import "ActivityManager.h"
 #import "DateUtils.h"
 #import "ImageKeyValue.h";
+#import "ReachabilityManager.h"
+
+@interface WeatherHourlyController (PrivateMethods)
+
+-(void) performRefresh;
+
+@end
 
 
 @implementation WeatherHourlyController
@@ -24,6 +31,7 @@
 @synthesize iconDictionary;
 @synthesize activityManager;
 @synthesize queue;
+@synthesize reachability;
 
 
 #pragma mark -
@@ -43,6 +51,42 @@
 	[aQueue release];
 	
 	self.iconDictionary = [NSMutableDictionary dictionary];
+	
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithInternet];
+	aReachability.delegate = self;
+	self.reachability = aReachability;
+	[aReachability release];
+	
+	[self performRefresh];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+	
+	[self.reachability startListener];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+	
+	[self.reachability stopListener];
+	[self.forecast.hourlyDetails removeAllObjects];
+}
+
+#pragma mark -
+#pragma mark ReachabilityDelegate Callback
+
+-(void) notReachable {
+	
+	[self.activityManager hideActivity];
+	
+	NSString *aMessage = @"Unable to connect to the network to display the weather hourly forecast.";
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" message:aMessage
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
+}
+
+-(void) reachable {
+	
 	[self.activityManager showActivity];
 	
 	NSURL *url = [NSURL URLWithString:[Forecast noaaHourlyUrlForLatitude:self.forecast.latitude andLongitude:self.forecast.longitude]];
@@ -52,10 +96,16 @@
 	[aRequest startAsynchronous];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+-(void) performRefresh {
 	
-	[super viewDidLoad];
-	[self.forecast.hourlyDetails removeAllObjects];
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		[self reachable];
+		
+	} else {
+		
+		[self notReachable];
+	}
 }
 
 #pragma mark -
@@ -237,6 +287,7 @@
 	[iconDictionary release];
 	[activityManager release];
 	[queue release];
+	[reachability release];
 	[super dealloc];
 }
 

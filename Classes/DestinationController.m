@@ -22,6 +22,13 @@
 #import "ReachabilityManager.h"
 
 
+@interface DestinationController (PrivateMethods)
+
+-(void) performRefresh;
+
+@end
+
+
 @implementation DestinationController
 
 @synthesize toolBar;
@@ -68,7 +75,7 @@
 	self.queue = aQueue;
 	[aQueue release];
 	
-	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithHost:@"www.apple.com"];
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithInternet];
 	aReachability.delegate = self;
 	self.reachability = aReachability;
 	[aReachability release];
@@ -78,6 +85,7 @@
 	[self loadValues];
 	[self configureSearchDisplay];
 	[self configureToolBar];
+	[self performRefresh];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -218,6 +226,17 @@
 	
 	UIBarButtonItem *aBarButtonItem = [self.toolBar.items objectAtIndex:0];
 	aBarButtonItem.enabled = YES;
+}
+
+-(void) performRefresh {
+	
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		[self reachable];
+	} else {
+		
+		[self notReachable];
+	}
 }
 
 

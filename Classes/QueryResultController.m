@@ -17,7 +17,14 @@
 #import "QueryDetailWebViewController.h"
 #import "JauntAppDelegate.h"
 #import "Logger.h"
+#import "ReachabilityManager.h"
 
+
+@interface QueryResultController (PrivateMethods)
+
+-(void) performRefresh;
+
+@end
 
 @implementation QueryResultController
 
@@ -26,6 +33,7 @@
 @synthesize googleQuery;
 @synthesize results;
 @synthesize activityManager;
+@synthesize reachability;
 
 
 #pragma mark -
@@ -40,10 +48,58 @@
 	[anActivityManager release];
 	[self.activityManager showActivity];
 	
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithInternet];
+	aReachability.delegate = self;
+	self.reachability = aReachability;
+	[aReachability release];
+	
+	[self performRefresh];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+	
+	[self.reachability startListener];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+	
+	[self.reachability stopListener];
+}
+
+#pragma mark -
+#pragma mark ReachabilityDelegate Callback
+
+-(void) notReachable {
+	
+	[self.activityManager hideActivity];
+	
+	NSString *aMessage = @"Unable to connect to the network to display the Google search results.";
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" message:aMessage
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
+}
+
+-(void) reachable {
+	
+	[self.activityManager showActivity];
+	
 	NSString *baseQuery = [self.googleEntry getQuery];
 	NSString *orderBy = [self.googleEntry getOrderBy];
 	
 	[GoogleServices executeQueryUsingDelegate:self selector:@selector(ticket:finishedWithFeed:error:) baseQuery:baseQuery orderBy:orderBy];
+}
+
+-(void) performRefresh {
+	
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		[self reachable];
+		
+	} else {
+		
+		[self notReachable];
+	}
 }
 
 #pragma mark -
@@ -169,6 +225,7 @@
 	[googleQuery release];
 	[results release];
 	[activityManager release];
+	[reachability release];
 	[super dealloc];
 }
 

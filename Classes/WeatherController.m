@@ -19,10 +19,13 @@
 #import "JauntAppDelegate.h"
 #import "ImageKeyValue.h"
 #import "WeatherHourlyController.h"
+#import "ReachabilityManager.h"
+
 
 @interface WeatherController (PrivateMethods)
 
 -(void) fetchWeatherForDestinations:(NSSet *) destinations startingIndex:(NSUInteger) startingIndex endingIndex:(NSUInteger) endingIndex;
+-(void) performRefresh;
 
 @end
 
@@ -34,6 +37,7 @@
 @synthesize iconDictionary;
 @synthesize queue;
 @synthesize selectedForecast;
+@synthesize reachability;
 
 
 #pragma mark -
@@ -43,28 +47,76 @@
 	
 	[super viewDidLoad];
 	
+	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
+	self.activityManager = anActivityManager;
+	[anActivityManager release];
+	
+	NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
+	[aQueue setMaxConcurrentOperationCount:5];
+	self.queue = aQueue;
+	[aQueue release];
+	
+	[self setForecasts:[NSMutableArray array]];
+	[self setIconDictionary:[NSMutableDictionary dictionary]];
+	
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithInternet];
+	aReachability.delegate = self;
+	self.reachability = aReachability;
+	[aReachability release];
+	
+	[self performRefresh];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+	
+	[self.reachability startListener];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+	
+	[self.reachability stopListener];
+}
+
+#pragma mark -
+#pragma mark ReachabilityDelegate Callback
+
+-(void) notReachable {
+	
+	[self.activityManager hideActivity];
+	
+	NSString *aMessage = @"Unable to connect to the network to display the weather forecast.";
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" message:aMessage
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
+}
+
+-(void) reachable {
+	
 	if ([self.trip.destinations count] > 0) {
 		
-		ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
-		self.activityManager = anActivityManager;
-		[anActivityManager release];
-		
-		NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
-		[aQueue setMaxConcurrentOperationCount:5];
-		self.queue = aQueue;
-		[aQueue release];
-		
-		[self setForecasts:[NSMutableArray array]];
-		[self setIconDictionary:[NSMutableDictionary dictionary]];
+		[self.activityManager showActivity];
 		[self fetchWeatherForDestinations:self.trip.destinations startingIndex:0 endingIndex:[self.trip.destinations count]];
 		
 	} else {
 		
 		NSString *aMessage = @"At least one destination needs to be added to determine the forecast";
 		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Weather Status" message:aMessage
-									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[anAlert show];	
 		[anAlert release];
+	}
+}
+
+-(void) performRefresh {
+	
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		[self reachable];
+		
+	} else {
+		
+		[self notReachable];
 	}
 }
 
@@ -330,6 +382,7 @@
 	[iconDictionary release];
 	[queue release];
 	[selectedForecast release];
+	[reachability release];
     [super dealloc];
 }
 

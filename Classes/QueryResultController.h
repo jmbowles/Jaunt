@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "ReachabilityDelegate.h"
 
 @class GoogleEntry;
 @class GoogleQuery;
 @class ActivityManager;
+@class ReachabilityManager;
 
-@interface QueryResultController : UITableViewController <UITableViewDelegate, UIActionSheetDelegate> {
+@interface QueryResultController : UITableViewController <UITableViewDelegate, UIActionSheetDelegate, ReachabilityDelegate> {
 
 	GoogleEntry *googleEntry;
 	CLLocation *currentLocation;
@@ -22,6 +24,7 @@
 	GoogleQuery *googleQuery;
 	NSMutableArray *results;
 	ActivityManager *activityManager;
+	ReachabilityManager *reachability;
 }
 
 @property (nonatomic, retain) GoogleEntry *googleEntry;
@@ -29,5 +32,6 @@
 @property (nonatomic, retain) GoogleQuery *googleQuery;
 @property (nonatomic, retain) NSArray *results;
 @property (nonatomic, retain) ActivityManager *activityManager;
+@property (nonatomic, retain) ReachabilityManager *reachability;
 
 @end

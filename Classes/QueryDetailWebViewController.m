@@ -8,6 +8,8 @@
 
 #import "QueryDetailWebViewController.h"
 #import "Logger.h"
+#import "ReachabilityManager.h"
+
 
 @interface QueryDetailWebViewController (PrivateMethods) 
 
@@ -15,6 +17,7 @@
 -(void) goBack;
 -(void) goForward;
 -(void) openWithSafari;
+-(void) performRefresh;
 
 @end
 
@@ -24,6 +27,7 @@
 @synthesize queryDetailUrl;
 @synthesize toolBar;
 @synthesize webView;
+@synthesize reachability;
 
 
 #pragma mark -
@@ -43,14 +47,20 @@
 	self.webView = aWebView;
 	[aWebView release];
 	[self.view addSubview: self.webView];
-	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.queryDetailUrl]]];
 	
+	ReachabilityManager *aReachability = [[ReachabilityManager alloc] initWithInternet];
+	aReachability.delegate = self;
+	self.reachability = aReachability;
+	[aReachability release];
+	
+	[self performRefresh];
 	[self configureToolBar];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	self.webView.delegate = self;	
+	[self.reachability startListener];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -60,11 +70,41 @@
 	[self.webView removeFromSuperview];
 	[self.toolBar removeFromSuperview];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[self.reachability stopListener];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark ReachabilityDelegate Callback
+
+-(void) notReachable {
+	
+	NSString *aMessage = @"Unable to connect to the network to display the web site.";
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" message:aMessage
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
+}
+
+-(void) reachable {
+	
+	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.queryDetailUrl]]];
+}
+
+-(void) performRefresh {
+	
+	if ([self.reachability isCurrentlyReachable] == YES) {
+		
+		[self reachable];
+		
+	} else {
+		
+		[self notReachable];
+	}
 }
 
 #pragma mark -
@@ -134,14 +174,6 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	if ([error code] != NSURLErrorCancelled) {
-		
-		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:@"Website" message:@"Unable to load website"
-														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-		[anAlert show];	
-		[anAlert release];
-	}
 }
 
 #pragma mark -
@@ -152,6 +184,7 @@
 	[queryDetailUrl release];
 	[toolBar release];
 	[webView release];
+	[reachability release];
     [super dealloc];
 }
 
