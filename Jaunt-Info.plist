@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>blue_uc_j.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.johnbowles.${PRODUCT_NAME:identifier}</string>
+	<string>com.johnbowles.iphone.applications</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -26,5 +26,11 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>still-camera</string>
+		<string>location-services</string>
+		<string>gps</string>
+	</array>
 </dict>
 </plist>

@@ -12,7 +12,6 @@
 #import	"EditTripController.h"
 #import "RouteController.h"
 #import "ChecklistController.h"
-#import	"ReservationController.h"
 #import "WeatherController.h"
 #import "CoreData/CoreData.h"
 #import "Trip.h"
