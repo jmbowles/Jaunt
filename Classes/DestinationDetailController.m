@@ -3,7 +3,6 @@
 //  Jaunt
 //
 //  Created by John Bowles on 3/7/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import "DestinationDetailController.h"
