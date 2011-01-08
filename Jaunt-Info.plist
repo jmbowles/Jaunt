@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>blue_uc_j.png</string>
+	<string>appicon57.png</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.johnbowles.iphone.applications</string>
 	<key>CFBundleInfoDictionaryVersion</key>
