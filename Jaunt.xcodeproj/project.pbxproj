@@ -92,7 +92,6 @@
 		6D9BA59D11CD17AD006B2B19 /* bednbreakfast.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA59C11CD17AD006B2B19 /* bednbreakfast.png */; };
 		6D9BA5A711CD1938006B2B19 /* concerts.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5A611CD1938006B2B19 /* concerts.png */; };
 		6D9BA5A911CD19A9006B2B19 /* football.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5A811CD19A9006B2B19 /* football.png */; };
-		6D9BA5AB11CD19E6006B2B19 /* comedy.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5AA11CD19E6006B2B19 /* comedy.png */; };
 		6D9BA5AD11CD1AA4006B2B19 /* arts.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9BA5AC11CD1AA4006B2B19 /* arts.png */; };
 		6D9C5D5312D891D500311B35 /* appicon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9C5D5212D891D500311B35 /* appicon57.png */; };
 		6D9EB82D12B500950002709E /* ReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D9EB82C12B500950002709E /* ReachabilityManager.m */; };
@@ -294,7 +293,6 @@
 		6D9BA59C11CD17AD006B2B19 /* bednbreakfast.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bednbreakfast.png; sourceTree = "<group>"; };
 		6D9BA5A611CD1938006B2B19 /* concerts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = concerts.png; sourceTree = "<group>"; };
 		6D9BA5A811CD19A9006B2B19 /* football.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = football.png; sourceTree = "<group>"; };
-		6D9BA5AA11CD19E6006B2B19 /* comedy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = comedy.png; path = "../../../../Desktop/IPhone/icons/043372-blue-jelly-icon-sports-hobbies-full-set/comedy.png"; sourceTree = SOURCE_ROOT; };
 		6D9BA5AC11CD1AA4006B2B19 /* arts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arts.png; sourceTree = "<group>"; };
 		6D9C5D5212D891D500311B35 /* appicon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appicon57.png; sourceTree = "<group>"; };
 		6D9EB82112B4FF710002709E /* ReachabilityDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityDelegate.h; sourceTree = "<group>"; };
@@ -423,7 +421,6 @@
 				6D9C5D5212D891D500311B35 /* appicon57.png */,
 				6D9BA5A611CD1938006B2B19 /* concerts.png */,
 				6D9BA59711CD16E2006B2B19 /* sightseeing.png */,
-				6D9BA5AA11CD19E6006B2B19 /* comedy.png */,
 				6D9BA5A811CD19A9006B2B19 /* football.png */,
 				6D9BA59511CD168C006B2B19 /* food.png */,
 				6D9BA5AC11CD1AA4006B2B19 /* arts.png */,
@@ -637,7 +634,11 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Jaunt" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectReferences = (
@@ -717,7 +718,6 @@
 				6D9BA59D11CD17AD006B2B19 /* bednbreakfast.png in Resources */,
 				6D9BA5A711CD1938006B2B19 /* concerts.png in Resources */,
 				6D9BA5A911CD19A9006B2B19 /* football.png in Resources */,
-				6D9BA5AB11CD19E6006B2B19 /* comedy.png in Resources */,
 				6D9BA5AD11CD1AA4006B2B19 /* arts.png in Resources */,
 				6D9C5D5312D891D500311B35 /* appicon57.png in Resources */,
 			);
@@ -821,6 +821,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = Jaunt;
+				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(GDATA_SRC)/**";
 			};
 			name = Debug;
@@ -840,6 +841,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = Jaunt;
+				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(GDATA_SRC)/**";
 			};
 			name = Release;
@@ -881,6 +883,7 @@
 				);
 				PRODUCT_NAME = Jaunt;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(GDATA_SRC)/**";
 			};
 			name = "Release Distribution";
