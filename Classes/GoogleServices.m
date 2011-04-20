@@ -136,7 +136,7 @@
 			double longitude = [aStringLong doubleValue];
 			
 			CLLocation *anEntryLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-			CLLocationDistance miles = ([aLocation getDistanceFrom:anEntryLocation] * 3.28f) / 5280;
+			CLLocationDistance miles = ([aLocation distanceFromLocation:anEntryLocation] * 3.28f) / 5280;
 			[anEntryLocation release];
 			
 			NSNumberFormatter *aNumberFormatter = [[NSNumberFormatter alloc] init];

@@ -88,7 +88,7 @@
 	
 	if ([self.trip.destinations count] > 0) {
 		
-		if (self.locationManager.locationServicesEnabled == YES) {
+		if ([CLLocationManager locationServicesEnabled] == YES) {
 			
 			[self.activityManager showActivity];
 			[self.locationManager startUpdatingLocation];
