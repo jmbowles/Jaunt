@@ -10,7 +10,7 @@
 #import "Forecast.h"
 #import "ForecastDetail.h"
 #import "ImageKeyValue.h"
-#import "WeatherHourlyController.h";
+#import "WeatherHourlyController.h"
 #import "JauntAppDelegate.h"
 
 @implementation WeatherDetailController

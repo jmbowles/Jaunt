@@ -12,7 +12,7 @@
 #import "Destination.h"
 #import "ASIHTTPRequest.h"
 #import "DateUtils.h"
-#import "Forecast.h";
+#import "Forecast.h"
 #import "ForecastDetail.h"
 #import "ActivityManager.h"
 #import "WeatherDetailController.h"

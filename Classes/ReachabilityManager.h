@@ -5,7 +5,7 @@
 //  Created by John Bowles on 12/12/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
-
+#import <netinet/in.h>
 #import <Foundation/Foundation.h>
 #import	"ReachabilityDelegate.h"
 

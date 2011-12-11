@@ -6,16 +6,12 @@
 //
 
 #import "DestinationDetailController.h"
-#import "GDataGoogleBase.h"
+#import "GData.h"
 #import "GoogleServices.h"
-#import "GoogleEntry.h"
-#import "LodgingEntry.h"
-#import "EventEntry.h"
-#import "RestaurantEntry.h"
 #import "Destination.h"
 #import "QueryResultController.h"
 #import "JauntAppDelegate.h"
-
+#import "GooglePlaceRequest.h"
 
 
 @interface DestinationDetailController (PrivateMethods) 
@@ -63,8 +59,8 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:reuseIdentifer] autorelease];
 	}
 	
-	GoogleEntry *anEntry = [self.actions objectAtIndex: [indexPath row]];
-	cell.textLabel.text = [anEntry getTitle];	
+	GooglePlaceRequest *aPlaceRequest = [self.actions objectAtIndex: [indexPath row]];
+	cell.textLabel.text = aPlaceRequest.title;	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.imageView.image = [self.icons objectAtIndex: [indexPath row]];
 	
@@ -76,12 +72,12 @@
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
 	
-	GoogleEntry *anEntry = [self.actions objectAtIndex:indexPath.row];
+	GooglePlaceRequest *aPlaceRequest = [self.actions objectAtIndex:indexPath.row];
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
 	QueryResultController *aController = [[QueryResultController alloc] init];
 	
-	[aController setTitle:[anEntry getTitle]];
-	[aController setGoogleEntry:anEntry];
+	[aController setTitle:aPlaceRequest.title];
+	[aController setPlaceRequest:aPlaceRequest];
 	[aController setCurrentLocation: self.currentLocation];
 	[aDelegate.navigationController pushViewController:aController animated:YES];
 	[aController release];
@@ -94,14 +90,21 @@
 	
 	NSString *latLong = [GoogleServices formatLatitude:self.destination.latitude andLongitude:self.destination.longitude];
 	
-	GoogleEntry *hotels = [[LodgingEntry alloc] initWithLocation:latLong withName:@"Hotels" itemType:@"hotels" andFilter:nil andCurrentLocation: self.currentLocation];
-	GoogleEntry *bnb = [[LodgingEntry alloc] initWithLocation:latLong withName:@"Bed & Breakfast" itemType:@"Bed and Breakfast" andFilter:nil andCurrentLocation: self.currentLocation];
-	GoogleEntry *food = [[RestaurantEntry alloc] initWithLocation:latLong withName:@"Restaurants" andFilter:nil andCurrentLocation: self.currentLocation];
-	GoogleEntry *sightseeing = [[EventEntry alloc] initWithLocation:latLong withName:@"Sightseeing" andFilter:@"[event type:Sightseeing]" andCurrentLocation: self.currentLocation];
-	GoogleEntry *concerts = [[EventEntry alloc] initWithLocation:latLong withName:@"Concerts" andFilter:@"[event type:Concerts]" andCurrentLocation: self.currentLocation];
-	GoogleEntry *sports = [[EventEntry alloc] initWithLocation:latLong withName:@"Sports" andFilter:@"[event type:Sports]" andCurrentLocation: self.currentLocation];
-	GoogleEntry *comedy = [[EventEntry alloc] initWithLocation:latLong withName:@"Comedy" andFilter:@"[event type:Comedy]" andCurrentLocation: self.currentLocation];
-	GoogleEntry *arts = [[EventEntry alloc] initWithLocation:latLong withName:@"Performing Arts" andFilter:@"[event type:Performing/Visual Arts]" andCurrentLocation: self.currentLocation];
+    GooglePlaceRequest *hotels = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Hotels" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *bnb = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Bed & Breakfast" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *food = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Restaurants" placeType:@"restaurant" radius:5000 currentLocation:self.currentLocation];
+	
+    GooglePlaceRequest *sightseeing = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sightseeing" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *concerts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Concerts" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *sports = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sports" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *comedy = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Comedy" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *arts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Performing Arts" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
 	
 	NSArray *anArray = [[NSArray alloc] initWithObjects:hotels, bnb, food, sightseeing, concerts, sports, comedy, arts, nil];
 	[self setActions: anArray];

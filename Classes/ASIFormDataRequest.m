@@ -15,8 +15,8 @@
 - (void)buildURLEncodedPostBody;
 - (void)appendPostString:(NSString *)string;
 
-@property (retain) NSMutableDictionary *postData;
-@property (retain) NSMutableDictionary *fileData;
+@property (retain) NSMutableArray *postData;
+@property (retain) NSMutableArray *fileData;
 
 #if DEBUG_FORM_DATA_REQUEST
 - (void)addToDebugBody:(NSString *)string;
@@ -30,7 +30,7 @@
 #pragma mark utilities
 - (NSString*)encodeURL:(NSString *)string
 {
-	NSString *newString = [(NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, CFSTR(":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`"), CFStringConvertNSStringEncodingToEncoding([self stringEncoding])) autorelease];
+	NSString *newString = [NSMakeCollectable(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, CFSTR(":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`"), CFStringConvertNSStringEncodingToEncoding([self stringEncoding]))) autorelease];
 	if (newString) {
 		return newString;
 	}
@@ -49,6 +49,7 @@
 	self = [super initWithURL:newURL];
 	[self setPostFormat:ASIURLEncodedPostFormat];
 	[self setStringEncoding:NSUTF8StringEncoding];
+    [self setRequestMethod:@"POST"];
 	return self;
 }
 
@@ -65,12 +66,58 @@
 
 #pragma mark setup request
 
+- (void)addPostValue:(id <NSObject>)value forKey:(NSString *)key
+{
+	if (!key) {
+		return;
+	}
+	if (![self postData]) {
+		[self setPostData:[NSMutableArray array]];
+	}
+	NSMutableDictionary *keyValuePair = [NSMutableDictionary dictionaryWithCapacity:2];
+	[keyValuePair setValue:key forKey:@"key"];
+	[keyValuePair setValue:[value description] forKey:@"value"];
+	[[self postData] addObject:keyValuePair];
+}
+
 - (void)setPostValue:(id <NSObject>)value forKey:(NSString *)key
 {
-	if (![self postData]) {
-		[self setPostData:[NSMutableDictionary dictionary]];
+	// Remove any existing value
+	NSUInteger i;
+	for (i=0; i<[[self postData] count]; i++) {
+		NSDictionary *val = [[self postData] objectAtIndex:i];
+		if ([[val objectForKey:@"key"] isEqualToString:key]) {
+			[[self postData] removeObjectAtIndex:i];
+			i--;
+		}
 	}
-	[[self postData] setValue:[value description] forKey:key];
+	[self addPostValue:value forKey:key];
+}
+
+
+- (void)addFile:(NSString *)filePath forKey:(NSString *)key
+{
+	[self addFile:filePath withFileName:nil andContentType:nil forKey:key];
+}
+
+- (void)addFile:(NSString *)filePath withFileName:(NSString *)fileName andContentType:(NSString *)contentType forKey:(NSString *)key
+{
+	BOOL isDirectory = NO;
+	BOOL fileExists = [[[[NSFileManager alloc] init] autorelease] fileExistsAtPath:filePath isDirectory:&isDirectory];
+	if (!fileExists || isDirectory) {
+		[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"No file exists at %@",filePath],NSLocalizedDescriptionKey,nil]]];
+	}
+    
+	// If the caller didn't specify a custom file name, we'll use the file name of the file we were passed
+	if (!fileName) {
+		fileName = [filePath lastPathComponent];
+	}
+    
+	// If we were given the path to a file, and the user didn't specify a mime type, we can detect it from the file extension
+	if (!contentType) {
+		contentType = [ASIHTTPRequest mimeTypeForFileAtPath:filePath];
+	}
+	[self addData:filePath withFileName:fileName andContentType:contentType forKey:key];
 }
 
 - (void)setFile:(NSString *)filePath forKey:(NSString *)key
@@ -80,31 +127,39 @@
 
 - (void)setFile:(id)data withFileName:(NSString *)fileName andContentType:(NSString *)contentType forKey:(NSString *)key
 {
-	if (![self fileData]) {
-		[self setFileData:[NSMutableDictionary dictionary]];
-	}
-	
-	// If data is a path to a local file
-	if ([data isKindOfClass:[NSString class]]) {
-		BOOL isDirectory = NO;
-		BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:(NSString *)data isDirectory:&isDirectory];
-		if (!fileExists || isDirectory) {
-			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"No file exists at %@",data],NSLocalizedDescriptionKey,nil]]];
+	// Remove any existing value
+	NSUInteger i;
+	for (i=0; i<[[self fileData] count]; i++) {
+		NSDictionary *val = [[self fileData] objectAtIndex:i];
+		if ([[val objectForKey:@"key"] isEqualToString:key]) {
+			[[self fileData] removeObjectAtIndex:i];
+			i--;
 		}
+	}
+	[self addFile:data withFileName:fileName andContentType:contentType forKey:key];
+}
 
-		// If the caller didn't specify a custom file name, we'll use the file name of the file we were passed
-		if (!fileName) {
-			fileName = [(NSString *)data lastPathComponent];
-		}
-	
-		// If we were given the path to a file, and the user didn't specify a mime type, we can detect it from the file extension
-		if (!contentType) {
-			contentType = [ASIHTTPRequest mimeTypeForFileAtPath:data];
-		}
+- (void)addData:(NSData *)data forKey:(NSString *)key
+{
+	[self addData:data withFileName:@"file" andContentType:nil forKey:key];
+}
+
+- (void)addData:(id)data withFileName:(NSString *)fileName andContentType:(NSString *)contentType forKey:(NSString *)key
+{
+	if (![self fileData]) {
+		[self setFileData:[NSMutableArray array]];
 	}
-	
-	NSDictionary *fileInfo = [NSDictionary dictionaryWithObjectsAndKeys:data, @"data", contentType, @"contentType", fileName, @"fileName", nil];
-	[[self fileData] setObject:fileInfo forKey:key];
+	if (!contentType) {
+		contentType = @"application/octet-stream";
+	}
+    
+	NSMutableDictionary *fileInfo = [NSMutableDictionary dictionaryWithCapacity:4];
+	[fileInfo setValue:key forKey:@"key"];
+	[fileInfo setValue:fileName forKey:@"fileName"];
+	[fileInfo setValue:contentType forKey:@"contentType"];
+	[fileInfo setValue:data forKey:@"data"];
+    
+	[[self fileData] addObject:fileInfo];
 }
 
 - (void)setData:(NSData *)data forKey:(NSString *)key
@@ -114,24 +169,22 @@
 
 - (void)setData:(id)data withFileName:(NSString *)fileName andContentType:(NSString *)contentType forKey:(NSString *)key
 {
-	if (![self fileData]) {
-		[self setFileData:[NSMutableDictionary dictionary]];
+	// Remove any existing value
+	NSUInteger i;
+	for (i=0; i<[[self fileData] count]; i++) {
+		NSDictionary *val = [[self fileData] objectAtIndex:i];
+		if ([[val objectForKey:@"key"] isEqualToString:key]) {
+			[[self fileData] removeObjectAtIndex:i];
+			i--;
+		}
 	}
-	if (!contentType) {
-		contentType = @"application/octet-stream";
-	}
-	
-	NSDictionary *fileInfo = [NSDictionary dictionaryWithObjectsAndKeys:data, @"data", contentType, @"contentType", fileName, @"fileName", nil];
-	[[self fileData] setObject:fileInfo forKey:key];
+	[self addData:data withFileName:fileName andContentType:contentType forKey:key];
 }
 
 - (void)buildPostBody
 {
 	if ([self haveBuiltPostBody]) {
 		return;
-	}
-	if (![[self requestMethod] isEqualToString:@"PUT"]) {
-		[self setRequestMethod:@"POST"];
 	}
 	
 #if DEBUG_FORM_DATA_REQUEST
@@ -151,11 +204,11 @@
 	} else {
 		[self buildMultipartFormDataPostBody];
 	}
-
+    
 	[super buildPostBody];
 	
 #if DEBUG_FORM_DATA_REQUEST
-	NSLog(@"%@",[self debugBodyString]);
+	ASI_DEBUG_LOG(@"%@",[self debugBodyString]);
 	[self setDebugBodyString:nil];
 #endif
 }
@@ -169,8 +222,11 @@
 	
 	NSString *charset = (NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding([self stringEncoding]));
 	
-	// Set your own boundary string only if really obsessive. We don't bother to check if post data contains the boundary, since it's pretty unlikely that it does.
-	NSString *stringBoundary = @"0xKhTmLbOuNdArY";
+	// We don't bother to check if post data contains the boundary, since it's pretty unlikely that it does.
+	CFUUIDRef uuid = CFUUIDCreate(nil);
+	NSString *uuidString = [(NSString*)CFUUIDCreateString(nil, uuid) autorelease];
+	CFRelease(uuid);
+	NSString *stringBoundary = [NSString stringWithFormat:@"0xKhTmLbOuNdArY-%@",uuidString];
 	
 	[self addRequestHeader:@"Content-Type" value:[NSString stringWithFormat:@"multipart/form-data; charset=%@; boundary=%@", charset, stringBoundary]];
 	
@@ -178,12 +234,10 @@
 	
 	// Adds post data
 	NSString *endItemBoundary = [NSString stringWithFormat:@"\r\n--%@\r\n",stringBoundary];
-	NSEnumerator *e = [[self postData] keyEnumerator];
-	NSString *key;
 	NSUInteger i=0;
-	while (key = [e nextObject]) {
-		[self appendPostString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",key]];
-		[self appendPostString:[[self postData] objectForKey:key]];
+	for (NSDictionary *val in [self postData]) {
+		[self appendPostString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",[val objectForKey:@"key"]]];
+		[self appendPostString:[val objectForKey:@"value"]];
 		i++;
 		if (i != [[self postData] count] || [[self fileData] count] > 0) { //Only add the boundary if this is not the last item in the post body
 			[self appendPostString:endItemBoundary];
@@ -191,21 +245,17 @@
 	}
 	
 	// Adds files to upload
-	e = [fileData keyEnumerator];
 	i=0;
-	while (key = [e nextObject]) {
-		NSDictionary *fileInfo = [[self fileData] objectForKey:key];
-		id file = [fileInfo objectForKey:@"data"];
-		NSString *contentType = [fileInfo objectForKey:@"contentType"];
-		NSString *fileName = [fileInfo objectForKey:@"fileName"];
+	for (NSDictionary *val in [self fileData]) {
+        
+		[self appendPostString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", [val objectForKey:@"key"], [val objectForKey:@"fileName"]]];
+		[self appendPostString:[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", [val objectForKey:@"contentType"]]];
 		
-		[self appendPostString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", key, fileName]];
-		[self appendPostString:[NSString stringWithFormat:@"Content-Type: %@; charset=%@\r\n\r\n", contentType, charset]];
-		
-		if ([file isKindOfClass:[NSString class]]) {
-			[self appendPostDataFromFile:file];
+		id data = [val objectForKey:@"data"];
+		if ([data isKindOfClass:[NSString class]]) {
+			[self appendPostDataFromFile:data];
 		} else {
-			[self appendPostData:file];
+			[self appendPostData:data];
 		}
 		i++;
 		// Only add the boundary if this is not the last item in the post body
@@ -223,7 +273,7 @@
 
 - (void)buildURLEncodedPostBody
 {
-
+    
 	// We can't post binary data using application/x-www-form-urlencoded
 	if ([[self fileData] count] > 0) {
 		[self setPostFormat:ASIMultipartFormDataPostFormat];
@@ -237,16 +287,14 @@
 	
 	
 	NSString *charset = (NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding([self stringEncoding]));
-
+    
 	[self addRequestHeader:@"Content-Type" value:[NSString stringWithFormat:@"application/x-www-form-urlencoded; charset=%@",charset]];
-
+    
 	
-	NSEnumerator *e = [[self postData] keyEnumerator];
-	NSString *key;
-	int i=0;
-	int count = [[self postData] count]-1;
-	while (key = [e nextObject]) {
-        NSString *data = [NSString stringWithFormat:@"%@=%@%@", [self encodeURL:key], [self encodeURL:[[self postData] objectForKey:key]],(i<count ?  @"&" : @"")]; 
+	NSUInteger i=0;
+	NSUInteger count = [[self postData] count]-1;
+	for (NSDictionary *val in [self postData]) {
+        NSString *data = [NSString stringWithFormat:@"%@=%@%@", [self encodeURL:[val objectForKey:@"key"]], [self encodeURL:[val objectForKey:@"value"]],(i<count ?  @"&" : @"")]; 
 		[self appendPostString:data];
 		i++;
 	}
@@ -273,19 +321,21 @@
 - (void)appendPostDataFromFile:(NSString *)file
 {
 	NSError *err = nil;
-	unsigned long long fileSize = [[[[NSFileManager defaultManager] attributesOfItemAtPath:file error:&err] objectForKey:NSFileSize] unsignedLongLongValue];
+	unsigned long long fileSize = [[[[[[NSFileManager alloc] init] autorelease] attributesOfItemAtPath:file error:&err] objectForKey:NSFileSize] unsignedLongLongValue];
 	if (err) {
 		[self addToDebugBody:[NSString stringWithFormat:@"[Error: Failed to obtain the size of the file at '%@']",file]];
 	} else {
 		[self addToDebugBody:[NSString stringWithFormat:@"[%llu bytes of data from file '%@']",fileSize,file]];
 	}
-
+    
 	[super appendPostDataFromFile:file];
 }
 
 - (void)addToDebugBody:(NSString *)string
 {
-	[self setDebugBodyString:[[self debugBodyString] stringByAppendingString:string]];
+	if (string) {
+		[self setDebugBodyString:[[self debugBodyString] stringByAppendingString:string]];
+	}
 }
 #endif
 
@@ -294,8 +344,8 @@
 - (id)copyWithZone:(NSZone *)zone
 {
 	ASIFormDataRequest *newRequest = [super copyWithZone:zone];
-	[newRequest setPostData:[[[self postData] copyWithZone:zone] autorelease]];
-	[newRequest setFileData:[[[self fileData] copyWithZone:zone] autorelease]];
+	[newRequest setPostData:[[[self postData] mutableCopyWithZone:zone] autorelease]];
+	[newRequest setFileData:[[[self fileData] mutableCopyWithZone:zone] autorelease]];
 	[newRequest setPostFormat:[self postFormat]];
 	[newRequest setStringEncoding:[self stringEncoding]];
 	[newRequest setRequestMethod:[self requestMethod]];

@@ -15,7 +15,7 @@
 #import "Logger.h"
 #import "ActivityManager.h"
 #import "DateUtils.h"
-#import "ImageKeyValue.h";
+#import "ImageKeyValue.h"
 #import "ReachabilityManager.h"
 
 @interface WeatherHourlyController (PrivateMethods)

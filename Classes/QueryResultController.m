@@ -6,19 +6,20 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "ASIHTTPRequest.h"
 #import "QueryResultController.h"
 #import "ActivityManager.h"
-#import "GDataUtilities.h"
 #import "GoogleServices.h"
 #import "GoogleQuery.h"
-#import "GoogleEntry.h"
-#import "GDataGoogleBase.h"
+#import "GData.h"
 #import "QueryDetailController.h"
 #import "QueryDetailWebViewController.h"
 #import "JauntAppDelegate.h"
 #import "Logger.h"
 #import "ReachabilityManager.h"
 
+#define DARK_BACKGROUND  [UIColor colorWithRed:203.0/255.0 green:204.0/255.0 blue:206.0/255.0 alpha:1.0]
+#define LIGHT_BACKGROUND [UIColor colorWithRed:224.0/255.0 green:225.0/255.0 blue:227.0/255.0 alpha:1.0]
 
 @interface QueryResultController (PrivateMethods)
 
@@ -29,11 +30,14 @@
 @implementation QueryResultController
 
 @synthesize googleEntry;
+@synthesize placeRequest;
 @synthesize currentLocation;
 @synthesize googleQuery;
 @synthesize results;
 @synthesize activityManager;
 @synthesize reachability;
+@synthesize ratingCell;
+@synthesize ratingCellNib;
 
 
 #pragma mark -
@@ -42,7 +46,10 @@
 -(void)viewDidLoad {
 	
     [super viewDidLoad];
-	
+    
+    self.ratingCellNib = [UINib nibWithNibName:@"RatingTableViewCell" bundle:nil];
+    self.tableView.rowHeight = 78.0;
+    
 	ActivityManager *anActivityManager = [[ActivityManager alloc] initWithView:self.tableView];
 	self.activityManager = anActivityManager;
 	[anActivityManager release];
@@ -84,10 +91,11 @@
 	
 	[self.activityManager showActivity];
 	
-	NSString *baseQuery = [self.googleEntry getQuery];
-	NSString *orderBy = [self.googleEntry getOrderBy];
-	
-	[GoogleServices executeQueryUsingDelegate:self selector:@selector(ticket:finishedWithFeed:error:) baseQuery:baseQuery orderBy:orderBy];
+    NSURL *url = [NSURL URLWithString:[self.placeRequest getQuery]];
+	ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:url];
+    [aRequest setTimeOutSeconds:20];
+	[aRequest setDelegate:self];
+	[aRequest startAsynchronous];
 }
 
 -(void) performRefresh {
@@ -103,38 +111,66 @@
 }
 
 #pragma mark -
-#pragma mark Google Base Query Callbacks
+#pragma mark ASIHttpRequest Callbacks
 
--(void)ticket:(GDataServiceTicket *) aTicket finishedWithFeed:(GDataFeedBase *) aFeed error:(NSError *) anError {
-	
-	NSMutableArray *queryResults = [NSMutableArray array];
-	
-	for (GDataEntryGoogleBase *entry in [aFeed entries]) {
-	
-		GoogleQuery *aResult = [[GoogleQuery alloc] init];
-		
-		aResult.title = [self.googleEntry formatTitleWithEntry:entry];
-		aResult.subTitle = [self.googleEntry formatSubTitleWithEntry:entry andAddress: [entry location]];
-		aResult.detailedDescription = [self.googleEntry formatDetailsWithEntry:entry];
-		aResult.address = [entry location];
-		aResult.href = [[entry alternateLink] href];
-		aResult.mapsURL = [GoogleServices mapsURLWithAddress:[entry location] andLocation:[self currentLocation]];
-		
-		[queryResults addObject:aResult];
-		[aResult release];
-	}
-	
-	[self.activityManager hideActivity];
-	[self setResults: queryResults];
-	[self.tableView reloadData];
-	
-	if ([[aFeed entries] count] == 0) {
-	
-		UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:[self.googleEntry getTitle] message:@"No results found"
-													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+	NSData *xmlData = [request responseData];
+    [Logger logMessage:[request responseString] withTitle:@"Response"];
+    
+	NSError *error;
+	GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
+    NSString *status = [[[[aDocument rootElement] elementsForName:@"status"] objectAtIndex:0] stringValue];
+	NSArray *places = [aDocument nodesForXPath:@"//PlaceSearchResponse/result" error:&error];
+    NSMutableArray *queryResults = [NSMutableArray array];
+    
+    if ([status caseInsensitiveCompare:@"ok"] == NSOrderedSame) {
+       
+        for (GDataXMLElement *place in places) {
+            
+            GDataXMLElement *name = [[place elementsForName:@"name"] objectAtIndex:0];
+            GDataXMLElement *address = [[place elementsForName:@"vicinity"] objectAtIndex:0];
+            GDataXMLElement *rating = [[place elementsForName:@"rating"] objectAtIndex:0];
+            GDataXMLElement *location = [[place nodesForXPath:@"geometry/location" error:&error] objectAtIndex:0];
+            GDataXMLElement *lat = [[location elementsForName:@"lat"] objectAtIndex:0];
+            GDataXMLElement *lng = [[location elementsForName:@"lng"] objectAtIndex:0];
+            NSString *miles = [GoogleServices calculateDistanceFromLatitude:[lat stringValue] fromLongitude:[lng stringValue] toLocation:[self currentLocation]];
+            GoogleQuery *aResult = [[GoogleQuery alloc] init];
+            
+            aResult.title = [name stringValue];
+            aResult.subTitle = miles;
+            aResult.detailedDescription = [rating stringValue];
+            aResult.address = [address stringValue];
+            aResult.mapsURL = [GoogleServices mapsURLWithAddress:[NSString stringWithFormat:@"%@,%@", [lat stringValue], [lng stringValue]] andLocation:[self currentLocation]];
+            
+            [queryResults addObject:aResult];
+            [aResult release];
+        }
+        
+    } else {
+      
+        UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:self.placeRequest.title message:@"No results found"
+                                                         delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[anAlert show];	
 		[anAlert release];
-	}
+    }
+    
+    [aDocument release];
+    [self.activityManager hideActivity];
+	[self setResults: queryResults];
+	[self.tableView reloadData];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+	[self.activityManager hideActivity];
+	
+	UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:self.placeRequest.title message:@"No results found"
+													 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	[anAlert show];	
+	[anAlert release];
 }
 
 #pragma mark -
@@ -147,21 +183,31 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *reuseIdentifer = @"ActionCell";
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: reuseIdentifer];
-	
+    static NSString *identifier = @"RatingCellReuseIdentifier";
+    
+    RatingTableViewCell *cell = (RatingTableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+
 	if (cell == nil) {
 		
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifer] autorelease];
-	}
-	
+        [self.ratingCellNib instantiateWithOwner:self options:nil];
+		cell = self.ratingCell;
+		self.ratingCell = nil;
+    }
+ 
 	GoogleQuery *aQuery = [self.results objectAtIndex: [indexPath row]];
-	cell.textLabel.text = [aQuery.title capitalizedString];	
-	cell.detailTextLabel.text = [aQuery.subTitle capitalizedString];
-	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	
-	return cell;
+    
+    cell.icon.image = [UIImage imageNamed:@"restaurant-71.png"];
+	cell.nameLabel.text = [aQuery.title capitalizedString];	
+	cell.milesLabel.text = aQuery.subTitle;
+    cell.addressLabel.text = aQuery.address;
+    [cell.ratingView setRating:[aQuery.detailedDescription floatValue]];
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = (indexPath.row % 2 == 0) ? LIGHT_BACKGROUND : DARK_BACKGROUND;
 }
 
 #pragma mark -
@@ -174,9 +220,9 @@
 	self.googleQuery = [self.results objectAtIndex:indexPath.row];
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles:@"Directions", @"Website", nil];
+													otherButtonTitles:@"Directions", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	actionSheet.cancelButtonIndex = 2;
+	actionSheet.cancelButtonIndex = 1;
 	[actionSheet showInView: self.view];
 	[actionSheet release];
 }
@@ -204,15 +250,6 @@
 	{
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.googleQuery.mapsURL]];
 	}
-	if (buttonIndex == 1)
-	{
-		JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-		QueryDetailWebViewController *aController = [[QueryDetailWebViewController alloc] init];
-		[aController setTitle:self.googleQuery.title];
-		[aController setQueryDetailUrl:self.googleQuery.href];
-		[aDelegate.navigationController pushViewController:aController animated:YES];
-		[aController release];
-	}
 }
 
 #pragma mark -
@@ -221,11 +258,14 @@
 -(void)dealloc {
     
 	[googleEntry release];
+    [placeRequest release];
 	[currentLocation release];
 	[googleQuery release];
 	[results release];
 	[activityManager release];
 	[reachability release];
+    [ratingCell release];
+    [ratingCellNib release];
 	[super dealloc];
 }
 
