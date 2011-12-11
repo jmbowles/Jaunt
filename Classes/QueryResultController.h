@@ -12,14 +12,12 @@
 #import "RatingTableViewCell.h"
 #import "GooglePlaceRequest.h"
 
-@class GoogleEntry;
 @class GoogleQuery;
 @class ActivityManager;
 @class ReachabilityManager;
 
 @interface QueryResultController : UITableViewController <UITableViewDelegate, UIActionSheetDelegate, ReachabilityDelegate> {
 
-	GoogleEntry *googleEntry;
     GooglePlaceRequest *placeRequest;
 	CLLocation *currentLocation;
     RatingTableViewCell *ratingCell;
@@ -30,9 +28,10 @@
 	NSMutableArray *results;
 	ActivityManager *activityManager;
 	ReachabilityManager *reachability;
+    NSOperationQueue *queue;
+    NSMutableDictionary *iconDictionary;
 }
 
-@property (nonatomic, retain) GoogleEntry *googleEntry;
 @property (nonatomic, retain) GooglePlaceRequest *placeRequest;
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, retain) GoogleQuery *googleQuery;
@@ -41,5 +40,7 @@
 @property (nonatomic, retain) ReachabilityManager *reachability;
 @property (nonatomic, retain) IBOutlet RatingTableViewCell *ratingCell;
 @property (nonatomic, retain) UINib *ratingCellNib;
+@property (nonatomic, retain) NSOperationQueue *queue;
+@property (nonatomic, retain) NSMutableDictionary *iconDictionary;
 
 @end

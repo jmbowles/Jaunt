@@ -37,14 +37,18 @@
     [service fetchFeedWithQuery:aQuery delegate:aDelegate didFinishSelector:aSelector];
 }
 
-+(NSString *) placesQueryWithLocation:(NSString *)aLocation placeType:(NSString *)aPlaceType radius:(NSInteger)aRadius {
++(NSString *) placesQueryWithLocation:(NSString *) aLocation placeType:(NSString *) aPlaceType placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius {
     
-    //https://maps.googleapis.com/maps/api/place/search/xml?location=39.71755,-82.95285&radius=500&types=restaurant&sensor=false&key=AIzaSyAAq2wxK50A-3FrhWRtNaB_gvVYUXAZYzM
+    NSString *key = @"AIzaSyAAq2wxK50A-3FrhWRtNaB_gvVYUXAZYzM";
     
-    NSString *aPlacesQuery = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&types=%@&sensor=true&key=AIzaSyAAq2wxK50A-3FrhWRtNaB_gvVYUXAZYzM", aLocation, [NSString stringWithFormat:@"%d", aRadius], aPlaceType];
-    
-  [Logger logMessage:aPlacesQuery withTitle:@"Query"];
-    return aPlacesQuery;
+    if (aPlaceFilter != nil && [aPlaceFilter isEqualToString:@""] == NO) {
+        
+        return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&types=%@&name=%@&sensor=true&key=%@", aLocation, [NSString stringWithFormat:@"%d", aRadius], aPlaceType, aPlaceFilter, key];
+        
+    } else {
+        
+        return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&types=%@&sensor=true&key=%@", aLocation, [NSString stringWithFormat:@"%d", aRadius], aPlaceType, key];
+    }
 }
 
 +(GDataServiceGoogle *) googleBaseService {

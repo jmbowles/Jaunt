@@ -11,19 +11,20 @@
 
 @implementation GooglePlaceRequest
 
-@synthesize placeLocation, title, placeType, radius, currentLocation;
+@synthesize placeLocation, title, placeType, placeFilter, radius, currentLocation;
 
 #pragma mark -
 #pragma mark Construction
 
 -(id) initWithPlace:(NSString *) aPlaceLocation title:(NSString *) aTitle placeType:(NSString *) aPlaceType 
-			 radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation {
+        placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation {
 	
 	if (self = [super init]) {
 		
 		self.placeLocation = aPlaceLocation;
 		self.title = aTitle;
 		self.placeType = aPlaceType;
+        self.placeFilter = aPlaceFilter;
         self.radius = aRadius;
 		self.currentLocation = aCurrentLocation;
 	}
@@ -35,7 +36,7 @@
 
 -(NSString *) getQuery {	
     
-	return [GoogleServices placesQueryWithLocation:self.placeLocation placeType:self.placeType radius:self.radius];
+	return [GoogleServices placesQueryWithLocation:self.placeLocation placeType:self.placeType placeFilter:self.placeFilter radius:self.radius];
     
 }
 
@@ -47,6 +48,7 @@
 	[placeLocation release];
 	[title release];
 	[placeType release];
+    [placeFilter release];
 	[currentLocation release];
 	[super dealloc];
 }

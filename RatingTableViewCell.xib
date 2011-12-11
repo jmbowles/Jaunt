@@ -44,7 +44,7 @@
 							<object class="IBUIImageView" id="59967971">
 								<reference key="NSNextResponder" ref="826570795"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{6, 11}, {60, 60}}</string>
+								<string key="NSFrame">{{11, 16}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="826570795"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="776959581"/>
@@ -54,7 +54,7 @@
 							<object class="IBUILabel" id="776959581">
 								<reference key="NSNextResponder" ref="826570795"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{74, 11}, {145, 21}}</string>
+								<string key="NSFrame">{{74, 11}, {206, 21}}</string>
 								<reference key="NSSuperview" ref="826570795"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="980683491"/>
@@ -69,16 +69,17 @@
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<string key="name">Helvetica-Bold</string>
 									<string key="family">Helvetica</string>
 									<int key="traits">2</int>
-									<double key="pointSize">15</double>
+									<double key="pointSize">12</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">15</double>
+									<double key="NSSize">12</double>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
@@ -88,7 +89,6 @@
 								<string key="NSFrame">{{74, 55}, {70, 16}}</string>
 								<reference key="NSSuperview" ref="826570795"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 							<object class="IBUILabel" id="404188697">
@@ -240,11 +240,11 @@
 						<int key="objectID">2</int>
 						<reference key="object" ref="549698730"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="59967971"/>
 							<reference ref="776959581"/>
 							<reference ref="952734682"/>
 							<reference ref="980683491"/>
 							<reference ref="404188697"/>
+							<reference ref="59967971"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

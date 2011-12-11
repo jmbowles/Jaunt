@@ -17,6 +17,7 @@
 #import "JauntAppDelegate.h"
 #import "Logger.h"
 #import "ReachabilityManager.h"
+#import "ImageKeyValue.h"
 
 #define DARK_BACKGROUND  [UIColor colorWithRed:203.0/255.0 green:204.0/255.0 blue:206.0/255.0 alpha:1.0]
 #define LIGHT_BACKGROUND [UIColor colorWithRed:224.0/255.0 green:225.0/255.0 blue:227.0/255.0 alpha:1.0]
@@ -24,12 +25,13 @@
 @interface QueryResultController (PrivateMethods)
 
 -(void) performRefresh;
+-(void)downloadImage:(NSString *)anImageKey;
 
 @end
 
 @implementation QueryResultController
 
-@synthesize googleEntry;
+
 @synthesize placeRequest;
 @synthesize currentLocation;
 @synthesize googleQuery;
@@ -38,6 +40,8 @@
 @synthesize reachability;
 @synthesize ratingCell;
 @synthesize ratingCellNib;
+@synthesize queue;
+@synthesize iconDictionary;
 
 
 #pragma mark -
@@ -60,6 +64,13 @@
 	self.reachability = aReachability;
 	[aReachability release];
 	
+    NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
+	[aQueue setMaxConcurrentOperationCount:3];
+	self.queue = aQueue;
+	[aQueue release];
+    
+    [self setIconDictionary:[NSMutableDictionary dictionary]];
+    
 	[self performRefresh];
 }
 
@@ -92,6 +103,7 @@
 	[self.activityManager showActivity];
 	
     NSURL *url = [NSURL URLWithString:[self.placeRequest getQuery]];
+    [Logger logMessage:[self.placeRequest getQuery] withTitle:@"PlaceQuery"];
 	ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:url];
     [aRequest setTimeOutSeconds:20];
 	[aRequest setDelegate:self];
@@ -113,8 +125,6 @@
 #pragma mark -
 #pragma mark ASIHttpRequest Callbacks
 
-
-
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
 	NSData *xmlData = [request responseData];
@@ -133,6 +143,7 @@
             GDataXMLElement *name = [[place elementsForName:@"name"] objectAtIndex:0];
             GDataXMLElement *address = [[place elementsForName:@"vicinity"] objectAtIndex:0];
             GDataXMLElement *rating = [[place elementsForName:@"rating"] objectAtIndex:0];
+            GDataXMLElement *icon = [[place elementsForName:@"icon"] objectAtIndex:0];
             GDataXMLElement *location = [[place nodesForXPath:@"geometry/location" error:&error] objectAtIndex:0];
             GDataXMLElement *lat = [[location elementsForName:@"lat"] objectAtIndex:0];
             GDataXMLElement *lng = [[location elementsForName:@"lng"] objectAtIndex:0];
@@ -140,6 +151,7 @@
             GoogleQuery *aResult = [[GoogleQuery alloc] init];
             
             aResult.title = [name stringValue];
+            aResult.iconHref = [icon stringValue];
             aResult.subTitle = miles;
             aResult.detailedDescription = [rating stringValue];
             aResult.address = [address stringValue];
@@ -147,6 +159,8 @@
             
             [queryResults addObject:aResult];
             [aResult release];
+            
+            [self downloadImage:[icon stringValue]];
         }
         
     } else {
@@ -173,6 +187,63 @@
 	[anAlert release];
 }
 
+- (void)imageRequestFinished:(ASIHTTPRequest *)request
+{
+
+    NSString *aKey = request.originalURL.absoluteString;
+    NSData *data = [request responseData];
+	UIImage *anImage = [[UIImage alloc] initWithData:data];
+	
+    ImageKeyValue *anImageKeyValuePair = [[ImageKeyValue alloc] init];
+	[anImageKeyValuePair setKeyName:aKey];
+	[anImageKeyValuePair setImageValue:anImage];
+	[anImageKeyValuePair setLoaded:YES];
+	[anImage release];
+    [iconDictionary setValue:anImageKeyValuePair forKey:aKey];
+    [anImageKeyValuePair release];
+    
+	[self.activityManager hideActivity];
+    [self.tableView reloadData];
+}
+
+- (void)imageRequestFailed:(ASIHTTPRequest *)request
+{
+	[self.activityManager hideActivity];
+    [Logger logMessage:@"Image Download Failed" withTitle:@"Failed"];
+}
+
+- (void)downloadImage:(NSString *)anImageKey
+{
+	ImageKeyValue *anImageKeyValuePair = [self.iconDictionary objectForKey:anImageKey];
+	
+    if (anImageKeyValuePair == nil) {
+        
+        [self.activityManager showActivity];
+        
+        NSURL *url = [NSURL URLWithString:anImageKey];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+        [request setTimeOutSeconds:10];
+        [request setDelegate:self];
+        [request setDidFinishSelector:@selector(imageRequestFinished:)];
+        [request setDidFailSelector:@selector(imageRequestFailed:)];
+        [[self queue] addOperation:request];
+    } 
+}
+
+-(UIImage*) getImageForKey:(NSString *) aKey usingDefaultImagePath:(NSString *) aPath {
+    
+    ImageKeyValue *anImageKeyValuePair = [self.iconDictionary objectForKey:aKey];
+	
+    if (anImageKeyValuePair) {
+        
+        return anImageKeyValuePair.imageValue;
+        
+    } else {
+        
+        return [UIImage imageNamed:aPath];
+    }
+}
+
 #pragma mark -
 #pragma mark Table Methods
 
@@ -196,7 +267,7 @@
  
 	GoogleQuery *aQuery = [self.results objectAtIndex: [indexPath row]];
     
-    cell.icon.image = [UIImage imageNamed:@"restaurant-71.png"];
+    cell.icon.image = [self getImageForKey:aQuery.iconHref usingDefaultImagePath:@"food.png"];
 	cell.nameLabel.text = [aQuery.title capitalizedString];	
 	cell.milesLabel.text = aQuery.subTitle;
     cell.addressLabel.text = aQuery.address;
@@ -257,7 +328,6 @@
 
 -(void)dealloc {
     
-	[googleEntry release];
     [placeRequest release];
 	[currentLocation release];
 	[googleQuery release];
@@ -266,6 +336,8 @@
 	[reachability release];
     [ratingCell release];
     [ratingCellNib release];
+    [queue release];
+    [iconDictionary release];
 	[super dealloc];
 }
 

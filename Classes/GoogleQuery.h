@@ -17,6 +17,7 @@
 	NSString *address;
 	NSString *href;
 	NSString *mapsURL;
+    NSString *iconHref;
 }
 
 @property (nonatomic, retain) NSString *title;
@@ -25,6 +26,7 @@
 @property (nonatomic, retain) NSString *address;
 @property (nonatomic, retain) NSString *href;
 @property (nonatomic, retain) NSString *mapsURL;
+@property (nonatomic, retain) NSString *iconHref;
 
 -(NSComparisonResult)compareQuery:(GoogleQuery *) aQuery;
 +(NSString *) formatDateTimeRangeFromStartingDate:(NSDate *) startingDate andEndingDate:(NSDate *) endingDate;

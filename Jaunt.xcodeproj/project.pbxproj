@@ -22,14 +22,25 @@
 		6D5F7C4A149399C50083DD04 /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D5F7C49149399C50083DD04 /* RatingTableViewCell.xib */; };
 		6D5F7C4E1493A65D0083DD04 /* StarsBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D5F7C4D1493A65D0083DD04 /* StarsBackground.png */; };
 		6D5F7C501493A66C0083DD04 /* StarsForeground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D5F7C4F1493A66C0083DD04 /* StarsForeground.png */; };
-		6D5F7C5414940BAE0083DD04 /* bar-71.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D5F7C5114940BAD0083DD04 /* bar-71.png */; };
-		6D5F7C5514940BAE0083DD04 /* cafe-71.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D5F7C5214940BAE0083DD04 /* cafe-71.png */; };
-		6D5F7C5614940BAE0083DD04 /* restaurant-71.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D5F7C5314940BAE0083DD04 /* restaurant-71.png */; };
 		6D632B08108256F1009769E5 /* RouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B07108256F1009769E5 /* RouteController.m */; };
 		6D632B0B10825703009769E5 /* WeatherController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D632B0A10825703009769E5 /* WeatherController.m */; };
 		6D632B131082578E009769E5 /* RouteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B121082578E009769E5 /* RouteView.xib */; };
 		6D632B15108257A0009769E5 /* WeatherView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D632B14108257A0009769E5 /* WeatherView.xib */; };
+		6D6A38DC1495094F007A5EF7 /* Places.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D6A38DB1495094F007A5EF7 /* Places.plist */; };
 		6D70783F10B4D20100CDA8FD /* DestinationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D70783E10B4D20100CDA8FD /* DestinationController.m */; };
+		6D7529701495425E00A6AB10 /* airport.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529631495425E00A6AB10 /* airport.png */; };
+		6D7529711495425E00A6AB10 /* atm.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529641495425E00A6AB10 /* atm.png */; };
+		6D7529721495425E00A6AB10 /* bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529651495425E00A6AB10 /* bar.png */; };
+		6D7529731495425E00A6AB10 /* cafe.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529661495425E00A6AB10 /* cafe.png */; };
+		6D7529741495425E00A6AB10 /* gas.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529671495425E00A6AB10 /* gas.png */; };
+		6D7529751495425E00A6AB10 /* hospital.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529681495425E00A6AB10 /* hospital.png */; };
+		6D7529761495425E00A6AB10 /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D7529691495425E00A6AB10 /* library.png */; };
+		6D7529771495425E00A6AB10 /* park.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D75296A1495425E00A6AB10 /* park.png */; };
+		6D7529781495425E00A6AB10 /* pharmacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D75296B1495425E00A6AB10 /* pharmacy.png */; };
+		6D7529791495425E00A6AB10 /* pizza.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D75296C1495425E00A6AB10 /* pizza.png */; };
+		6D75297A1495425E00A6AB10 /* postoffice.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D75296D1495425E00A6AB10 /* postoffice.png */; };
+		6D75297B1495425E00A6AB10 /* wine.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D75296E1495425E00A6AB10 /* wine.png */; };
+		6D75297C1495425E00A6AB10 /* zoo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D75296F1495425E00A6AB10 /* zoo.png */; };
 		6D755F9610CBDD33004D36F2 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D755F9510CBDD33004D36F2 /* Photo.m */; };
 		6D755F9B10CBDE74004D36F2 /* UIImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D755F9A10CBDE74004D36F2 /* UIImageToDataTransformer.m */; };
 		6D761C5310D99BD60050E414 /* ViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D761C5210D99BD60050E414 /* ViewManager.m */; };
@@ -183,9 +194,6 @@
 		6D5F7C49149399C50083DD04 /* RatingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingTableViewCell.xib; sourceTree = "<group>"; };
 		6D5F7C4D1493A65D0083DD04 /* StarsBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarsBackground.png; sourceTree = "<group>"; };
 		6D5F7C4F1493A66C0083DD04 /* StarsForeground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarsForeground.png; sourceTree = "<group>"; };
-		6D5F7C5114940BAD0083DD04 /* bar-71.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bar-71.png"; sourceTree = "<group>"; };
-		6D5F7C5214940BAE0083DD04 /* cafe-71.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cafe-71.png"; sourceTree = "<group>"; };
-		6D5F7C5314940BAE0083DD04 /* restaurant-71.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restaurant-71.png"; sourceTree = "<group>"; };
 		6D632B06108256F1009769E5 /* RouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteController.h; sourceTree = "<group>"; };
 		6D632B07108256F1009769E5 /* RouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteController.m; sourceTree = "<group>"; };
 		6D632B0910825703009769E5 /* WeatherController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherController.h; sourceTree = "<group>"; };
@@ -193,8 +201,22 @@
 		6D632B121082578E009769E5 /* RouteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteView.xib; sourceTree = "<group>"; };
 		6D632B14108257A0009769E5 /* WeatherView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherView.xib; sourceTree = "<group>"; };
 		6D632C6510828ECA009769E5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		6D6A38DB1495094F007A5EF7 /* Places.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Places.plist; sourceTree = "<group>"; };
 		6D70783D10B4D20100CDA8FD /* DestinationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationController.h; sourceTree = "<group>"; };
 		6D70783E10B4D20100CDA8FD /* DestinationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationController.m; sourceTree = "<group>"; };
+		6D7529631495425E00A6AB10 /* airport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airport.png; sourceTree = "<group>"; };
+		6D7529641495425E00A6AB10 /* atm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atm.png; sourceTree = "<group>"; };
+		6D7529651495425E00A6AB10 /* bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bar.png; sourceTree = "<group>"; };
+		6D7529661495425E00A6AB10 /* cafe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cafe.png; sourceTree = "<group>"; };
+		6D7529671495425E00A6AB10 /* gas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gas.png; sourceTree = "<group>"; };
+		6D7529681495425E00A6AB10 /* hospital.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hospital.png; sourceTree = "<group>"; };
+		6D7529691495425E00A6AB10 /* library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = library.png; sourceTree = "<group>"; };
+		6D75296A1495425E00A6AB10 /* park.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = park.png; sourceTree = "<group>"; };
+		6D75296B1495425E00A6AB10 /* pharmacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pharmacy.png; sourceTree = "<group>"; };
+		6D75296C1495425E00A6AB10 /* pizza.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pizza.png; sourceTree = "<group>"; };
+		6D75296D1495425E00A6AB10 /* postoffice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postoffice.png; sourceTree = "<group>"; };
+		6D75296E1495425E00A6AB10 /* wine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wine.png; sourceTree = "<group>"; };
+		6D75296F1495425E00A6AB10 /* zoo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoo.png; sourceTree = "<group>"; };
 		6D755F9410CBDD33004D36F2 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		6D755F9510CBDD33004D36F2 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		6D755F9910CBDE74004D36F2 /* UIImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageToDataTransformer.h; sourceTree = "<group>"; };
@@ -439,9 +461,19 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6D5F7C5114940BAD0083DD04 /* bar-71.png */,
-				6D5F7C5214940BAE0083DD04 /* cafe-71.png */,
-				6D5F7C5314940BAE0083DD04 /* restaurant-71.png */,
+				6D7529631495425E00A6AB10 /* airport.png */,
+				6D7529641495425E00A6AB10 /* atm.png */,
+				6D7529651495425E00A6AB10 /* bar.png */,
+				6D7529661495425E00A6AB10 /* cafe.png */,
+				6D7529671495425E00A6AB10 /* gas.png */,
+				6D7529681495425E00A6AB10 /* hospital.png */,
+				6D7529691495425E00A6AB10 /* library.png */,
+				6D75296A1495425E00A6AB10 /* park.png */,
+				6D75296B1495425E00A6AB10 /* pharmacy.png */,
+				6D75296C1495425E00A6AB10 /* pizza.png */,
+				6D75296D1495425E00A6AB10 /* postoffice.png */,
+				6D75296E1495425E00A6AB10 /* wine.png */,
+				6D75296F1495425E00A6AB10 /* zoo.png */,
 				6D5F7C4F1493A66C0083DD04 /* StarsForeground.png */,
 				6D5F7C4D1493A65D0083DD04 /* StarsBackground.png */,
 				6D3CCB05145C2AC8000F8D2B /* comedy.png */,
@@ -470,6 +502,7 @@
 				6D7B564710B02331007942E0 /* TextFieldCell.xib */,
 				6D7B570610B04AC0007942E0 /* NonEditableCell.xib */,
 				6D5F7C49149399C50083DD04 /* RatingTableViewCell.xib */,
+				6D6A38DB1495094F007A5EF7 /* Places.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -731,6 +764,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D6A38DC1495094F007A5EF7 /* Places.plist in Resources */,
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				6D632B131082578E009769E5 /* RouteView.xib in Resources */,
 				6D632B15108257A0009769E5 /* WeatherView.xib in Resources */,
@@ -757,9 +791,19 @@
 				6D5F7C4A149399C50083DD04 /* RatingTableViewCell.xib in Resources */,
 				6D5F7C4E1493A65D0083DD04 /* StarsBackground.png in Resources */,
 				6D5F7C501493A66C0083DD04 /* StarsForeground.png in Resources */,
-				6D5F7C5414940BAE0083DD04 /* bar-71.png in Resources */,
-				6D5F7C5514940BAE0083DD04 /* cafe-71.png in Resources */,
-				6D5F7C5614940BAE0083DD04 /* restaurant-71.png in Resources */,
+				6D7529701495425E00A6AB10 /* airport.png in Resources */,
+				6D7529711495425E00A6AB10 /* atm.png in Resources */,
+				6D7529721495425E00A6AB10 /* bar.png in Resources */,
+				6D7529731495425E00A6AB10 /* cafe.png in Resources */,
+				6D7529741495425E00A6AB10 /* gas.png in Resources */,
+				6D7529751495425E00A6AB10 /* hospital.png in Resources */,
+				6D7529761495425E00A6AB10 /* library.png in Resources */,
+				6D7529771495425E00A6AB10 /* park.png in Resources */,
+				6D7529781495425E00A6AB10 /* pharmacy.png in Resources */,
+				6D7529791495425E00A6AB10 /* pizza.png in Resources */,
+				6D75297A1495425E00A6AB10 /* postoffice.png in Resources */,
+				6D75297B1495425E00A6AB10 /* wine.png in Resources */,
+				6D75297C1495425E00A6AB10 /* zoo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

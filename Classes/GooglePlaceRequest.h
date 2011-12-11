@@ -14,6 +14,7 @@
     NSString *placeLocation;
     NSString *title;
     NSString *placeType;
+    NSString *placeFilter;
     NSInteger radius;
     CLLocation *currentLocation;
 
@@ -22,11 +23,12 @@
 @property (nonatomic, retain) NSString *placeLocation;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *placeType;
+@property (nonatomic, retain) NSString *placeFilter;
 @property (nonatomic, assign) NSInteger radius;
 @property (nonatomic, retain) CLLocation *currentLocation;
 
 -(id) initWithPlace:(NSString *) aPlaceLocation title:(NSString *) aTitle placeType:(NSString *) aPlaceType 
-			 radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation;
+        placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation;
 -(NSString *) getQuery;
 
 @end

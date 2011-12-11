@@ -17,6 +17,7 @@
 @synthesize address;
 @synthesize href;
 @synthesize mapsURL;
+@synthesize iconHref;
 
 
 #pragma mark -
@@ -49,6 +50,7 @@
 	[address release];
 	[href release];
 	[mapsURL release];
+    [iconHref release];
 	[super dealloc];
 }
 

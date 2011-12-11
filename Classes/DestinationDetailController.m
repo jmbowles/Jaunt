@@ -26,6 +26,7 @@
 
 @synthesize destination;
 @synthesize currentLocation;
+@synthesize places;
 @synthesize actions;
 @synthesize icons;
 
@@ -36,8 +37,12 @@
 -(void)viewDidLoad {
 	
     [super viewDidLoad];
+    
+    NSString *placeTypes = [[NSBundle mainBundle] pathForResource:@"Places" ofType:@"plist"];
+    self.places = [NSArray arrayWithContentsOfFile:placeTypes];
+    
 	[self loadActions];
-	[self loadIcons];
+	//[self loadIcons];
 }
 
 #pragma mark -
@@ -89,22 +94,43 @@
 -(void) loadActions {
 	
 	NSString *latLong = [GoogleServices formatLatitude:self.destination.latitude andLongitude:self.destination.longitude];
+	NSMutableArray *placesArray = [NSMutableArray array];
+    NSMutableArray *iconsArray = [NSMutableArray array];
+    
+    for (NSDictionary *aDictionary in self.places) {
+        
+        NSString *title = [aDictionary objectForKey:@"Title"];
+        NSString *imageName = [aDictionary objectForKey:@"ImageName"];
+        NSString *type = [aDictionary objectForKey:@"Type"];
+        NSString *filter = [aDictionary objectForKey:@"Filter"];
+        NSInteger radius = [[aDictionary objectForKey:@"Radius"] intValue];
+        
+        GooglePlaceRequest *aRequest = [[GooglePlaceRequest alloc] initWithPlace:latLong title:title placeType:type placeFilter:filter radius:radius currentLocation:self.currentLocation];
+        
+        [placesArray addObject:aRequest];
+        [self setActions: placesArray];
+        [aRequest release];
+        
+        [iconsArray addObject:[UIImage imageNamed:imageName]];
+        [self setIcons: iconsArray];
+    }
+    
+    /**
+    GooglePlaceRequest *hotels = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Hotels" placeType:@"lodging" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *bnb = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Bed & Breakfast" placeType:@"lodging" placeFilter:@"b&b" radius:5000 currentLocation:self.currentLocation];
+    
+    GooglePlaceRequest *food = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Restaurants" placeType:@"restaurant"  placeFilter:nil radius:5000 currentLocation:self.currentLocation];
 	
-    GooglePlaceRequest *hotels = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Hotels" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    GooglePlaceRequest *sightseeing = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sightseeing" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
     
-    GooglePlaceRequest *bnb = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Bed & Breakfast" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    GooglePlaceRequest *concerts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Concerts" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
     
-    GooglePlaceRequest *food = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Restaurants" placeType:@"restaurant" radius:5000 currentLocation:self.currentLocation];
-	
-    GooglePlaceRequest *sightseeing = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sightseeing" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    GooglePlaceRequest *sports = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sports" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
     
-    GooglePlaceRequest *concerts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Concerts" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    GooglePlaceRequest *comedy = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Comedy" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
     
-    GooglePlaceRequest *sports = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sports" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *comedy = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Comedy" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *arts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Performing Arts" placeType:@"restaurant" radius:500 currentLocation:self.currentLocation];
+    GooglePlaceRequest *arts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Performing Arts" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
 	
 	NSArray *anArray = [[NSArray alloc] initWithObjects:hotels, bnb, food, sightseeing, concerts, sports, comedy, arts, nil];
 	[self setActions: anArray];
@@ -118,6 +144,7 @@
 	[sports release];
 	[comedy release];
 	[arts release];
+     **/
 }
 
 -(void) loadIcons {
@@ -143,6 +170,7 @@
     
 	[destination release];
 	[currentLocation release];
+    [places release];
 	[actions release];
 	[icons release];
 	[super dealloc];
