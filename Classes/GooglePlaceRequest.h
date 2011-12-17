@@ -15,6 +15,7 @@
     NSString *title;
     NSString *placeType;
     NSString *placeFilter;
+    NSString *defaultImageName;
     NSInteger radius;
     CLLocation *currentLocation;
 
@@ -24,11 +25,12 @@
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *placeType;
 @property (nonatomic, retain) NSString *placeFilter;
+@property (nonatomic, retain) NSString *defaultImageName;
 @property (nonatomic, assign) NSInteger radius;
 @property (nonatomic, retain) CLLocation *currentLocation;
 
 -(id) initWithPlace:(NSString *) aPlaceLocation title:(NSString *) aTitle placeType:(NSString *) aPlaceType 
-        placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation;
+        placeFilter:(NSString *) aPlaceFilter defaultImage:(NSString *) defaultImage radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation;
 -(NSString *) getQuery;
 
 @end

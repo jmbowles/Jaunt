@@ -42,7 +42,6 @@
     self.places = [NSArray arrayWithContentsOfFile:placeTypes];
     
 	[self loadActions];
-	//[self loadIcons];
 }
 
 #pragma mark -
@@ -105,7 +104,7 @@
         NSString *filter = [aDictionary objectForKey:@"Filter"];
         NSInteger radius = [[aDictionary objectForKey:@"Radius"] intValue];
         
-        GooglePlaceRequest *aRequest = [[GooglePlaceRequest alloc] initWithPlace:latLong title:title placeType:type placeFilter:filter radius:radius currentLocation:self.currentLocation];
+        GooglePlaceRequest *aRequest = [[GooglePlaceRequest alloc] initWithPlace:latLong title:title placeType:type placeFilter:filter defaultImage:imageName radius:radius currentLocation:self.currentLocation];
         
         [placesArray addObject:aRequest];
         [self setActions: placesArray];
@@ -114,54 +113,7 @@
         [iconsArray addObject:[UIImage imageNamed:imageName]];
         [self setIcons: iconsArray];
     }
-    
-    /**
-    GooglePlaceRequest *hotels = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Hotels" placeType:@"lodging" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *bnb = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Bed & Breakfast" placeType:@"lodging" placeFilter:@"b&b" radius:5000 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *food = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Restaurants" placeType:@"restaurant"  placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-	
-    GooglePlaceRequest *sightseeing = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sightseeing" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *concerts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Concerts" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *sports = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Sports" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *comedy = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Comedy" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-    
-    GooglePlaceRequest *arts = [[GooglePlaceRequest alloc] initWithPlace:latLong title:@"Performing Arts" placeType:@"restaurant" placeFilter:nil radius:5000 currentLocation:self.currentLocation];
-	
-	NSArray *anArray = [[NSArray alloc] initWithObjects:hotels, bnb, food, sightseeing, concerts, sports, comedy, arts, nil];
-	[self setActions: anArray];
-	
-	[anArray release];
-	[hotels release];
-	[bnb release];
-	[food release];
-	[sightseeing release];
-	[concerts release];
-	[sports release];
-	[comedy release];
-	[arts release];
-     **/
 }
-
--(void) loadIcons {
-	
-	UIImage *hotels = [UIImage imageNamed:@"hotel.png"];
-	UIImage *bnb = [UIImage imageNamed:@"bednbreakfast.png"];
-	UIImage *food = [UIImage imageNamed:@"food.png"];
-	UIImage *sightseeing = [UIImage imageNamed:@"sightseeing.png"];
-	UIImage *concerts = [UIImage imageNamed:@"concerts.png"];
-	UIImage *sports = [UIImage imageNamed:@"football.png"];
-	UIImage *comedy = [UIImage imageNamed:@"comedy.png"];
-	UIImage *arts = [UIImage imageNamed:@"arts.png"];
-
-	NSArray *anArray = [[NSArray alloc] initWithObjects:hotels, bnb, food, sightseeing, concerts, sports, comedy, arts, nil];
-	[self setIcons: anArray];
-}
-
 
 #pragma mark -
 #pragma mark Memory Management

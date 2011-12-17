@@ -12,10 +12,10 @@
 
 #import <Foundation/Foundation.h>
 #if TARGET_OS_IPHONE
-#import <CFNetwork/CFNetwork.h>
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
-#import <UIKit/UIKit.h> // Necessary for background task support
-#endif
+	#import <CFNetwork/CFNetwork.h>
+	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+	#import <UIKit/UIKit.h> // Necessary for background task support
+	#endif
 #endif
 
 #import <stdio.h>
@@ -31,16 +31,16 @@ extern NSString *ASIHTTPRequestVersion;
 // Make targeting different platforms more reliable
 // See: http://www.blumtnwerx.com/blog/2009/06/cross-sdk-code-hygiene-in-xcode/
 #ifndef __IPHONE_3_2
-#define __IPHONE_3_2 30200
+	#define __IPHONE_3_2 30200
 #endif
 #ifndef __IPHONE_4_0
-#define __IPHONE_4_0 40000
+	#define __IPHONE_4_0 40000
 #endif
 #ifndef __MAC_10_5
-#define __MAC_10_5 1050
+	#define __MAC_10_5 1050
 #endif
 #ifndef __MAC_10_6
-#define __MAC_10_6 1060
+	#define __MAC_10_6 1060
 #endif
 
 typedef enum _ASIAuthenticationState {
@@ -91,7 +91,7 @@ typedef void (^ASIDataBlock)(NSData *data);
 	
 	// Temporarily stores the url we are about to redirect to. Will be nil again when we do redirect
 	NSURL *redirectURL;
-    
+
 	// The delegate - will be notified of various changes in state via the ASIHTTPRequestDelegate protocol
 	id <ASIHTTPRequestDelegate> delegate;
 	
@@ -293,11 +293,11 @@ typedef void (^ASIDataBlock)(NSData *data);
 	
 	// Called on the delegate (if implemented) when the request receives response headers. Default is request:didReceiveResponseHeaders:
 	SEL didReceiveResponseHeadersSelector;
-    
+
 	// Called on the delegate (if implemented) when the request receives a Location header and shouldRedirect is YES
 	// The delegate can then change the url if needed, and can restart the request by calling [request redirectToURL:], or simply cancel it
 	SEL willRedirectSelector;
-    
+
 	// Called on the delegate (if implemented) when the request completes successfully. Default is requestFinished:
 	SEL didFinishSelector;
 	
@@ -377,7 +377,7 @@ typedef void (^ASIDataBlock)(NSData *data);
 	// ASIHTTPRequest will assume kCFProxyTypeHTTP if the proxy type could not be automatically determined
 	// Set to kCFProxyTypeSOCKS if you are manually configuring a SOCKS proxy
 	NSString *proxyType;
-    
+
 	// URL for a PAC (Proxy Auto Configuration) file. If you want to set this yourself, it's probably best if you use a local file
 	NSURL *PACurl;
 	
@@ -402,18 +402,18 @@ typedef void (^ASIDataBlock)(NSData *data);
 	// Set to allow a request to automatically retry itself on timeout
 	// Default is zero - timeout will stop the request
 	int numberOfTimesToRetryOnTimeout;
-    
+
 	// The number of times this request has retried (when numberOfTimesToRetryOnTimeout > 0)
 	int retryCount;
-    
+
 	// Temporarily set to YES when a closed connection forces a retry (internally, this stops ASIHTTPRequest cleaning up a temporary post body)
 	BOOL willRetryRequest;
-    
+
 	// When YES, requests will keep the connection to the server alive for a while to allow subsequent requests to re-use it for a substantial speed-boost
 	// Persistent connections will not be used if the server explicitly closes the connection
 	// Default is YES
 	BOOL shouldAttemptPersistentConnection;
-    
+
 	// Number of seconds to keep an inactive persistent connection open on the client side
 	// Default is 60
 	// If we get a keep-alive header, this is this value is replaced with how long the server told us to keep the connection around
@@ -460,14 +460,14 @@ typedef void (^ASIDataBlock)(NSData *data);
 	
 	// Will be true when the response was pulled from the cache rather than downloaded
 	BOOL didUseCachedResponse;
-    
+
 	// Set secondsToCache to use a custom time interval for expiring the response when it is stored in a cache
 	NSTimeInterval secondsToCache;
-    
-#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+
+	#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
 	BOOL shouldContinueWhenAppEntersBackground;
 	UIBackgroundTaskIdentifier backgroundTask;
-#endif
+	#endif
 	
 	// When downloading a gzipped response, the request will use this helper object to inflate the response
 	ASIDataDecompressor *dataDecompressor;
@@ -485,59 +485,59 @@ typedef void (^ASIDataBlock)(NSData *data);
 	//
 	// Setting this to NO may be especially useful for users using ASIHTTPRequest in conjunction with a streaming parser, as it will allow partial gzipped responses to be inflated and passed on to the parser while the request is still running
 	BOOL shouldWaitToInflateCompressedResponses;
-    
+
 	// Will be YES if this is a request created behind the scenes to download a PAC file - these requests do not attempt to configure their own proxies
 	BOOL isPACFileRequest;
-    
+
 	// Used for downloading PAC files from http / https webservers
 	ASIHTTPRequest *PACFileRequest;
-    
+
 	// Used for asynchronously reading PAC files from file:// URLs
 	NSInputStream *PACFileReadStream;
-    
+
 	// Used for storing PAC data from file URLs as it is downloaded
 	NSMutableData *PACFileData;
-    
+
 	// Set to YES in startSynchronous. Currently used by proxy detection to download PAC files synchronously when appropriate
 	BOOL isSynchronous;
-    
-#if NS_BLOCKS_AVAILABLE
+
+	#if NS_BLOCKS_AVAILABLE
 	//block to execute when request starts
 	ASIBasicBlock startedBlock;
-    
+
 	//block to execute when headers are received
 	ASIHeadersBlock headersReceivedBlock;
-    
+
 	//block to execute when request completes successfully
 	ASIBasicBlock completionBlock;
-    
+
 	//block to execute when request fails
 	ASIBasicBlock failureBlock;
-    
+
 	//block for when bytes are received
 	ASIProgressBlock bytesReceivedBlock;
-    
+
 	//block for when bytes are sent
 	ASIProgressBlock bytesSentBlock;
-    
+
 	//block for when download size is incremented
 	ASISizeBlock downloadSizeIncrementedBlock;
-    
+
 	//block for when upload size is incremented
 	ASISizeBlock uploadSizeIncrementedBlock;
-    
+
 	//block for handling raw bytes received
 	ASIDataBlock dataReceivedBlock;
-    
+
 	//block for handling authentication
 	ASIBasicBlock authenticationNeededBlock;
-    
+
 	//block for handling proxy authentication
 	ASIBasicBlock proxyAuthenticationNeededBlock;
 	
     //block for handling redirections, if you want to
     ASIBasicBlock requestRedirectedBlock;
-#endif
+	#endif
 }
 
 #pragma mark init / dealloc

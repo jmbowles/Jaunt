@@ -11,13 +11,13 @@
 
 @implementation GooglePlaceRequest
 
-@synthesize placeLocation, title, placeType, placeFilter, radius, currentLocation;
+@synthesize placeLocation, title, placeType, placeFilter, defaultImageName, radius, currentLocation;
 
 #pragma mark -
 #pragma mark Construction
 
 -(id) initWithPlace:(NSString *) aPlaceLocation title:(NSString *) aTitle placeType:(NSString *) aPlaceType 
-        placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation {
+        placeFilter:(NSString *) aPlaceFilter defaultImage:(NSString *) defaultImage radius:(NSInteger) aRadius currentLocation:(CLLocation *) aCurrentLocation {
 	
 	if (self = [super init]) {
 		
@@ -25,6 +25,7 @@
 		self.title = aTitle;
 		self.placeType = aPlaceType;
         self.placeFilter = aPlaceFilter;
+        self.defaultImageName = defaultImage;
         self.radius = aRadius;
 		self.currentLocation = aCurrentLocation;
 	}
@@ -49,6 +50,7 @@
 	[title release];
 	[placeType release];
     [placeFilter release];
+    [defaultImageName release];
 	[currentLocation release];
 	[super dealloc];
 }

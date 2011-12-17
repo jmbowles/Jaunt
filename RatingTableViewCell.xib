@@ -89,12 +89,13 @@
 								<string key="NSFrame">{{74, 55}, {70, 16}}</string>
 								<reference key="NSSuperview" ref="826570795"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 							<object class="IBUILabel" id="404188697">
 								<reference key="NSNextResponder" ref="826570795"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{227, 34}, {93, 17}}</string>
+								<string key="NSFrame">{{227, 34}, {53, 17}}</string>
 								<reference key="NSSuperview" ref="826570795"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="952734682"/>
@@ -141,7 +142,7 @@
 								<reference key="IBUIFont" ref="1015936855"/>
 							</object>
 						</array>
-						<string key="NSFrameSize">{287, 82}</string>
+						<string key="NSFrameSize">{320, 82}</string>
 						<reference key="NSSuperview" ref="549698730"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="59967971"/>
@@ -161,7 +162,6 @@
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="826570795"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<int key="IBUIAccessoryType">2</int>
 				<reference key="IBUIContentView" ref="826570795"/>
 				<string key="IBUIReuseIdentifier">RatingCellReuseIdentifier</string>
 			</object>

@@ -21,25 +21,13 @@
 
 @implementation GoogleServices
 
+static NSString *key = @"AIzaSyAAq2wxK50A-3FrhWRtNaB_gvVYUXAZYzM";
+
 #pragma mark -
 #pragma mark Google Base
 
-+(void) executeQueryUsingDelegate:(id) aDelegate selector:(SEL) aSelector baseQuery:(NSString *) baseQuery orderBy:(NSString *) orderBy; {
-	
-	NSURL *aURL = [NSURL URLWithString:@"http://www.google.com/base/feeds/snippets"];
-	GDataQuery *aQuery = [GDataQuery queryWithFeedURL:aURL];
-	[aQuery setFullTextQueryString:baseQuery];
-	[aQuery setOrderBy:orderBy];
-	[aQuery setMaxResults:30];
-	[aQuery addCustomParameterWithName:@"content" value:@"geocodes"];
-	
-	GDataServiceGoogle *service = [GoogleServices googleBaseService];
-    [service fetchFeedWithQuery:aQuery delegate:aDelegate didFinishSelector:aSelector];
-}
 
 +(NSString *) placesQueryWithLocation:(NSString *) aLocation placeType:(NSString *) aPlaceType placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius {
-    
-    NSString *key = @"AIzaSyAAq2wxK50A-3FrhWRtNaB_gvVYUXAZYzM";
     
     if (aPlaceFilter != nil && [aPlaceFilter isEqualToString:@""] == NO) {
         
@@ -49,6 +37,11 @@
         
         return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&types=%@&sensor=true&key=%@", aLocation, [NSString stringWithFormat:@"%d", aRadius], aPlaceType, key];
     }
+}
+
++(NSString *) placesDetailQueryWithReference:(NSString *) aReference {
+    
+    return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/xml?reference=%@&sensor=true&key=%@", aReference, key];
 }
 
 +(GDataServiceGoogle *) googleBaseService {
@@ -82,7 +75,6 @@
 									 start.latitude, start.longitude, encoded];
 	
 	return googleMapsURLString;
-	
 }
 
 +(NSString *) orderByLocation:(CLLocation *) aLocation {

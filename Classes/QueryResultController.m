@@ -11,13 +11,13 @@
 #import "ActivityManager.h"
 #import "GoogleServices.h"
 #import "GoogleQuery.h"
-#import "GData.h"
-#import "QueryDetailController.h"
-#import "QueryDetailWebViewController.h"
 #import "JauntAppDelegate.h"
 #import "Logger.h"
 #import "ReachabilityManager.h"
 #import "ImageKeyValue.h"
+#import "UIImageView+WebCache.h"
+#import "PlaceViewController.h"
+#import "GData.h"
 
 #define DARK_BACKGROUND  [UIColor colorWithRed:203.0/255.0 green:204.0/255.0 blue:206.0/255.0 alpha:1.0]
 #define LIGHT_BACKGROUND [UIColor colorWithRed:224.0/255.0 green:225.0/255.0 blue:227.0/255.0 alpha:1.0]
@@ -25,7 +25,6 @@
 @interface QueryResultController (PrivateMethods)
 
 -(void) performRefresh;
--(void)downloadImage:(NSString *)anImageKey;
 
 @end
 
@@ -40,8 +39,7 @@
 @synthesize reachability;
 @synthesize ratingCell;
 @synthesize ratingCellNib;
-@synthesize queue;
-@synthesize iconDictionary;
+@synthesize httpRequest;
 
 
 #pragma mark -
@@ -63,25 +61,24 @@
 	aReachability.delegate = self;
 	self.reachability = aReachability;
 	[aReachability release];
-	
-    NSOperationQueue *aQueue = [[NSOperationQueue alloc] init];
-	[aQueue setMaxConcurrentOperationCount:3];
-	self.queue = aQueue;
-	[aQueue release];
     
-    [self setIconDictionary:[NSMutableDictionary dictionary]];
-    
-	[self performRefresh];
+    [self performRefresh];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
 	
+    [super viewWillAppear:animated];
 	[self.reachability startListener];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
 	
+    [super viewWillDisappear:animated];
 	[self.reachability stopListener];
+    [self.activityManager hideActivity];
+    [self.httpRequest clearDelegatesAndCancel];
+    [self.httpRequest setDidFailSelector:nil];
+    [self.httpRequest setDidFinishSelector:nil];
 }
 
 #pragma mark -
@@ -103,11 +100,14 @@
 	[self.activityManager showActivity];
 	
     NSURL *url = [NSURL URLWithString:[self.placeRequest getQuery]];
-    [Logger logMessage:[self.placeRequest getQuery] withTitle:@"PlaceQuery"];
-	ASIHTTPRequest *aRequest = [ASIHTTPRequest requestWithURL:url];
-    [aRequest setTimeOutSeconds:20];
-	[aRequest setDelegate:self];
-	[aRequest startAsynchronous];
+	ASIHTTPRequest *aRequest = [[ASIHTTPRequest alloc] initWithURL:url];
+    self.httpRequest = aRequest;
+    
+    [self.httpRequest setTimeOutSeconds:20];
+	[self.httpRequest setDelegate:self];
+	[self.httpRequest startAsynchronous];
+    
+    [aRequest release];
 }
 
 -(void) performRefresh {
@@ -128,7 +128,6 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
 	NSData *xmlData = [request responseData];
-    [Logger logMessage:[request responseString] withTitle:@"Response"];
     
 	NSError *error;
 	GDataXMLDocument *aDocument = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
@@ -144,14 +143,16 @@
             GDataXMLElement *address = [[place elementsForName:@"vicinity"] objectAtIndex:0];
             GDataXMLElement *rating = [[place elementsForName:@"rating"] objectAtIndex:0];
             GDataXMLElement *icon = [[place elementsForName:@"icon"] objectAtIndex:0];
+            GDataXMLElement *placeReference = [[place elementsForName:@"reference"] objectAtIndex:0];
             GDataXMLElement *location = [[place nodesForXPath:@"geometry/location" error:&error] objectAtIndex:0];
             GDataXMLElement *lat = [[location elementsForName:@"lat"] objectAtIndex:0];
             GDataXMLElement *lng = [[location elementsForName:@"lng"] objectAtIndex:0];
             NSString *miles = [GoogleServices calculateDistanceFromLatitude:[lat stringValue] fromLongitude:[lng stringValue] toLocation:[self currentLocation]];
-            GoogleQuery *aResult = [[GoogleQuery alloc] init];
             
+            GoogleQuery *aResult = [[GoogleQuery alloc] init];
             aResult.title = [name stringValue];
             aResult.iconHref = [icon stringValue];
+            aResult.placeReference = [placeReference stringValue];
             aResult.subTitle = miles;
             aResult.detailedDescription = [rating stringValue];
             aResult.address = [address stringValue];
@@ -159,8 +160,6 @@
             
             [queryResults addObject:aResult];
             [aResult release];
-            
-            [self downloadImage:[icon stringValue]];
         }
         
     } else {
@@ -187,62 +186,6 @@
 	[anAlert release];
 }
 
-- (void)imageRequestFinished:(ASIHTTPRequest *)request
-{
-
-    NSString *aKey = request.originalURL.absoluteString;
-    NSData *data = [request responseData];
-	UIImage *anImage = [[UIImage alloc] initWithData:data];
-	
-    ImageKeyValue *anImageKeyValuePair = [[ImageKeyValue alloc] init];
-	[anImageKeyValuePair setKeyName:aKey];
-	[anImageKeyValuePair setImageValue:anImage];
-	[anImageKeyValuePair setLoaded:YES];
-	[anImage release];
-    [iconDictionary setValue:anImageKeyValuePair forKey:aKey];
-    [anImageKeyValuePair release];
-    
-	[self.activityManager hideActivity];
-    [self.tableView reloadData];
-}
-
-- (void)imageRequestFailed:(ASIHTTPRequest *)request
-{
-	[self.activityManager hideActivity];
-    [Logger logMessage:@"Image Download Failed" withTitle:@"Failed"];
-}
-
-- (void)downloadImage:(NSString *)anImageKey
-{
-	ImageKeyValue *anImageKeyValuePair = [self.iconDictionary objectForKey:anImageKey];
-	
-    if (anImageKeyValuePair == nil) {
-        
-        [self.activityManager showActivity];
-        
-        NSURL *url = [NSURL URLWithString:anImageKey];
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-        [request setTimeOutSeconds:10];
-        [request setDelegate:self];
-        [request setDidFinishSelector:@selector(imageRequestFinished:)];
-        [request setDidFailSelector:@selector(imageRequestFailed:)];
-        [[self queue] addOperation:request];
-    } 
-}
-
--(UIImage*) getImageForKey:(NSString *) aKey usingDefaultImagePath:(NSString *) aPath {
-    
-    ImageKeyValue *anImageKeyValuePair = [self.iconDictionary objectForKey:aKey];
-	
-    if (anImageKeyValuePair) {
-        
-        return anImageKeyValuePair.imageValue;
-        
-    } else {
-        
-        return [UIImage imageNamed:aPath];
-    }
-}
 
 #pragma mark -
 #pragma mark Table Methods
@@ -255,23 +198,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
     static NSString *identifier = @"RatingCellReuseIdentifier";
-    
     RatingTableViewCell *cell = (RatingTableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
 
 	if (cell == nil) {
 		
         [self.ratingCellNib instantiateWithOwner:self options:nil];
 		cell = self.ratingCell;
+        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		self.ratingCell = nil;
     }
  
 	GoogleQuery *aQuery = [self.results objectAtIndex: [indexPath row]];
-    
-    cell.icon.image = [self getImageForKey:aQuery.iconHref usingDefaultImagePath:@"food.png"];
-	cell.nameLabel.text = [aQuery.title capitalizedString];	
+    cell.nameLabel.text = aQuery.title;	
 	cell.milesLabel.text = aQuery.subTitle;
     cell.addressLabel.text = aQuery.address;
     [cell.ratingView setRating:[aQuery.detailedDescription floatValue]];
+    [cell.icon setImageWithURL:[NSURL URLWithString:aQuery.iconHref] placeholderImage:[UIImage imageNamed:self.placeRequest.defaultImageName]];
 
     return cell;
 }
@@ -303,9 +245,9 @@
 	[self.tableView deselectRowAtIndexPath:indexPath animated: NO];
 	
 	GoogleQuery *aQuery = [self.results objectAtIndex:indexPath.row];
-	
 	JauntAppDelegate *aDelegate = [[UIApplication sharedApplication] delegate];
-	QueryDetailController *aController = [[QueryDetailController alloc] init];
+
+    PlaceViewController *aController = [[PlaceViewController alloc] initWithNibName:@"PlaceViewController" bundle:[NSBundle mainBundle]];
 	[aController setTitle:aQuery.title];
 	[aController setGoogleQuery:aQuery];
 	[aDelegate.navigationController pushViewController:aController animated:YES];
@@ -336,8 +278,7 @@
 	[reachability release];
     [ratingCell release];
     [ratingCellNib release];
-    [queue release];
-    [iconDictionary release];
+    [httpRequest release];
 	[super dealloc];
 }
 

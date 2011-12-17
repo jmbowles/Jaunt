@@ -18,6 +18,9 @@
 @synthesize href;
 @synthesize mapsURL;
 @synthesize iconHref;
+@synthesize placeReference;
+@synthesize phoneNumber;
+@synthesize website;
 
 
 #pragma mark -
@@ -51,6 +54,9 @@
 	[href release];
 	[mapsURL release];
     [iconHref release];
+    [placeReference release];
+    [phoneNumber release];
+    [website release];
 	[super dealloc];
 }
 

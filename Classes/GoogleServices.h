@@ -14,8 +14,8 @@
 
 }
 
-+(void) executeQueryUsingDelegate:(id) aDelegate selector:(SEL) aSelector baseQuery:(NSString *) baseQuery orderBy:(NSString *) orderBy;
 +(NSString *) placesQueryWithLocation:(NSString *) aLocation placeType:(NSString *) aPlaceType placeFilter:(NSString *) aPlaceFilter radius:(NSInteger) aRadius;
++(NSString *) placesDetailQueryWithReference:(NSString *) aReference;
 +(NSString *) formatLatitude:(NSNumber *) aLatitude andLongitude:(NSNumber *) aLongitude;
 +(NSString *) mapsURLWithAddress:(NSString *) anAddress andLocation:(CLLocation *) aLocation;
 +(NSString *) orderByLocation:(CLLocation *) aLocation;
