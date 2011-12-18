@@ -8,6 +8,18 @@
 		<key>Radius</key>
 		<integer>10000</integer>
 		<key>Type</key>
+		<string></string>
+		<key>ImageName</key>
+		<string>all.png</string>
+		<key>Title</key>
+		<string>Nearby</string>
+	</dict>
+    <dict>
+		<key>Filter</key>
+		<string></string>
+		<key>Radius</key>
+		<integer>10000</integer>
+		<key>Type</key>
 		<string>gas_station</string>
 		<key>ImageName</key>
 		<string>gas.png</string>
@@ -97,6 +109,54 @@
 		<string>wine.png</string>
 		<key>Title</key>
 		<string>Wine</string>
+	</dict>
+    <dict>
+		<key>Filter</key>
+		<string></string>
+		<key>Radius</key>
+		<integer>10000</integer>
+		<key>Type</key>
+		<string>bowling_alley</string>
+		<key>ImageName</key>
+		<string>bowling.png</string>
+		<key>Title</key>
+		<string>Bowling</string>
+	</dict>
+    <dict>
+		<key>Filter</key>
+		<string></string>
+		<key>Radius</key>
+		<integer>30000</integer>
+		<key>Type</key>
+		<string>movie_theater</string>
+		<key>ImageName</key>
+		<string>arts.png</string>
+		<key>Title</key>
+		<string>Movie Theater</string>
+	</dict>
+    <dict>
+		<key>Filter</key>
+		<string></string>
+		<key>Radius</key>
+		<integer>50000</integer>
+		<key>Type</key>
+		<string>shopping_mall</string>
+		<key>ImageName</key>
+		<string>mall.png</string>
+		<key>Title</key>
+		<string>Shopping</string>
+	</dict>
+    <dict>
+		<key>Filter</key>
+		<string></string>
+		<key>Radius</key>
+		<integer>30000</integer>
+		<key>Type</key>
+		<string>gym</string>
+		<key>ImageName</key>
+		<string>gym.png</string>
+		<key>Title</key>
+		<string>Gym</string>
 	</dict>
     <dict>
 		<key>Filter</key>

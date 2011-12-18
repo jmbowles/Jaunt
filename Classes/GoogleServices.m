@@ -35,7 +35,14 @@ static NSString *key = @"AIzaSyAAq2wxK50A-3FrhWRtNaB_gvVYUXAZYzM";
         
     } else {
         
-        return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&types=%@&sensor=true&key=%@", aLocation, [NSString stringWithFormat:@"%d", aRadius], aPlaceType, key];
+        if ([aPlaceType isEqualToString:@""] == NO) {
+            
+            return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&types=%@&sensor=true&key=%@", aLocation, [NSString stringWithFormat:@"%d", aRadius], aPlaceType, key];
+            
+        } else {
+            
+            return [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/xml?location=%@&radius=%@&sensor=true&key=%@", aLocation, [NSString stringWithFormat:@"%d", aRadius], key];
+        }
     }
 }
 

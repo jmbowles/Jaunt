@@ -13,6 +13,10 @@
 		6D0BA06D111F5E9100AF7773 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8F8776111F29BF003061A5 /* libGDataTouchStaticLib.a */; };
 		6D15019C1498267D00DD171E /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D15019B1498267C00DD171E /* ASIHTTPRequest.m */; };
 		6D16C36A1494CA4200564D09 /* GooglePlaceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D16C3691494CA4200564D09 /* GooglePlaceRequest.m */; };
+		6D2CEB70149E083C00DF397C /* all.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CEB6C149E083C00DF397C /* all.png */; };
+		6D2CEB71149E083C00DF397C /* bowling.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CEB6D149E083C00DF397C /* bowling.png */; };
+		6D2CEB72149E083C00DF397C /* gym.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CEB6E149E083C00DF397C /* gym.png */; };
+		6D2CEB73149E083C00DF397C /* mall.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CEB6F149E083C00DF397C /* mall.png */; };
 		6D3CCB04145C207C000F8D2B /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D3CCB03145C207C000F8D2B /* libz.1.2.5.dylib */; };
 		6D3CCB06145C2AC8000F8D2B /* comedy.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D3CCB05145C2AC8000F8D2B /* comedy.png */; };
 		6D458C5D148BFA3A00EB1694 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D458C5C148BFA3A00EB1694 /* Security.framework */; };
@@ -192,6 +196,10 @@
 		6D15019B1498267C00DD171E /* ASIHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIHTTPRequest.m; sourceTree = "<group>"; };
 		6D16C3681494CA4200564D09 /* GooglePlaceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlaceRequest.h; sourceTree = "<group>"; };
 		6D16C3691494CA4200564D09 /* GooglePlaceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlaceRequest.m; sourceTree = "<group>"; };
+		6D2CEB6C149E083C00DF397C /* all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all.png; sourceTree = "<group>"; };
+		6D2CEB6D149E083C00DF397C /* bowling.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bowling.png; sourceTree = "<group>"; };
+		6D2CEB6E149E083C00DF397C /* gym.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gym.png; sourceTree = "<group>"; };
+		6D2CEB6F149E083C00DF397C /* mall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mall.png; sourceTree = "<group>"; };
 		6D3CCB03145C207C000F8D2B /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		6D3CCB05145C2AC8000F8D2B /* comedy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comedy.png; sourceTree = "<group>"; };
 		6D458C5C148BFA3A00EB1694 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -500,6 +508,10 @@
 			isa = PBXGroup;
 			children = (
 				6D9B7210149CDD22006CBED6 /* PlaceViewController.xib */,
+				6D2CEB6C149E083C00DF397C /* all.png */,
+				6D2CEB6D149E083C00DF397C /* bowling.png */,
+				6D2CEB6E149E083C00DF397C /* gym.png */,
+				6D2CEB6F149E083C00DF397C /* mall.png */,
 				6D7529631495425E00A6AB10 /* airport.png */,
 				6D7529641495425E00A6AB10 /* atm.png */,
 				6D7529651495425E00A6AB10 /* bar.png */,
@@ -913,6 +925,10 @@
 				6D75297C1495425E00A6AB10 /* zoo.png in Resources */,
 				6D9B7212149CDD23006CBED6 /* PlaceViewController.xib in Resources */,
 				6D9B7214149D140F006CBED6 /* PlaceTableViewCell.xib in Resources */,
+				6D2CEB70149E083C00DF397C /* all.png in Resources */,
+				6D2CEB71149E083C00DF397C /* bowling.png in Resources */,
+				6D2CEB72149E083C00DF397C /* gym.png in Resources */,
+				6D2CEB73149E083C00DF397C /* mall.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
