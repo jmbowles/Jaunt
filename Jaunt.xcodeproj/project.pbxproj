@@ -1069,12 +1069,12 @@
 			};
 			name = Release;
 		};
-		6DDBED2E12BD23C100FD0A80 /* Release Distribution */ = {
+		6DDBED2E12BD23C100FD0A80 /* App Store Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos3.1.3]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1082,13 +1082,13 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos3.1.3]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
-			name = "Release Distribution";
+			name = "App Store Distribution";
 		};
-		6DDBED2F12BD23C100FD0A80 /* Release Distribution */ = {
+		6DDBED2F12BD23C100FD0A80 /* App Store Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1110,7 +1110,7 @@
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(GDATA_SRC)/**";
 			};
-			name = "Release Distribution";
+			name = "App Store Distribution";
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1162,20 +1162,20 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				6DDBED2F12BD23C100FD0A80 /* Release Distribution */,
+				6DDBED2F12BD23C100FD0A80 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "App Store Distribution";
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Jaunt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				6DDBED2E12BD23C100FD0A80 /* Release Distribution */,
+				6DDBED2E12BD23C100FD0A80 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "App Store Distribution";
 		};
 /* End XCConfigurationList section */
 
